@@ -1,0 +1,30 @@
+{
+  "parent": "trajanscore:parts/steel_manufacturer",
+  "display": {
+    "icon": {
+      "item": "trajanscore:light_tank_tracks"
+    },
+    "title": "A-track-tive",
+    "description": "Craft any tank tracks",
+    "frame": "task",
+    "show_toast": true,
+    "hidden": false,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "trajanscore:light_tank_tracks",
+              "trajanscore:medium_tank_tracks",
+              "trajanscore:heavy_tank_tracks"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

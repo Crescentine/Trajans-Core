@@ -1,0 +1,38 @@
+{
+  "type" : "trajanscore:steel_manufacturer",
+  "ingredients" : [
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:lever"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:lever"
+    },
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "minecraft:lever"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:lever"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "trajanscore:hammer"
+    }
+  ],
+  "output" : {
+    "item": "trajanscore:steering_crafting_item"
+  }
+}

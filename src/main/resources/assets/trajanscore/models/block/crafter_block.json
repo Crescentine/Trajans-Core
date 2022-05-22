@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "trajanscore:block/tank_crafter_bottom",
+    "up": "trajanscore:block/tank_crafter_top",
+    "north": "trajanscore:block/tank_crafter_front",
+    "east": "trajanscore:block/tank_crafter_side",
+    "south": "trajanscore:block/tank_crafter_front",
+    "west": "trajanscore:block/tank_crafter_side",
+    "particle": "trajanscore:block/tank_crafter_top"
+  }
+}

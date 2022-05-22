@@ -1,0 +1,30 @@
+{
+  "parent": "trajanscore:parts/engine_fabricator",
+  "display": {
+    "icon": {
+      "item": "trajanscore:light_engine"
+    },
+    "title": "You think these things run themselves?",
+    "description": "Craft any tank engine (Regarding title: Well, they kinda do...)",
+    "frame": "task",
+    "show_toast": true,
+    "hidden": false,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "trajanscore:heavy_engine",
+              "trajanscore:medium_engine",
+              "trajanscore:light_engine"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

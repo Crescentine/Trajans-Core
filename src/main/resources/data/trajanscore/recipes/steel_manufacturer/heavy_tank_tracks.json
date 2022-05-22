@@ -1,0 +1,38 @@
+{
+  "type" : "trajanscore:steel_manufacturer",
+  "ingredients" : [
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "minecraft:rail"
+    },
+    {
+      "item": "trajanscore:hammer"
+    }
+  ],
+  "output" : {
+    "item": "trajanscore:heavy_tank_tracks"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "parent": "trajanscore:parts/turret_factory",
+  "display": {
+    "icon": {
+      "item": "trajanscore:light_tank_turret"
+    },
+    "title": "Turr-ific",
+    "description": "Craft any turret",
+    "frame": "task",
+    "show_toast": true,
+    "hidden": false,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "trajanscore:light_tank_turret",
+              "trajanscore:medium_tank_turret",
+              "trajanscore:heavy_tank_turret"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "parent": "trajanscore:parts/steel_manufacturer",
+  "display": {
+    "icon": {
+      "item": "trajanscore:steering_crafting_item"
+    },
+    "title": "Steering",
+    "description": "Craft the steering wheel",
+    "frame": "task",
+    "show_toast": true,
+    "hidden": false,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "trajanscore:steering_crafting_item"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

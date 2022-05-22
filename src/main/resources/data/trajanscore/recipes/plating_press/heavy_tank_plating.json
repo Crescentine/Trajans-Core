@@ -1,0 +1,23 @@
+{
+  "type" : "trajanscore:plating_press",
+  "ingredients" : [
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "trajanscore:bolster_plate"
+    }
+  ],
+  "output" : {
+    "item" : "trajanscore:heavy_tank_plating"
+  }
+}

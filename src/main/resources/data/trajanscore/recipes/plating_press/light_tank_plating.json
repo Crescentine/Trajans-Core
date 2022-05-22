@@ -1,0 +1,23 @@
+{
+  "type" : "trajanscore:plating_press",
+  "ingredients" : [
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "trajanscore:bolster_plate"
+    }
+  ],
+  "output" : {
+    "item" : "trajanscore:light_tank_plating"
+  }
+}

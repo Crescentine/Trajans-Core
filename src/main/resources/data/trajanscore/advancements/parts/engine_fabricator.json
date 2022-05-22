@@ -1,0 +1,28 @@
+{
+  "parent": "trajanscore:parts/trajanstanks",
+  "display": {
+    "icon": {
+      "item": "trajanscore:engine_fabricator_item"
+    },
+    "title": "Engine Forgicator",
+    "description": "Craft the Engine Fabricator",
+    "frame": "task",
+    "show_toast": true,
+    "hidden": false,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "trajanscore:engine_fabricator_item"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

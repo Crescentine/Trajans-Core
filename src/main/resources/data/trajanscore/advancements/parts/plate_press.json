@@ -1,0 +1,28 @@
+{
+  "parent": "trajanscore:parts/trajanstanks",
+  "display": {
+    "icon": {
+      "item": "trajanscore:plate_press_block_item"
+    },
+    "title": "Infinite Pressing",
+    "description": "Craft the Plating Press",
+    "frame": "task",
+    "show_toast": true,
+    "hidden": false,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "trajanscore:plate_press_block_item"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

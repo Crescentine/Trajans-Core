@@ -1,0 +1,19 @@
+{
+  "display": {
+    "icon": {
+      "item": "trajanscore:hammer"
+    },
+    "title": "Trajan's Tanks",
+    "description": "Welcome to Trajan's Tanks",
+    "frame": "challenge",
+    "hidden": false,
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "trajanscore:textures/block/anvil.png"
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}
