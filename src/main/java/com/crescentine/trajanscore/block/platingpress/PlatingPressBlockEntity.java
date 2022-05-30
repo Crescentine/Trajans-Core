@@ -212,14 +212,7 @@ public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider
     @Override
     public void registerControllers(AnimationData data) {
         AnimationController<PlatingPressBlockEntity> controller = new AnimationController<PlatingPressBlockEntity>(this, "controller", 20, this::predicate);
-        controller.registerSoundListener(this::soundListener);
         data.addAnimationController(controller);
-    }
-    private <ENTITY extends IAnimatable> void soundListener(SoundKeyframeEvent<ENTITY> event) {
-        AbstractClientPlayer player = Minecraft.getInstance().player;
-        if (player != null) {
-            player.playSound(SoundEvents.ANVIL_LAND, 0.1f, 0.1f);
-        }
     }
 
     @Override

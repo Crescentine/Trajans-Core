@@ -12,7 +12,7 @@ public class TankModClient {
     }
     public static void init() {
         startMoving = registerKey("tankMovement", KeyMapping.CATEGORY_GAMEPLAY, GLFW.GLFW_KEY_W);
-         shootKey = registerKey("shootKey", KeyMapping.CATEGORY_GAMEPLAY, GLFW.GLFW_KEY_G);
+        shootKey = registerKey("shootKey", KeyMapping.CATEGORY_GAMEPLAY, GLFW.GLFW_KEY_G);
     }
     private static KeyMapping registerKey(String name, String category, int keycode) {
         final var key = new KeyMapping("key." + TrajansCoreMod.MOD_ID + "." + name, keycode, category);

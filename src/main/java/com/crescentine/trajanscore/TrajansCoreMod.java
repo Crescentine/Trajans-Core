@@ -52,6 +52,7 @@ public class TrajansCoreMod {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
+        TankModClient.init();
         MenuScreens.register(TankModContainers.CRAFTER_CONTAINER.get(), CrafterScreen::new);
         MenuScreens.register(TankModContainers.ENGINE_FABRICATOR_CONTAINER.get(), EngineFabricatorScreen::new);
         MenuScreens.register(TankModContainers.STEEL_MANUFACTURER_CONTAINER.get(), SteelManufacturerScreen::new);
