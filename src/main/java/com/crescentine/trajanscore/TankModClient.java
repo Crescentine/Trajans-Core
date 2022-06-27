@@ -7,12 +7,14 @@ import org.lwjgl.glfw.GLFW;
 public class TankModClient {
     public static KeyMapping startMoving;
     public static KeyMapping shootKey;
+    public static KeyMapping fuelRemaining;
 
     private TankModClient() {
     }
     public static void init() {
         startMoving = registerKey("tankMovement", KeyMapping.CATEGORY_GAMEPLAY, GLFW.GLFW_KEY_W);
         shootKey = registerKey("shootKey", KeyMapping.CATEGORY_GAMEPLAY, GLFW.GLFW_KEY_G);
+        fuelRemaining = registerKey("fuelRemaining", KeyMapping.CATEGORY_GAMEPLAY, GLFW.GLFW_KEY_LEFT_CONTROL);
     }
     private static KeyMapping registerKey(String name, String category, int keycode) {
         final var key = new KeyMapping("key." + TrajansCoreMod.MOD_ID + "." + name, keycode, category);
