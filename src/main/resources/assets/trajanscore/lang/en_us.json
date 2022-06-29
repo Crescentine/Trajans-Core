@@ -27,6 +27,11 @@
   "block.trajanscore.turret_factory" : "Turret Factory",
   "block.trajanscore.engine_fabricator" : "Engine Fabricator",
   "block.trajanscore.steel_manufacturer" : "Steel Manufacturer",
-  "item.trajanscore.cruiser_mk1_item" : "Cruiser MK1"
+  "item.trajanscore.cruiser_mk1_item" : "Cruiser MK1",
+
+  "key.trajanscore.tankMovement" : "Tank Move Forward",
+  "key.trajanscore.shootKey" : "Shoot (Trajan's Tanks)",
+  "key.trajanscore.fuelRemaining" : "Print Amount of Fuel Remaining"
+
 
 }
