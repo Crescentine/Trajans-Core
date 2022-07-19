@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -74,7 +73,7 @@ public class TurretFactoryBlockEntity extends BlockEntity implements MenuProvide
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Turret Factory");
+        return Component.literal("Turret Factory");
     }
 
     @Nullable
@@ -172,7 +171,7 @@ public class TurretFactoryBlockEntity extends BlockEntity implements MenuProvide
             entity.itemHandler.extractItem(4,1, false);
             entity.itemHandler.extractItem(5,1, false);
             entity.itemHandler.extractItem(6,1, false);
-            entity.itemHandler.getStackInSlot(7).hurt(1, new Random(), null);
+            entity.itemHandler.getStackInSlot(7).hurt(1, level.getRandom(), null);
 
 
             entity.itemHandler.setStackInSlot(8, new ItemStack(match.get().getResultItem().getItem(),

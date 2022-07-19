@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class TankModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister
-            .create(ForgeRegistries.BLOCK_ENTITIES, TrajansCoreMod.MOD_ID);
+            .create(ForgeRegistries.BLOCK_ENTITY_TYPES, TrajansCoreMod.MOD_ID);
 
     public static RegistryObject<BlockEntityType<CrafterBlockEntity>> CRAFTER =
             BLOCK_ENTITIES.register("crafter", () -> BlockEntityType.Builder.of

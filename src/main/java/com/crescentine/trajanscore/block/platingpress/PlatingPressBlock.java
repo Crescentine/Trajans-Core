@@ -94,7 +94,7 @@ public class PlatingPressBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof PlatingPressBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)player), (PlatingPressBlockEntity)entity, pos);
+                NetworkHooks.openScreen(((ServerPlayer)player), (PlatingPressBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

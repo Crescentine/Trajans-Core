@@ -12,9 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -94,7 +94,7 @@ public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Plating Press");
+        return Component.literal("Plating Press");
     }
 
     @Nullable
@@ -189,7 +189,7 @@ public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider
             entity.itemHandler.extractItem(1, 1, false);
             entity.itemHandler.extractItem(2, 1, false);
             entity.itemHandler.extractItem(3, 1, false);
-            entity.itemHandler.getStackInSlot(4).hurt(1, new Random(), null);
+            entity.itemHandler.getStackInSlot(4).hurt(1, level.getRandom(), null);
             entity.itemHandler.setStackInSlot(5, new ItemStack(match.get().getResultItem().getItem(),
                     entity.itemHandler.getStackInSlot(5).getCount() + 1));
             level.playSound(null, pos, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 1f, 1f);

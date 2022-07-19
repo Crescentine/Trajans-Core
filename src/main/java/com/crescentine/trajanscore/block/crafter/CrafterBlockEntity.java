@@ -6,8 +6,6 @@ import com.crescentine.trajanscore.block.TankModBlockEntities;
 import com.crescentine.trajanscore.recipe.TankCrafterRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 public class CrafterBlockEntity extends InventoryBlockEntity implements MenuProvider {
-    public static final Component TITLE = new TranslatableComponent(
+    public static final Component TITLE = Component.translatable(
             "container." + TrajansCoreMod.MOD_ID + ".crafter");
 
     public CrafterBlockEntity(BlockPos pos, BlockState state) {
@@ -30,7 +28,7 @@ public class CrafterBlockEntity extends InventoryBlockEntity implements MenuProv
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Tank Crafter");
+        return Component.literal("Tank Crafter");
     }
 
     @Nullable

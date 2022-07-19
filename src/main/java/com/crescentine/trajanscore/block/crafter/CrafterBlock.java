@@ -3,8 +3,11 @@ package com.crescentine.trajanscore.block.crafter;
 import com.crescentine.trajanscore.container.CrafterContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentContents;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -24,6 +27,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class CrafterBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public CrafterBlock(Properties properties) {
@@ -46,7 +51,7 @@ public class CrafterBlock extends HorizontalDirectionalBlock implements EntityBl
                                  BlockHitResult result) {
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof final CrafterBlockEntity crafter) {
             MenuProvider containerProvider = createContainerProvider(level, pos);
-            NetworkHooks.openGui((ServerPlayer) player, containerProvider, pos);
+            NetworkHooks.openScreen((ServerPlayer) player, containerProvider, pos);
         }
 
         return InteractionResult.SUCCESS;
@@ -55,10 +60,9 @@ public class CrafterBlock extends HorizontalDirectionalBlock implements EntityBl
     private MenuProvider createContainerProvider(Level worldIn, BlockPos pos) {
         return new MenuProvider() {
             @Override
-            public TranslatableComponent getDisplayName() {
-                return new TranslatableComponent("Tank Crafter");
+            public Component getDisplayName() {
+                return Component.literal("Tank Crafter");
             }
-
             @Override
             public AbstractContainerMenu createMenu(int i, Inventory playerInventory, Player playerEntity) {
                 return new CrafterContainer(i, worldIn, pos, playerInventory, playerEntity);

@@ -7,7 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -74,7 +73,7 @@ public class SteelManufacturerBlockEntity extends BlockEntity implements MenuPro
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Steel Manufacturer");
+        return Component.literal("Steel Manufacturer");
     }
 
     @Nullable
@@ -175,7 +174,7 @@ public class SteelManufacturerBlockEntity extends BlockEntity implements MenuPro
             entity.itemHandler.extractItem(7,1, false);
             entity.itemHandler.extractItem(8,1, false);
 
-            entity.itemHandler.getStackInSlot(9).hurt(1, new Random(), null);
+            entity.itemHandler.getStackInSlot(9).hurt(1, level.getRandom(), null);
 
 
             entity.itemHandler.setStackInSlot(10, new ItemStack(match.get().getResultItem().getItem(),

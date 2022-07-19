@@ -11,7 +11,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class EngineFabricatorRecipe implements Recipe<SimpleContainer> {
     ResourceLocation TYPE_ID = new ResourceLocation(TrajansCoreMod.MOD_ID, "engine_fabricator");
@@ -84,12 +83,9 @@ public class EngineFabricatorRecipe implements Recipe<SimpleContainer> {
         public static final String ID = "engine_fabricator";
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<EngineFabricatorRecipe> {
+    public static class Serializer implements RecipeSerializer<EngineFabricatorRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final String ID = "engine_fabricator";
-        public Serializer() {
-            setRegistryName(TrajansCoreMod.MOD_ID, "engine_fabricator");
-        }
         @Override
         public EngineFabricatorRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));

@@ -15,7 +15,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.awt.*;
 
 public class TankModContainers {
-    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, TrajansCoreMod.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, TrajansCoreMod.MOD_ID);
 
     public static final RegistryObject<MenuType<CrafterContainer>> CRAFTER_CONTAINER
             = CONTAINERS.register("crafter_container",

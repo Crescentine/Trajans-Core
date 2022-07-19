@@ -3,6 +3,7 @@ package com.crescentine.trajanscore.integration.jei_compat;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import com.crescentine.trajanscore.item.TankModItems;
+import com.crescentine.trajanscore.recipe.PlatingPressRecipe;
 import com.crescentine.trajanscore.recipe.SteelManufacturerRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -10,9 +11,9 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,28 +23,22 @@ public class SteelManufacturerRecipeCategory implements IRecipeCategory<SteelMan
     public final static ResourceLocation UID = new ResourceLocation(TrajansCoreMod.MOD_ID, "steel_manufacturer");
     public final static ResourceLocation TEXTURE =
             new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/jei_steel_manufacturer.png");
-
+    public static final RecipeType<SteelManufacturerRecipe> RECIPE_TYPE = RecipeType.create(TrajansCoreMod.MOD_ID, "steel_manufacturer", SteelManufacturerRecipe.class);
     private final IDrawable background;
     private final IDrawable icon;
 
     public SteelManufacturerRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 125, 53);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(TankModItems.STEEL_MANUFACTURER.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TankModItems.STEEL_MANUFACTURER.get()));
     }
-
     @Override
-    public ResourceLocation getUid() {
-        return UID;
-    }
-
-    @Override
-    public Class<? extends SteelManufacturerRecipe> getRecipeClass() {
-        return SteelManufacturerRecipe.class;
+    public RecipeType<SteelManufacturerRecipe> getRecipeType() {
+        return RECIPE_TYPE;
     }
 
     @Override
     public Component getTitle() {
-        return new TextComponent("Steel Manufacturer");
+        return Component.literal("Steel Manufacturer");
     }
 
     @Override

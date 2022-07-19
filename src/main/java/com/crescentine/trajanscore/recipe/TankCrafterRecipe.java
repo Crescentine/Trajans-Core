@@ -13,7 +13,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class TankCrafterRecipe implements Recipe<SimpleContainer> {
     ResourceLocation TYPE_ID = new ResourceLocation(TrajansCoreMod.MOD_ID, "crafter");
@@ -85,12 +84,9 @@ public class TankCrafterRecipe implements Recipe<SimpleContainer> {
         public static final String ID = "crafter";
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<TankCrafterRecipe> {
+    public static class Serializer implements RecipeSerializer<TankCrafterRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final String ID = "crafter";
-        public Serializer() {
-            setRegistryName(TrajansCoreMod.MOD_ID, "crafter");
-        }
         @Override
         public TankCrafterRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));

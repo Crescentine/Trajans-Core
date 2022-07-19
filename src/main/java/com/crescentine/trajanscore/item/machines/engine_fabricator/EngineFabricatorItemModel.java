@@ -6,15 +6,15 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class EngineFabricatorItemModel extends AnimatedGeoModel<EngineFabricatorItem> {
     @Override
-    public ResourceLocation getAnimationFileLocation(EngineFabricatorItem animatable) {
+    public ResourceLocation getAnimationResource(EngineFabricatorItem animatable) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "animations/engine_fabricator.animation.json");
     }
     @Override
-    public ResourceLocation getModelLocation(EngineFabricatorItem animatable) {
+    public ResourceLocation getModelResource(EngineFabricatorItem animatable) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "geo/engine_fabricator.geo.json");
     }
     @Override
-    public ResourceLocation getTextureLocation(EngineFabricatorItem entity) {
+    public ResourceLocation getTextureResource(EngineFabricatorItem entity) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/block/engine_fabricator.png");
     }
 

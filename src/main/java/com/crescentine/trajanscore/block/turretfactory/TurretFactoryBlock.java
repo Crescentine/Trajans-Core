@@ -104,7 +104,7 @@ public class TurretFactoryBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof TurretFactoryBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)player), (TurretFactoryBlockEntity)entity, pos);
+                NetworkHooks.openScreen(((ServerPlayer)player), (TurretFactoryBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

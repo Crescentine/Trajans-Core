@@ -104,7 +104,7 @@ public class SteelManufacturerBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof SteelManufacturerBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)player), (SteelManufacturerBlockEntity)entity, pos);
+                NetworkHooks.openScreen(((ServerPlayer)player), (SteelManufacturerBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

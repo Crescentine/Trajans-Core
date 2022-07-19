@@ -98,7 +98,7 @@ public class EngineFabricatorBlock extends BaseEntityBlock {
         if (!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof EngineFabricatorBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)player), (EngineFabricatorBlockEntity)entity, pos);
+                NetworkHooks.openScreen(((ServerPlayer)player), (EngineFabricatorBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }

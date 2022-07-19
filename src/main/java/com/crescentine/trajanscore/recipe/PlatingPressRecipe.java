@@ -11,7 +11,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class PlatingPressRecipe implements Recipe<SimpleContainer> {
     ResourceLocation TYPE_ID = new ResourceLocation(TrajansCoreMod.MOD_ID, "plating_press");
@@ -80,12 +79,9 @@ public class PlatingPressRecipe implements Recipe<SimpleContainer> {
         public static final String ID = "plating_press";
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<PlatingPressRecipe> {
+    public static class Serializer implements RecipeSerializer<PlatingPressRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final String ID = "plating_press";
-        public Serializer() {
-            setRegistryName(TrajansCoreMod.MOD_ID, "plating_press");
-        }
         @Override
         public PlatingPressRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
