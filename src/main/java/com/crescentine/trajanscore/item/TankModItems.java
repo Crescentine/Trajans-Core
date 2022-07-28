@@ -1,6 +1,7 @@
 package com.crescentine.trajanscore.item;
 
 import com.crescentine.trajanscore.PartsItemGroup;
+import com.crescentine.trajanscore.ShellsItemGroup;
 import com.crescentine.trajanscore.TrajansCoreMod;
 import com.crescentine.trajanscore.block.crafter.CrafterBlock;
 import com.crescentine.trajanscore.block.engine_fabricator.EngineFabricatorBlock;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.openjdk.nashorn.tools.Shell;
 
 import java.util.function.Supplier;
 
@@ -75,6 +77,17 @@ public class TankModItems {
     public static final RegistryObject<Item> CRUISERMK1_BLUEPRINT = ITEMS.register("cruisermk1_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> M4SHERMAN_BLUEPRINT = ITEMS.register("m4sherman_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
 
+    //Shells
+    public static final RegistryObject<Item> ACPR_SHELL = ITEMS.register("acpr_shell",
+            () -> new Item(new Item.Properties().tab(ShellsItemGroup.SHELLS_ITEM_GROUP).stacksTo(32)));
+    public static final RegistryObject<Item> ARMOR_PIERCING_SHELL = ITEMS.register("armor_piercing_shell",
+            () -> new Item(new Item.Properties().tab(ShellsItemGroup.SHELLS_ITEM_GROUP).stacksTo(32)));
+    public static final RegistryObject<Item> HEAT_SHELL = ITEMS.register("heat_shell",
+            () -> new Item(new Item.Properties().tab(ShellsItemGroup.SHELLS_ITEM_GROUP).stacksTo(32)));
+    public static final RegistryObject<Item> HIGH_EXPLOSIVE_SHELL = ITEMS.register("high_explosive_shell",
+            () -> new Item(new Item.Properties().tab(ShellsItemGroup.SHELLS_ITEM_GROUP).stacksTo(32)));
+    public static final RegistryObject<Item> STANDARD_SHELL = ITEMS.register("standard_shell",
+            () -> new Item(new Item.Properties().tab(ShellsItemGroup.SHELLS_ITEM_GROUP).stacksTo(32)));
 
     //Machine Parts
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer",
