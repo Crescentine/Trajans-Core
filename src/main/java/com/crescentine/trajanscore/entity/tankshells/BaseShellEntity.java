@@ -1,6 +1,7 @@
 package com.crescentine.trajanscore.entity.tankshells;
 
 import com.crescentine.trajanscore.entity.TrajansCoreEntityTypes;
+import com.crescentine.trajanscore.entity.tankshells.standard.StandardShellEntity;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -25,8 +25,14 @@ public class BaseShellEntity extends ThrowableItemProjectile implements IAnimata
     public double damage;
     public boolean makesFire;
     private final AnimationFactory factory = new AnimationFactory(this);
-    public BaseShellEntity(EntityType<? extends Entity> entityType, Level world) {
+    public BaseShellEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends ThrowableItemProjectile>) entityType, world);
+    }
+    public BaseShellEntity(EntityType<?> entityType, LivingEntity player, Level world) {
+        super((EntityType<? extends ThrowableItemProjectile>) entityType, player, world);
+    }
+    public BaseShellEntity(EntityType<?> entityType, double x, double y, double z, Level world) {
+        super((EntityType<? extends ThrowableItemProjectile>) entityType, x, y, z, world);
     }
     @Override
     public Packet<?> getAddEntityPacket() {
