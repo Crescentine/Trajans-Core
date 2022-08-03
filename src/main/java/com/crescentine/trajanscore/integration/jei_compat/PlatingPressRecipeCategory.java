@@ -1,8 +1,7 @@
 package com.crescentine.trajanscore.integration.jei_compat;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
-import com.crescentine.trajanscore.item.TankModItems;
-import com.crescentine.trajanscore.recipe.EngineFabricatorRecipe;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.recipe.PlatingPressRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -28,7 +27,7 @@ public class PlatingPressRecipeCategory implements IRecipeCategory<PlatingPressR
 
     public PlatingPressRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 108, 58);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TankModItems.PLATE_PRESS_BLOCK.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TrajansCoreItems.PLATE_PRESS_BLOCK.get()));
     }
     @Override
     public RecipeType<PlatingPressRecipe> getRecipeType() {

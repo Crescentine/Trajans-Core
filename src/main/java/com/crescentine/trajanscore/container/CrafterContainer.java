@@ -1,6 +1,6 @@
 package com.crescentine.trajanscore.container;
 
-import com.crescentine.trajanscore.item.TankModItems;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -52,7 +52,7 @@ public class CrafterContainer extends AbstractContainerMenu {
     }
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(this.containerAccess, player, TankModItems.CRAFTER_BLOCK.get());
+        return stillValid(this.containerAccess, player, TrajansCoreItems.CRAFTER_BLOCK.get());
     }
 
     @Override

@@ -20,25 +20,24 @@ import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.openjdk.nashorn.tools.Shell;
 
 import java.util.function.Supplier;
 
-public class TankModItems {
+public class TrajansCoreItems {
     public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TrajansCoreMod.MOD_ID);
     public static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TrajansCoreMod.MOD_ID);
 
     //Block Items
     public static final RegistryObject<Item> CRAFTER_BLOCK_ITEM = ITEMS.register("crafter_block",
-            () -> new BlockItem(TankModItems.CRAFTER_BLOCK.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
+            () -> new BlockItem(TrajansCoreItems.CRAFTER_BLOCK.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> PLATE_PRESS_BLOCK_ITEM = ITEMS.register("plate_press_block_item",
-            () -> new PlatingPressItem(TankModItems.PLATE_PRESS_BLOCK.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
+            () -> new PlatingPressItem(TrajansCoreItems.PLATE_PRESS_BLOCK.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> TURRET_FACTORY_BLOCK_ITEM = ITEMS.register("turret_factory_block_item",
-            () -> new TurretFactoryItem(TankModItems.TURRET_FACTORY.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
+            () -> new TurretFactoryItem(TrajansCoreItems.TURRET_FACTORY.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> ENGINE_FABRICATOR_ITEM = ITEMS.register("engine_fabricator_item",
-            () -> new EngineFabricatorItem(TankModItems.ENGINE_FABRICATOR.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
+            () -> new EngineFabricatorItem(TrajansCoreItems.ENGINE_FABRICATOR.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> STEEL_MANUFACTURER_ITEM = ITEMS.register("steel_manufacturer_item",
-            () -> new SteelManufacturerItem(TankModItems.STEEL_MANUFACTURER.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
+            () -> new SteelManufacturerItem(TrajansCoreItems.STEEL_MANUFACTURER.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     //Blocks
     public static final RegistryObject<Block> CRAFTER_BLOCK = registerBlock("crafter_block",
         () -> new CrafterBlock(BlockBehaviour.Properties.of(Material.METAL).strength(1.0f)));
@@ -78,7 +77,7 @@ public class TankModItems {
     public static final RegistryObject<Item> M4SHERMAN_BLUEPRINT = ITEMS.register("m4sherman_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
 
     //Shells
-    public static final RegistryObject<Item> ACPR_SHELL = ITEMS.register("acpr_shell",
+    public static final RegistryObject<Item> APCR_SHELL = ITEMS.register("apcr_shell",
             () -> new Item(new Item.Properties().tab(ShellsItemGroup.SHELLS_ITEM_GROUP).stacksTo(32)));
     public static final RegistryObject<Item> ARMOR_PIERCING_SHELL = ITEMS.register("armor_piercing_shell",
             () -> new Item(new Item.Properties().tab(ShellsItemGroup.SHELLS_ITEM_GROUP).stacksTo(32)));

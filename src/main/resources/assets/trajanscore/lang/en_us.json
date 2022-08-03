@@ -34,7 +34,7 @@
   "key.trajanscore.fuelRemaining" : "Print Amount of Fuel Remaining",
 
   "itemGroup.trajanscore_shells" : "Tank Shells",
-  "item.trajanscore.acpr_shell" : "ACPR Shell",
+  "item.trajanscore.apcr_shell" : "APCR Shell",
   "item.trajanscore.standard_shell" : "Standard Shell",
   "item.trajanscore.heat_shell" : "HEAT Shell",
   "item.trajanscore.armor_piercing_shell" : "Armor Piercing Shell",

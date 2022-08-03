@@ -1,8 +1,7 @@
 package com.crescentine.trajanscore.integration.jei_compat;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
-import com.crescentine.trajanscore.item.TankModItems;
-import com.crescentine.trajanscore.recipe.PlatingPressRecipe;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.recipe.TankCrafterRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -28,7 +27,7 @@ public class TankCrafterRecipeCategory implements IRecipeCategory<TankCrafterRec
 
     public TankCrafterRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 125, 53);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TankModItems.CRAFTER_BLOCK.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TrajansCoreItems.CRAFTER_BLOCK.get()));
     }
     @Override
     public RecipeType<TankCrafterRecipe> getRecipeType() {

@@ -1,8 +1,7 @@
 package com.crescentine.trajanscore.integration.jei_compat;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
-import com.crescentine.trajanscore.item.TankModItems;
-import com.crescentine.trajanscore.recipe.SteelManufacturerRecipe;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.recipe.TurretFactoryRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -28,7 +27,7 @@ public class TurretFactoryCategory implements IRecipeCategory<TurretFactoryRecip
 
     public TurretFactoryCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 134, 53);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TankModItems.TURRET_FACTORY.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TrajansCoreItems.TURRET_FACTORY.get()));
     }
 
     @Override

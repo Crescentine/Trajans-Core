@@ -2,7 +2,7 @@ package com.crescentine.trajanscore.integration.jei_compat;
 
 
 import com.crescentine.trajanscore.TrajansCoreMod;
-import com.crescentine.trajanscore.item.TankModItems;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.recipe.EngineFabricatorRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -28,7 +28,7 @@ public class EngineFabricatorRecipeCategory implements IRecipeCategory<EngineFab
 
     public EngineFabricatorRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 134, 53);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TankModItems.ENGINE_FABRICATOR.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TrajansCoreItems.ENGINE_FABRICATOR.get()));
     }
     @Override
     public RecipeType<EngineFabricatorRecipe> getRecipeType() {

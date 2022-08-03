@@ -1,7 +1,7 @@
 package com.crescentine.trajanscore.container;
 
 import com.crescentine.trajanscore.block.platingpress.PlatingPressBlockEntity;
-import com.crescentine.trajanscore.item.TankModItems;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -69,7 +69,7 @@ public class PlatingPressContainer extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player pPlayer) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, TankModItems.PLATE_PRESS_BLOCK.get());
+                pPlayer, TrajansCoreItems.PLATE_PRESS_BLOCK.get());
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons

@@ -1,6 +1,6 @@
 package com.crescentine.trajanscore;
 
-import com.crescentine.trajanscore.item.TankModItems;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
@@ -14,6 +14,6 @@ public class ShellsItemGroup extends CreativeModeTab {
     }
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(TankModItems.HIGH_EXPLOSIVE_SHELL.get());
+        return new ItemStack(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get());
     }
 }

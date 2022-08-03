@@ -2,8 +2,7 @@ package com.crescentine.trajanscore.integration.jei_compat;
 
 
 import com.crescentine.trajanscore.TrajansCoreMod;
-import com.crescentine.trajanscore.item.TankModItems;
-import com.crescentine.trajanscore.recipe.PlatingPressRecipe;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.recipe.SteelManufacturerRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -29,7 +28,7 @@ public class SteelManufacturerRecipeCategory implements IRecipeCategory<SteelMan
 
     public SteelManufacturerRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 125, 53);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TankModItems.STEEL_MANUFACTURER.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(TrajansCoreItems.STEEL_MANUFACTURER.get()));
     }
     @Override
     public RecipeType<SteelManufacturerRecipe> getRecipeType() {
