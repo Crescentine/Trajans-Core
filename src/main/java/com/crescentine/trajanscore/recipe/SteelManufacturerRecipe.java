@@ -70,20 +70,13 @@ public class SteelManufacturerRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
+        return ModRecipes.STEEL_MANUFACTURER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return Type.INSTANCE;
+        return ModRecipes.STEEL_MANUFACTURER_RECIPE.get();
     }
-
-    public static class Type implements RecipeType<SteelManufacturerRecipe> {
-        public Type() { }
-        public static final Type INSTANCE = new Type();
-        public static final String ID = "steel_manufacturer";
-    }
-
     public static class Serializer implements RecipeSerializer<SteelManufacturerRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final String ID = "steel_manufacturer";

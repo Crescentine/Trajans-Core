@@ -1,0 +1,29 @@
+{
+  "type" : "trajanscore:shell_workbench",
+  "ingredients" : [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:fire_charge"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:arrow"
+    },
+    {
+      "item": "minecraft:copper_ingot"
+    },
+    {
+      "item": "minecraft:arrow"
+    }
+  ],
+  "output" : {
+    "item" : "trajanscore:heat_shell"
+  }
+}

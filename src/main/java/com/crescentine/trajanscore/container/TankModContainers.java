@@ -32,6 +32,8 @@ public class TankModContainers {
             registerMenuType(SteelManufacturerContainer::new, "steel_manufacturer_container");
     public static final RegistryObject<MenuType<TurretFactoryContainer>> TURRET_FACTORY_CONTAINER =
             registerMenuType(TurretFactoryContainer::new, "turret_factory_container");
+    public static final RegistryObject<MenuType<ShellWorkbenchContainer>> SHELL_WORKBENCH_CONTAINER =
+            registerMenuType(ShellWorkbenchContainer::new, "shell_workbench_container");
 
 
 

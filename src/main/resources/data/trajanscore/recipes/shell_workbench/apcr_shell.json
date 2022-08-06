@@ -1,0 +1,29 @@
+{
+  "type" : "trajanscore:shell_workbench",
+  "ingredients" : [
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minecraft:tnt"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minecraft:arrow"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:arrow"
+    }
+  ],
+  "output" : {
+    "item" : "trajanscore:apcr_shell"
+  }
+}

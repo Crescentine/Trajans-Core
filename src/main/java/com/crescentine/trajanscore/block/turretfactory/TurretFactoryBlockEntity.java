@@ -2,6 +2,7 @@ package com.crescentine.trajanscore.block.turretfactory;
 
 import com.crescentine.trajanscore.block.TankModBlockEntities;
 import com.crescentine.trajanscore.container.TurretFactoryContainer;
+import com.crescentine.trajanscore.recipe.ModRecipes;
 import com.crescentine.trajanscore.recipe.TurretFactoryRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -148,7 +149,7 @@ public class TurretFactoryBlockEntity extends BlockEntity implements MenuProvide
         }
 
         Optional<TurretFactoryRecipe> match = level.getRecipeManager()
-                .getRecipeFor(TurretFactoryRecipe.Type.INSTANCE, inventory, level);
+                .getRecipeFor(ModRecipes.TURRET_FACTORY_RECIPE.get(), inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
@@ -161,7 +162,7 @@ public class TurretFactoryBlockEntity extends BlockEntity implements MenuProvide
         }
 
         Optional<TurretFactoryRecipe> match = level.getRecipeManager()
-                .getRecipeFor(TurretFactoryRecipe.Type.INSTANCE, inventory, level);
+                .getRecipeFor(ModRecipes.TURRET_FACTORY_RECIPE.get(), inventory, level);
 
         if(match.isPresent()) {
             entity.itemHandler.extractItem(0,1, false);

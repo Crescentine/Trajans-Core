@@ -3,6 +3,7 @@ package com.crescentine.trajanscore.block.crafter;
 import com.crescentine.trajanscore.TrajansCoreMod;
 import com.crescentine.trajanscore.block.InventoryBlockEntity;
 import com.crescentine.trajanscore.block.TankModBlockEntities;
+import com.crescentine.trajanscore.recipe.ModRecipes;
 import com.crescentine.trajanscore.recipe.TankCrafterRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -52,7 +53,7 @@ public class CrafterBlockEntity extends InventoryBlockEntity implements MenuProv
         }
 
         Optional<TankCrafterRecipe> match = world.getRecipeManager()
-                .getRecipeFor(TankCrafterRecipe.Type.INSTANCE, inventory, world);
+                .getRecipeFor(ModRecipes.CRAFTER_RECIPE.get(), inventory, world);
 
         return match.isPresent()
                 && canInsertAmountIntoOutputSlot(inventory)
@@ -69,7 +70,7 @@ public class CrafterBlockEntity extends InventoryBlockEntity implements MenuProv
         }
 
         Optional<TankCrafterRecipe> match = world.getRecipeManager()
-                .getRecipeFor(TankCrafterRecipe.Type.INSTANCE, inventory, world);
+                .getRecipeFor(ModRecipes.CRAFTER_RECIPE.get(), inventory, world);
 
         if (match.isPresent()) {
             entity.extractItem(0);

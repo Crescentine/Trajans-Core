@@ -36,4 +36,7 @@ public class ModRecipes {
     public static final RegistryObject<RecipeSerializer<?>> TURRET_FACTORY_SERIALIZER = RECIPE_SERIALIZERS.register("turret_factory", TurretFactoryRecipe.Serializer::new);
     public static final RegistryObject<RecipeType<TurretFactoryRecipe>> TURRET_FACTORY_RECIPE = RECIPE_TYPES.register("turret_factory", () -> RecipeType.simple(new ResourceLocation(TrajansCoreMod.MOD_ID, "turret_factory")));
 
+    public static final RegistryObject<RecipeSerializer<?>> SHELL_WORKBENCH_SERIALIZER = RECIPE_SERIALIZERS.register("shell_workbench", ShellWorkbenchRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<ShellWorkbenchRecipe>> SHELL_WORKBENCH = RECIPE_TYPES.register("shell_workbench", () -> RecipeType.simple(new ResourceLocation(TrajansCoreMod.MOD_ID, "shell_workbench")));
+
 }

@@ -13,7 +13,6 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 public class TurretFactoryRecipe implements Recipe<SimpleContainer> {
-    ResourceLocation TYPE_ID = new ResourceLocation(TrajansCoreMod.MOD_ID, "turret_factory");
     private final ResourceLocation id;
     private final ItemStack output;
     public final NonNullList<Ingredient> recipeItems;
@@ -22,7 +21,6 @@ public class TurretFactoryRecipe implements Recipe<SimpleContainer> {
                                    NonNullList<Ingredient> recipeItems) {
         this.id = id;
         this.output = output;
-        this.TYPE_ID = TYPE_ID;
         this.recipeItems = recipeItems;
     }
 
@@ -68,20 +66,13 @@ public class TurretFactoryRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return Serializer.INSTANCE;
+        return ModRecipes.TURRET_FACTORY_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return Type.INSTANCE;
+        return ModRecipes.TURRET_FACTORY_RECIPE.get();
     }
-
-    public static class Type implements RecipeType<TurretFactoryRecipe> {
-        public Type() { }
-        public static final Type INSTANCE = new Type();
-        public static final String ID = "turret_factory";
-    }
-
     public static class Serializer implements RecipeSerializer<TurretFactoryRecipe> {
         public static final Serializer INSTANCE = new Serializer();
         public static final String ID = "turret_factory";

@@ -2,6 +2,7 @@ package com.crescentine.trajanscore.block.steelmanufacturer;
 
 import com.crescentine.trajanscore.block.TankModBlockEntities;
 import com.crescentine.trajanscore.container.SteelManufacturerContainer;
+import com.crescentine.trajanscore.recipe.ModRecipes;
 import com.crescentine.trajanscore.recipe.SteelManufacturerRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -148,7 +149,7 @@ public class SteelManufacturerBlockEntity extends BlockEntity implements MenuPro
         }
 
         Optional<SteelManufacturerRecipe> match = level.getRecipeManager()
-                .getRecipeFor(SteelManufacturerRecipe.Type.INSTANCE, inventory, level);
+                .getRecipeFor(ModRecipes.STEEL_MANUFACTURER_RECIPE.get(), inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
@@ -161,7 +162,7 @@ public class SteelManufacturerBlockEntity extends BlockEntity implements MenuPro
         }
 
         Optional<SteelManufacturerRecipe> match = level.getRecipeManager()
-                .getRecipeFor(SteelManufacturerRecipe.Type.INSTANCE, inventory, level);
+                .getRecipeFor(ModRecipes.STEEL_MANUFACTURER_RECIPE.get(), inventory, level);
 
         if(match.isPresent()) {
             entity.itemHandler.extractItem(0,1, false);

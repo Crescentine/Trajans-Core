@@ -6,10 +6,12 @@ import com.crescentine.trajanscore.TrajansCoreMod;
 import com.crescentine.trajanscore.block.crafter.CrafterBlock;
 import com.crescentine.trajanscore.block.engine_fabricator.EngineFabricatorBlock;
 import com.crescentine.trajanscore.block.platingpress.PlatingPressBlock;
+import com.crescentine.trajanscore.block.shellworkbench.ShellWorkbenchBlock;
 import com.crescentine.trajanscore.block.steelmanufacturer.SteelManufacturerBlock;
 import com.crescentine.trajanscore.block.turretfactory.TurretFactoryBlock;
 import com.crescentine.trajanscore.item.machines.engine_fabricator.EngineFabricatorItem;
 import com.crescentine.trajanscore.item.machines.plating_press.PlatingPressItem;
+import com.crescentine.trajanscore.item.machines.shell_workbench.ShellWorkbenchItem;
 import com.crescentine.trajanscore.item.machines.steel_manufacturer.SteelManufacturerItem;
 import com.crescentine.trajanscore.item.machines.turret_factory.TurretFactoryItem;
 import net.minecraft.world.item.BlockItem;
@@ -38,6 +40,8 @@ public class TrajansCoreItems {
             () -> new EngineFabricatorItem(TrajansCoreItems.ENGINE_FABRICATOR.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> STEEL_MANUFACTURER_ITEM = ITEMS.register("steel_manufacturer_item",
             () -> new SteelManufacturerItem(TrajansCoreItems.STEEL_MANUFACTURER.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
+    public static final RegistryObject<Item> SHELL_WORKBENCH = ITEMS.register("shell_workbench_item",
+            () -> new ShellWorkbenchItem(TrajansCoreItems.SHELL_WORKBENCH_BLOCK.get(), new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     //Blocks
     public static final RegistryObject<Block> CRAFTER_BLOCK = registerBlock("crafter_block",
         () -> new CrafterBlock(BlockBehaviour.Properties.of(Material.METAL).strength(1.0f)));
@@ -48,6 +52,8 @@ public class TrajansCoreItems {
             SteelManufacturerBlock::new);
     public static final RegistryObject<Block> TURRET_FACTORY = registerBlock("turret_factory",
             TurretFactoryBlock::new);
+    public static final RegistryObject<Block> SHELL_WORKBENCH_BLOCK = registerBlock("shell_workbench",
+            ShellWorkbenchBlock::new);
 
 
     //Parts for Panzer 2

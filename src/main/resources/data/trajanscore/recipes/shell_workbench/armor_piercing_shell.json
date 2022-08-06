@@ -1,0 +1,29 @@
+{
+  "type" : "trajanscore:shell_workbench",
+  "ingredients" : [
+    {
+      "item": "minecraft:firework_rocket"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:firework_star"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:arrow"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "minecraft:arrow"
+    }
+  ],
+  "output" : {
+    "item" : "trajanscore:armor_piercing_shell"
+  }
+}

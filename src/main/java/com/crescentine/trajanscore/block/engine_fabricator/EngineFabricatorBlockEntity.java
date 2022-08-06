@@ -3,6 +3,7 @@ package com.crescentine.trajanscore.block.engine_fabricator;
 import com.crescentine.trajanscore.block.TankModBlockEntities;
 import com.crescentine.trajanscore.container.EngineFabricatorContainer;
 import com.crescentine.trajanscore.recipe.EngineFabricatorRecipe;
+import com.crescentine.trajanscore.recipe.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -148,7 +149,7 @@ public class EngineFabricatorBlockEntity extends BlockEntity implements MenuProv
         }
 
         Optional<EngineFabricatorRecipe> match = level.getRecipeManager()
-                .getRecipeFor(EngineFabricatorRecipe.Type.INSTANCE, inventory, level);
+                .getRecipeFor(ModRecipes.ENGINE_FABRICATOR_RECIPE.get(), inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
@@ -161,7 +162,7 @@ public class EngineFabricatorBlockEntity extends BlockEntity implements MenuProv
         }
 
         Optional<EngineFabricatorRecipe> match = level.getRecipeManager()
-                .getRecipeFor(EngineFabricatorRecipe.Type.INSTANCE, inventory, level);
+                .getRecipeFor(ModRecipes.ENGINE_FABRICATOR_RECIPE.get(), inventory, level);
 
         if(match.isPresent()) {
             entity.itemHandler.extractItem(0,1, false);

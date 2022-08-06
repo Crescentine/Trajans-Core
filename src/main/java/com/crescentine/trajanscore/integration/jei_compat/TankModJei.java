@@ -30,8 +30,7 @@ public class TankModJei implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(TrajansCoreItems.PLATE_PRESS_BLOCK.get()), PlatingPressRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(TrajansCoreItems.CRAFTER_BLOCK.get()), TankCrafterRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(TrajansCoreItems.TURRET_FACTORY.get()), TurretFactoryCategory.RECIPE_TYPE);
-
-
+        registration.addRecipeCatalyst(new ItemStack(TrajansCoreItems.SHELL_WORKBENCH.get()), ShellWorkbenchRecipeCategory.RECIPE_TYPE);
     }
 
     @Override
@@ -41,6 +40,7 @@ public class TankModJei implements IModPlugin {
                 new TankCrafterRecipeCategory(registration.getJeiHelpers().getGuiHelper()),
                 new PlatingPressRecipeCategory(registration.getJeiHelpers().getGuiHelper()),
                 new TurretFactoryCategory(registration.getJeiHelpers().getGuiHelper()),
+                new ShellWorkbenchRecipeCategory(registration.getJeiHelpers().getGuiHelper()),
                 new SteelManufacturerRecipeCategory(registration.getJeiHelpers().getGuiHelper())
 
         );
@@ -49,16 +49,18 @@ public class TankModJei implements IModPlugin {
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager rm = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
-        List<TankCrafterRecipe> tankCrafterRecipes = rm.getAllRecipesFor(TankCrafterRecipe.Type.INSTANCE);
-        List<PlatingPressRecipe> platingPressRecipes = rm.getAllRecipesFor(PlatingPressRecipe.Type.INSTANCE);
-        List<EngineFabricatorRecipe> engineFabricatorRecipes = rm.getAllRecipesFor(EngineFabricatorRecipe.Type.INSTANCE);
-        List<SteelManufacturerRecipe> manufacturerRecipes = rm.getAllRecipesFor(SteelManufacturerRecipe.Type.INSTANCE);
-        List<TurretFactoryRecipe> turretFactoryRecipes = rm.getAllRecipesFor(TurretFactoryRecipe.Type.INSTANCE);
+        List<TankCrafterRecipe> tankCrafterRecipes = rm.getAllRecipesFor(ModRecipes.CRAFTER_RECIPE.get());
+        List<PlatingPressRecipe> platingPressRecipes = rm.getAllRecipesFor(ModRecipes.PLATING_PRESS_RECIPE.get());
+        List<EngineFabricatorRecipe> engineFabricatorRecipes = rm.getAllRecipesFor(ModRecipes.ENGINE_FABRICATOR_RECIPE.get());
+        List<SteelManufacturerRecipe> manufacturerRecipes = rm.getAllRecipesFor(ModRecipes.STEEL_MANUFACTURER_RECIPE.get());
+        List<TurretFactoryRecipe> turretFactoryRecipes = rm.getAllRecipesFor(ModRecipes.TURRET_FACTORY_RECIPE.get());
+        List<ShellWorkbenchRecipe> shellWorkbenchRecipes = rm.getAllRecipesFor(ModRecipes.SHELL_WORKBENCH.get());
 
         registration.addRecipes(TurretFactoryCategory.RECIPE_TYPE, turretFactoryRecipes);
         registration.addRecipes(EngineFabricatorRecipeCategory.RECIPE_TYPE, engineFabricatorRecipes);
         registration.addRecipes(PlatingPressRecipeCategory.RECIPE_TYPE, platingPressRecipes);
         registration.addRecipes(SteelManufacturerRecipeCategory.RECIPE_TYPE, manufacturerRecipes);
         registration.addRecipes(TankCrafterRecipeCategory.RECIPE_TYPE, tankCrafterRecipes);
+        registration.addRecipes(ShellWorkbenchRecipeCategory.RECIPE_TYPE, shellWorkbenchRecipes);
     }
 }

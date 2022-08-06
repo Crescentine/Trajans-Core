@@ -1,6 +1,5 @@
 package com.crescentine.trajanscore.recipe;
 
-import com.crescentine.trajanscore.TrajansCoreMod;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
@@ -12,13 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
-public class EngineFabricatorRecipe implements Recipe<SimpleContainer> {
+public class ShellWorkbenchRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final ItemStack output;
     public final NonNullList<Ingredient> recipeItems;
 
-    public EngineFabricatorRecipe(ResourceLocation id, ItemStack output,
-                             NonNullList<Ingredient> recipeItems) {
+    public ShellWorkbenchRecipe(ResourceLocation id, ItemStack output,
+                                  NonNullList<Ingredient> recipeItems) {
         this.id = id;
         this.output = output;
         this.recipeItems = recipeItems;
@@ -37,10 +36,8 @@ public class EngineFabricatorRecipe implements Recipe<SimpleContainer> {
                     if (recipeItems.get(3).test(inventory.getItem(3))) {
                         if (recipeItems.get(4).test(inventory.getItem(4))) {
                             if (recipeItems.get(5).test(inventory.getItem(5))) {
-                                if (recipeItems.get(6).test(inventory.getItem(6))) {
-                                    if (recipeItems.get(7).test(inventory.getItem(7))) {
-                                    return recipeItems.get(8).test(inventory.getItem(8));
-                                }}}}}}}}
+                                recipeItems.get(6).test(inventory.getItem(6));
+                            }}}}}}
         return false;
     }
 
@@ -67,33 +64,32 @@ public class EngineFabricatorRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.ENGINE_FABRICATOR_SERIALIZER.get();
+        return ModRecipes.SHELL_WORKBENCH_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.ENGINE_FABRICATOR_RECIPE.get();
+        return ModRecipes.SHELL_WORKBENCH.get();
     }
 
-    public static class Serializer implements RecipeSerializer<EngineFabricatorRecipe> {
-        public static final Serializer INSTANCE = new Serializer();
-        public static final String ID = "engine_fabricator";
+    public static class Serializer implements RecipeSerializer<ShellWorkbenchRecipe> {
+        public static final String ID = "shell_workbench";
         @Override
-        public EngineFabricatorRecipe fromJson(ResourceLocation id, JsonObject json) {
+        public ShellWorkbenchRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
-            NonNullList<Ingredient> inputs = NonNullList.withSize(9, Ingredient.EMPTY);
+            NonNullList<Ingredient> inputs = NonNullList.withSize(7, Ingredient.EMPTY);
 
             for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new EngineFabricatorRecipe(id, output, inputs);
+            return new ShellWorkbenchRecipe(id, output, inputs);
         }
 
         @Override
-        public EngineFabricatorRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+        public ShellWorkbenchRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
 
             for (int i = 0; i < inputs.size(); i++) {
@@ -101,12 +97,12 @@ public class EngineFabricatorRecipe implements Recipe<SimpleContainer> {
             }
 
             ItemStack output = buf.readItem();
-            return new EngineFabricatorRecipe(id, output,
+            return new ShellWorkbenchRecipe(id, output,
                     inputs);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buf, EngineFabricatorRecipe recipe) {
+        public void toNetwork(FriendlyByteBuf buf, ShellWorkbenchRecipe recipe) {
             buf.writeInt(recipe.getIngredients().size());
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buf);

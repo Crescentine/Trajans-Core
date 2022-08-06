@@ -1,0 +1,29 @@
+{
+  "type" : "trajanscore:shell_workbench",
+  "ingredients" : [
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:gunpowder"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:arrow"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:arrow"
+    }
+  ],
+  "output" : {
+    "item" : "trajanscore:standard_shell"
+  }
+}
