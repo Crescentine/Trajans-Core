@@ -22,14 +22,16 @@
   "item.trajanscore.hammer" : "Hammer",
   "item.trajanscore.cruisermk1_blueprint" : "Cruiser MK1 Blueprint",
   "item.trajanscore.m4sherman_blueprint" : "M4 Sherman Blueprint",
+  "item.trajanscore.archer_blueprint" : "Archer Blueprint",
 
   "block.trajanscore.plate_press_block" : "Plating Press",
   "block.trajanscore.turret_factory" : "Turret Factory",
   "block.trajanscore.engine_fabricator" : "Engine Fabricator",
   "block.trajanscore.steel_manufacturer" : "Steel Manufacturer",
+  "block.trajanscore.shell_workbench" : "Shell Workbench",
   "item.trajanscore.cruiser_mk1_item" : "Cruiser MK1",
 
-  "key.trajanscore.startMoving" : "Tank Move Forward",
+  "key.trajanscore.sync" : "Sync Turret with Body",
   "key.trajanscore.shootKey" : "Shoot (Trajan's Tanks)",
   "key.trajanscore.fuelRemaining" : "Print Amount of Fuel Remaining",
 

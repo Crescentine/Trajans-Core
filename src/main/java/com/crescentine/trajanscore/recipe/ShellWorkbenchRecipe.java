@@ -36,7 +36,7 @@ public class ShellWorkbenchRecipe implements Recipe<SimpleContainer> {
                     if (recipeItems.get(3).test(inventory.getItem(3))) {
                         if (recipeItems.get(4).test(inventory.getItem(4))) {
                             if (recipeItems.get(5).test(inventory.getItem(5))) {
-                                recipeItems.get(6).test(inventory.getItem(6));
+                                return recipeItems.get(6).test(inventory.getItem(6));
                             }}}}}}
         return false;
     }

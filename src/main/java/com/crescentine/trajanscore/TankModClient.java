@@ -10,12 +10,12 @@ import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 
 public class TankModClient {
-    public static final String startMoving = "key.trajanscore.startMoving";
+    public static final String sync = "key.trajanscore.sync";
     public static final String shootKey = "key.trajanscore.shootKey";
     public static final String fuelRemaining = "key.trajanscore.fuelRemaining";
 
-    public static final KeyMapping START_MOVING = new KeyMapping(startMoving, KeyConflictContext.IN_GAME,
-            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_W, KeyMapping.CATEGORY_MISC);
+    public static final KeyMapping SYNC_TURRET_WITH_TANK = new KeyMapping(sync, KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_CONTROL, KeyMapping.CATEGORY_MISC);
     public static final KeyMapping SHOOT_KEY = new KeyMapping(shootKey, KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_G, KeyMapping.CATEGORY_MISC);
     public static final KeyMapping FUEL_CHECK = new KeyMapping(fuelRemaining, KeyConflictContext.IN_GAME,
@@ -25,7 +25,7 @@ public class TankModClient {
     public static class ClientModBusEvents {
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
-            event.register(START_MOVING);
+            event.register(SYNC_TURRET_WITH_TANK);
             event.register(SHOOT_KEY);
             event.register(FUEL_CHECK);
         }
