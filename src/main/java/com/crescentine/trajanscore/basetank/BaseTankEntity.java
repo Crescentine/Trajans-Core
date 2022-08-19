@@ -79,6 +79,7 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     public boolean canUseArmorPiercing;
     public boolean canUseHeat;
     public boolean canUseHighExplosive;
+    public boolean turretFollow;
 
     public BaseTankEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends Animal>) entityType, world);
@@ -173,10 +174,13 @@ public class BaseTankEntity extends Animal implements IAnimatable {
             if (this.isVehicle()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
                 if (level.isClientSide) {
-                    boolean keybind = TankModClient.SYNC_TURRET_WITH_TANK.isDown() && level.isClientSide;
-                    //If it is NOT DOWN, then it is True?
-                    keybind = !keybind;
-                    if (keybind) {
+
+                    if (TankModClient.SYNC_TURRET_WITH_TANK.consumeClick() && level.isClientSide)
+                    {
+                        turretFollow = !turretFollow;
+                    }
+
+                    if (turretFollow) {
                         this.setYRot(livingentity.getYRot());
                         this.yRotO = this.getYRot();
                         this.setXRot(livingentity.getXRot() * 0.5F);
@@ -190,11 +194,14 @@ public class BaseTankEntity extends Animal implements IAnimatable {
                 if (f1 <= 0.0F) {
                     f1 *= 0.25F;
                 }
+
+
                 if (getFuelAmount() > 0) {
                     this.setSpeed((float) speed);
                 }
                 super.travel(new Vec3((double) f, pos.y, (double) f1));
             }
+
             super.travel(pos);
             this.setSpeed(0);
             this.flyingSpeed = 0.02f;
