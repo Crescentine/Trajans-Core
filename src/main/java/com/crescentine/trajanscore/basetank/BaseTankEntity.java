@@ -89,7 +89,7 @@ public class BaseTankEntity extends Animal implements IAnimatable {
         return Pig.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 250.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 10.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.5)
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
                 .add(Attributes.FOLLOW_RANGE, 0.0D);
     }
 
@@ -131,12 +131,30 @@ public class BaseTankEntity extends Animal implements IAnimatable {
         return InteractionResult.FAIL;
     }
     public void healTank(double healAmount) {
-        this.heal((float) healAmount);
-        this.level.addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+        // stops overhealing
+        if (this.getMaxHealth() - this.getHealth() > healAmount) {
+            this.setHealth((float) this.getHealth() + (float) healAmount);
+            this.level.addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+        } else {
+            if (this.getHealth() < this.getMaxHealth()) {
+                this.setHealth(this.getMaxHealth());
+                this.level.addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+        }
+
     }
     public void fuelTankWithItem(int fuelAmount) {
-        addFuel(fuelAmount);
-        this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+        // Stops overfueing
+        if (getFuelAmount() + fuelAmount < maxFuel) {
+            setFuelAmount(getFuelAmount() + fuelAmount);
+            this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+        } else {
+            if (getFuelAmount() < maxFuel) {
+                setFuelAmount((int) maxFuel);
+                this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+            }
+        }
+
+
     }
 
     @Override
@@ -198,7 +216,14 @@ public class BaseTankEntity extends Animal implements IAnimatable {
                 if (getFuelAmount() > 0) {
                     this.setSpeed((float) speed);
                 }
-                super.travel(new Vec3((double) f, pos.y, (double) f1));
+                if (getFuelAmount() <= 0) {
+                    this.setSpeed(0);
+                }
+
+
+                Vec3 finalSpeed = new Vec3(f, pos.y, f1);
+
+                super.travel(finalSpeed);
             }
             super.travel(pos);
             this.setSpeed(0);
