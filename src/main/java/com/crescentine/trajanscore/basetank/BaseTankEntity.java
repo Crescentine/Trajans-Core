@@ -195,13 +195,11 @@ public class BaseTankEntity extends Animal implements IAnimatable {
                     f1 *= 0.25F;
                 }
 
-
                 if (getFuelAmount() > 0) {
                     this.setSpeed((float) speed);
                 }
                 super.travel(new Vec3((double) f, pos.y, (double) f1));
             }
-
             super.travel(pos);
             this.setSpeed(0);
             this.flyingSpeed = 0.02f;

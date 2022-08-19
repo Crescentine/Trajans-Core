@@ -3,19 +3,14 @@ package com.crescentine.trajanscore.block.platingpress;
 
 import com.crescentine.trajanscore.block.TankModBlockEntities;
 import com.crescentine.trajanscore.container.PlatingPressContainer;
-import com.crescentine.trajanscore.container.TankModContainers;
-import com.crescentine.trajanscore.item.machines.plating_press.PlatingPressItem;
 import com.crescentine.trajanscore.recipe.ModRecipes;
 import com.crescentine.trajanscore.recipe.PlatingPressRecipe;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -37,7 +32,6 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -45,7 +39,6 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.Random;
 
 public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider, IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
