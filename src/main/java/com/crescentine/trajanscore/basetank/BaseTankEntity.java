@@ -80,6 +80,8 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     public boolean canUseHeat;
     public boolean canUseHighExplosive;
     public boolean turretFollow;
+    public int accelerationTime;
+    public int speedPercent = 30;
 
     public BaseTankEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends Animal>) entityType, world);
@@ -139,8 +141,8 @@ public class BaseTankEntity extends Animal implements IAnimatable {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.setHealth(this.getMaxHealth());
                 this.level.addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+            }
         }
-
     }
     public void fuelTankWithItem(int fuelAmount) {
         // Stops overfueing
@@ -153,8 +155,6 @@ public class BaseTankEntity extends Animal implements IAnimatable {
                 this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
             }
         }
-
-
     }
 
     @Override
@@ -192,12 +192,10 @@ public class BaseTankEntity extends Animal implements IAnimatable {
             if (this.isVehicle()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
                 if (level.isClientSide) {
-
-                    if (TankModClient.SYNC_TURRET_WITH_TANK.consumeClick() && level.isClientSide)
+                    if (TankModClient.SYNC_TURRET_WITH_TANK.consumeClick() && level.isClientSide && livingentity.isPassenger())
                     {
                         turretFollow = !turretFollow;
                     }
-
                     if (turretFollow) {
                         this.setYRot(livingentity.getYRot());
                         this.yRotO = this.getYRot();
@@ -212,23 +210,64 @@ public class BaseTankEntity extends Animal implements IAnimatable {
                 if (f1 <= 0.0F) {
                     f1 *= 0.25F;
                 }
-
                 if (getFuelAmount() > 0) {
-                    this.setSpeed((float) speed);
+                    this.setSpeed((float) speed * 0.25f);
+                    if (accelerationTime >= 20) {
+                        this.setSpeed((float) speed * 0.3f);
+                    }
+                    if (accelerationTime >= 30) {
+                        this.setSpeed((float) speed * 0.35f);
+                    }
+                    if (accelerationTime >= 40) {
+                        this.setSpeed((float) speed * 0.40f);
+                    }
+                    if (accelerationTime >= 50) {
+                        this.setSpeed((float) speed * 0.45f);
+                    }
+                    if (accelerationTime >= 60) {
+                        this.setSpeed((float) speed * 0.5f);
+                    }
+                    if (accelerationTime >= 70) {
+                        this.setSpeed((float) speed * 0.55f);
+                    }
+                    if (accelerationTime >= 80) {
+                        this.setSpeed((float) speed * 0.60f);
+                    }
+                    if (accelerationTime >= 90) {
+                        this.setSpeed((float) speed * 0.65f);
+                    }
+                    if (accelerationTime >= 100) {
+                        this.setSpeed((float) speed * 0.70f);
+                    }
+                    if (accelerationTime >= 110) {
+                        this.setSpeed((float) speed * 0.75f);
+                    }
+                    if (accelerationTime >= 120) {
+                        this.setSpeed((float) speed * 0.8f);
+                    }
+                    if (accelerationTime >= 130) {
+                        this.setSpeed((float) speed * 0.85f);
+                    }
+                    if (accelerationTime >= 140) {
+                        this.setSpeed((float) speed * 0.9f);
+                    }
+                    if (accelerationTime >= 150) {
+                        this.setSpeed((float) speed * 0.95f);
+                    }
+                    if (accelerationTime >= 160) {
+                        this.setSpeed((float) speed);
+                    }
                 }
-                if (getFuelAmount() <= 0) {
-                    this.setSpeed(0);
-                }
-
-
-                Vec3 finalSpeed = new Vec3(f, pos.y, f1);
-
-                super.travel(finalSpeed);
+                super.travel(new Vec3((double) f, pos.y, (double) f1));
             }
             super.travel(pos);
             this.setSpeed(0);
+            speedPercent = 0;
             this.flyingSpeed = 0.02f;
         }
+    }
+    public int getSpeedPercent() {
+        return speedPercent;
     }
 
     @Override
@@ -314,12 +353,19 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     protected SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
     }
-
     @Override
     public void tick() {
         super.tick();
         if (this.isMoving()) {
             fuelTick();
+        }
+        if (this.isMoving() && this.isVehicle() && accelerationTime <= 160) {
+            accelerationTime++;
+        }
+        if (accelerationTime >= 0) {
+            if (!this.isVehicle() || !this.isMoving() || getFuelAmount() == 0) {
+                accelerationTime--;
+            }
         }
         age++;
         if (time < shootingCooldown) time++;
@@ -327,7 +373,25 @@ public class BaseTankEntity extends Animal implements IAnimatable {
             this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
             this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
         }
-    }
+        if (this.isVehicle()) {
+                if (accelerationTime < 10) speedPercent = 25;
+                if (accelerationTime >= 10) speedPercent = 30;
+                if (accelerationTime >= 30) speedPercent = 35;
+                if (accelerationTime >= 40) speedPercent = 40;
+                if (accelerationTime >= 50) speedPercent = 45;
+                if (accelerationTime >= 60) speedPercent = 50;
+                if (accelerationTime >= 70) speedPercent = 55;
+                if (accelerationTime >= 80) speedPercent = 60;
+                if (accelerationTime >= 90) speedPercent = 65;
+                if (accelerationTime >= 100) speedPercent = 70;
+                if (accelerationTime >= 110) speedPercent = 75;
+                if (accelerationTime >= 120) speedPercent = 80;
+                if (accelerationTime >= 130) speedPercent = 85;
+                if (accelerationTime >= 140) speedPercent = 90;
+                if (accelerationTime >= 150) speedPercent = 95;
+                if (accelerationTime >= 160) speedPercent = 100;
+            }
+        }
 
     protected void fuelTick() {
         int fuel = getFuelAmount();
