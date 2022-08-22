@@ -82,6 +82,7 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     public boolean turretFollow;
     public int accelerationTime;
     public int speedPercent = 30;
+    double lastSpeed = 0;
 
     public BaseTankEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends Animal>) entityType, world);
@@ -212,51 +213,21 @@ public class BaseTankEntity extends Animal implements IAnimatable {
                 }
                 if (getFuelAmount() > 0) {
                     this.setSpeed((float) speed * 0.25f);
-                    if (accelerationTime >= 20) {
-                        this.setSpeed((float) speed * 0.3f);
+
+                    // increase speed as accelerationTime increases
+                    if (accelerationTime > 0) {
+                        // if we stopped, reset accelerationTime
+
+                        if (this.getSpeed() == 0.0f) {
+                            accelerationTime = 0;
+                        }
+
+
+                        this.setSpeed((float) speed * (accelerationTime / 160.0f));
+                        lastSpeed = speed * (accelerationTime / 160.0f);
                     }
-                    if (accelerationTime >= 30) {
-                        this.setSpeed((float) speed * 0.35f);
-                    }
-                    if (accelerationTime >= 40) {
-                        this.setSpeed((float) speed * 0.40f);
-                    }
-                    if (accelerationTime >= 50) {
-                        this.setSpeed((float) speed * 0.45f);
-                    }
-                    if (accelerationTime >= 60) {
-                        this.setSpeed((float) speed * 0.5f);
-                    }
-                    if (accelerationTime >= 70) {
-                        this.setSpeed((float) speed * 0.55f);
-                    }
-                    if (accelerationTime >= 80) {
-                        this.setSpeed((float) speed * 0.60f);
-                    }
-                    if (accelerationTime >= 90) {
-                        this.setSpeed((float) speed * 0.65f);
-                    }
-                    if (accelerationTime >= 100) {
-                        this.setSpeed((float) speed * 0.70f);
-                    }
-                    if (accelerationTime >= 110) {
-                        this.setSpeed((float) speed * 0.75f);
-                    }
-                    if (accelerationTime >= 120) {
-                        this.setSpeed((float) speed * 0.8f);
-                    }
-                    if (accelerationTime >= 130) {
-                        this.setSpeed((float) speed * 0.85f);
-                    }
-                    if (accelerationTime >= 140) {
-                        this.setSpeed((float) speed * 0.9f);
-                    }
-                    if (accelerationTime >= 150) {
-                        this.setSpeed((float) speed * 0.95f);
-                    }
-                    if (accelerationTime >= 160) {
-                        this.setSpeed((float) speed);
-                    }
+
+
                 }
                 super.travel(new Vec3((double) f, pos.y, (double) f1));
             }
@@ -364,7 +335,10 @@ public class BaseTankEntity extends Animal implements IAnimatable {
         }
         if (accelerationTime >= 0) {
             if (!this.isVehicle() || !this.isMoving() || getFuelAmount() == 0) {
-                accelerationTime--;
+                accelerationTime -= 5;
+                if (accelerationTime < 0) {
+                    accelerationTime = 0;
+                }
             }
         }
         age++;
