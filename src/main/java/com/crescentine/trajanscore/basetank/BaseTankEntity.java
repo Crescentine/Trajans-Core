@@ -49,12 +49,13 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 import javax.swing.text.JTextComponent;
 
-public class BaseTankEntity extends Animal implements IAnimatable {
+public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     public double healAmount = 0;
     public boolean armored;
     public double speed = 0;
     private static final EntityDataAccessor<Integer> FUEL_AMOUNT = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.FLOAT);
     public int shootingCooldown = 60;
     public int time;
     public double armor = 0;
@@ -81,7 +82,6 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     public boolean canUseHighExplosive;
     public boolean turretFollow;
     public int accelerationTime;
-    public int speedPercent = 30;
     double lastSpeed = 0;
 
     public BaseTankEntity(EntityType<?> entityType, Level world) {
@@ -212,35 +212,24 @@ public class BaseTankEntity extends Animal implements IAnimatable {
                     f1 *= 0.25F;
                 }
                 if (getFuelAmount() > 0) {
-                    this.setSpeed((float) speed * 0.25f);
 
-                    // increase speed as accelerationTime increases
                     if (accelerationTime > 0) {
                         // if we stopped, reset accelerationTime
-
-                        if (this.getSpeed() == 0.0f) {
+                        if (this.getTankSpeed() == 0.0f) {
                             accelerationTime = 0;
                         }
-
-
-                        this.setSpeed((float) speed * (accelerationTime / 160.0f));
-                        lastSpeed = speed * (accelerationTime / 160.0f);
+                        this.setTankSpeed(Math.max((float) speed * (accelerationTime / 160.0f), (float) (speed * 0.25f)));
+                        this.setSpeed(getTankSpeed());
                     }
-
-
                 }
                 super.travel(new Vec3((double) f, pos.y, (double) f1));
             }
             super.travel(pos);
-            this.setSpeed(0);
-            speedPercent = 0;
+            this.setTankSpeed(0);
+            this.setSpeed(getSpeed());
             this.flyingSpeed = 0.02f;
         }
     }
-    public int getSpeedPercent() {
-        return speedPercent;
-    }
-
     @Override
     public boolean shouldRiderSit() {
         return false;
@@ -260,66 +249,26 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     }
 
     @Override
-    public boolean isNoGravity() {
-        return false;
-    }
-
-
-    @org.jetbrains.annotations.Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel p_146743_, AgeableMob p_146744_) {
-        return null;
-    }
-
-    @Override
-    public boolean requiresCustomPersistence() {
-        return true;
-    }
-
-    @Override
-    public ItemStack getItemBySlot(EquipmentSlot slot) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    protected void registerGoals() {
-    }
-
-    @Override
     public boolean startRiding(Entity p_21396_, boolean p_21397_) {
         this.time = 0;
         return super.startRiding(p_21396_, p_21397_);
     }
-
-    @Override
-    public boolean isBaby() {
-        return false;
-    }
-
-    private boolean isMoving() {
-            return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
-    }
-
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.GENERIC_EXPLODE;
     }
-
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.ARMOR_EQUIP_IRON;
     }
-
     @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ARMOR_EQUIP_IRON;
     }
-
     @Override
     protected SoundEvent getSwimSplashSound() {
         return SoundEvents.PLAYER_SPLASH;
     }
-
     @Override
     protected SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
@@ -327,51 +276,36 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     @Override
     public void tick() {
         super.tick();
-        if (this.isMoving()) {
-            fuelTick();
-        }
-        if (this.isMoving() && this.isVehicle() && accelerationTime <= 160) {
-            accelerationTime++;
-        }
-        if (accelerationTime >= 0) {
-            if (!this.isVehicle() || !this.isMoving() || getFuelAmount() == 0) {
-                accelerationTime -= 5;
-                if (accelerationTime < 0) {
-                    accelerationTime = 0;
-                }
-            }
-        }
+        fuelTick();
+        accelerationTick();
         age++;
         if (time < shootingCooldown) time++;
         if (level.isClientSide() && this.isVehicle() && this.age % 10 == 0 && getFuelAmount() > 0) {
             this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
             this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
         }
-        if (this.isVehicle()) {
-                if (accelerationTime < 10) speedPercent = 25;
-                if (accelerationTime >= 10) speedPercent = 30;
-                if (accelerationTime >= 30) speedPercent = 35;
-                if (accelerationTime >= 40) speedPercent = 40;
-                if (accelerationTime >= 50) speedPercent = 45;
-                if (accelerationTime >= 60) speedPercent = 50;
-                if (accelerationTime >= 70) speedPercent = 55;
-                if (accelerationTime >= 80) speedPercent = 60;
-                if (accelerationTime >= 90) speedPercent = 65;
-                if (accelerationTime >= 100) speedPercent = 70;
-                if (accelerationTime >= 110) speedPercent = 75;
-                if (accelerationTime >= 120) speedPercent = 80;
-                if (accelerationTime >= 130) speedPercent = 85;
-                if (accelerationTime >= 140) speedPercent = 90;
-                if (accelerationTime >= 150) speedPercent = 95;
-                if (accelerationTime >= 160) speedPercent = 100;
-            }
-        }
+    }
 
     protected void fuelTick() {
         int fuel = getFuelAmount();
-        if (level.isClientSide) {
-            if (this.isVehicle()) {
-                removeFuel(1);
+        if (this.isMoving()) {
+            if (level.isClientSide) {
+                if (this.isVehicle()) {
+                    removeFuel(1);
+                }
+            }
+        }
+    }
+    protected void accelerationTick() {
+        if (this.isMoving() && this.isVehicle() && accelerationTime <= 160) {
+            accelerationTime++;
+        }
+        if (accelerationTime >= 0) {
+            if (!this.isVehicle() || !this.isMoving() || getFuelAmount() == 0) {
+                accelerationTime -= 2;
+                if (accelerationTime < 0) {
+                    accelerationTime = 0;
+                }
             }
         }
     }
@@ -392,10 +326,17 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(FUEL_AMOUNT, 0);
+        entityData.define(SPEED, 0.0f);
     }
 
     public void setFuelAmount(int fuel) {
         this.entityData.set(FUEL_AMOUNT, fuel);
+    }
+    public void setTankSpeed(float newSpeed) {
+        this.entityData.set(SPEED, newSpeed);
+    }
+    public float getTankSpeed() {
+        return this.entityData.get(SPEED);
     }
 
     public int getFuelAmount() {
@@ -406,12 +347,14 @@ public class BaseTankEntity extends Animal implements IAnimatable {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         setFuelAmount(pCompound.getInt("fuel"));
+        setTankSpeed(pCompound.getFloat("speed"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("fuel", getFuelAmount());
+        pCompound.putFloat("speed", getTankSpeed());
     }
 
 
@@ -524,20 +467,6 @@ public class BaseTankEntity extends Animal implements IAnimatable {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
-    }
-
-    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        return PlayState.STOP;
-    }
-
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
