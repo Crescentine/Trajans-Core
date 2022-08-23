@@ -11,6 +11,7 @@ import com.crescentine.trajanscore.tankshells.standard.StandardShell;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,6 +22,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,6 +39,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.glfw.GLFW;
@@ -83,6 +89,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     public boolean turretFollow;
     public int accelerationTime;
     double lastSpeed = 0;
+    private boolean breakableBlocks;
+    private int speedPercent;
 
     public BaseTankEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends Animal>) entityType, world);
@@ -230,6 +238,54 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
             this.flyingSpeed = 0.02f;
         }
     }
+    public int getSpeedPercent() {
+        return speedPercent;
+    }
+
+
+    public boolean isBreakableBlock(BlockState blockstate) {
+        return blockstate.is(BlockTags.REPLACEABLE_PLANTS) || blockstate.is(BlockTags.LEAVES) || blockstate.is(BlockTags.FLOWERS);
+    }
+
+    private boolean destroyBlocks(AABB pArea) {
+        int i = Mth.floor(pArea.minX);
+        int j = Mth.floor(pArea.minY);
+        int k = Mth.floor(pArea.minZ);
+        int l = Mth.floor(pArea.maxX);
+        int i1 = Mth.floor(pArea.maxY);
+        int j1 = Mth.floor(pArea.maxZ);
+        boolean flag = false;
+        boolean flag1 = false;
+
+        for(int k1 = i; k1 <= l; ++k1) {
+            for(int l1 = j; l1 <= i1; ++l1) {
+                for(int i2 = k; i2 <= j1; ++i2) {
+                    BlockPos blockpos = new BlockPos(k1, l1, i2);
+                    BlockState blockstate = this.level.getBlockState(blockpos);
+                    if (!blockstate.isAir() && isBreakableBlock(blockstate)) {
+                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this) && isBreakableBlock(blockstate)) {
+                            flag1 = this.level.removeBlock(blockpos, false) || flag1;
+                        } else {
+                            flag = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (flag1) {
+            BlockPos blockpos1 = new BlockPos(i + this.random.nextInt(l - i + 1), j + this.random.nextInt(i1 - j + 1), k + this.random.nextInt(j1 - k + 1));
+            this.level.levelEvent(2008, blockpos1, 0);
+        }
+
+        return flag;
+    }
+
+
+
+
+
+
     @Override
     public boolean shouldRiderSit() {
         return false;
@@ -289,6 +345,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     protected void fuelTick() {
         int fuel = getFuelAmount();
         if (this.isMoving()) {
+            fuelTick();
             if (level.isClientSide) {
                 if (this.isVehicle()) {
                     removeFuel(1);
@@ -296,6 +353,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
             }
         }
     }
+
     protected void accelerationTick() {
         if (this.isMoving() && this.isVehicle() && accelerationTime <= 160) {
             accelerationTime++;
@@ -308,7 +366,38 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
                 }
             }
         }
-    }
+        age++;
+        if (time < shootingCooldown) time++;
+        if (level.isClientSide() && this.isVehicle() && this.age % 10 == 0 && getFuelAmount() > 0) {
+            this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+            this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+        }
+
+        if (!this.level.isClientSide) {
+            this.breakableBlocks = this.destroyBlocks(this.getBoundingBox());
+        }
+        
+        
+        if (this.isVehicle()) {
+                if (accelerationTime < 10) speedPercent = 25;
+                if (accelerationTime >= 10) speedPercent = 30;
+                if (accelerationTime >= 30) speedPercent = 35;
+                if (accelerationTime >= 40) speedPercent = 40;
+                if (accelerationTime >= 50) speedPercent = 45;
+                if (accelerationTime >= 60) speedPercent = 50;
+                if (accelerationTime >= 70) speedPercent = 55;
+                if (accelerationTime >= 80) speedPercent = 60;
+                if (accelerationTime >= 90) speedPercent = 65;
+                if (accelerationTime >= 100) speedPercent = 70;
+                if (accelerationTime >= 110) speedPercent = 75;
+                if (accelerationTime >= 120) speedPercent = 80;
+                if (accelerationTime >= 130) speedPercent = 85;
+                if (accelerationTime >= 140) speedPercent = 90;
+                if (accelerationTime >= 150) speedPercent = 95;
+                if (accelerationTime >= 160) speedPercent = 100;
+            }
+        }
+
 
     private void removeFuel(int amount) {
         int fuel = getFuelAmount();
