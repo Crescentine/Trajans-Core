@@ -32,7 +32,7 @@ public class StatsOverlay {
         PoseStack matrixStack = new PoseStack();
         BaseTankEntity tank = (BaseTankEntity) entity;
         DecimalFormat format1 = new DecimalFormat("0.0");
-        String speed = format1.format(tank.getTankSpeed() * 43.2);
+        String speed = format1.format(tank.getOverlaySpeed() * 4.32f);
         String health = format1.format(tank.getHealth());
         mc.font.drawShadow(matrixStack, ChatFormatting.BOLD + "Health: " + ChatFormatting.WHITE + health, 10, 10, Color.CYAN.getRGB());
 
@@ -41,6 +41,6 @@ public class StatsOverlay {
             String fuel = format.format(tank.getFuelAmount()) + "/" + format.format(tank.maxFuel);
             mc.font.drawShadow(matrixStack, ChatFormatting.BOLD + "Fuel Remaining: " + ChatFormatting.WHITE + fuel, 10, 20, Color.CYAN.getRGB());
         }
-        mc.font.drawShadow(matrixStack, ChatFormatting.BOLD + "Blocks Per Second: " + ChatFormatting.WHITE + speed, 10, 30, Color.CYAN.getRGB());
+        mc.font.drawShadow(matrixStack, ChatFormatting.BOLD + "Km Per Hour: " + ChatFormatting.WHITE + speed, 10, 30, Color.CYAN.getRGB());
     }
 }

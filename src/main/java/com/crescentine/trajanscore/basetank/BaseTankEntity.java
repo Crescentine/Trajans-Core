@@ -10,7 +10,6 @@ import com.crescentine.trajanscore.tankshells.highexplosive.HighExplosiveShell;
 import com.crescentine.trajanscore.tankshells.standard.StandardShell;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -39,27 +38,19 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import org.lwjgl.glfw.GLFW;
 import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
-import javax.swing.text.JTextComponent;
 
 public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     public double healAmount = 0;
     public boolean armored;
-    public double speed = 0;
+    public double speedMultiplier = 0;
     private static final EntityDataAccessor<Integer> FUEL_AMOUNT = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.FLOAT);
     public int shootingCooldown = 60;
@@ -88,9 +79,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     public boolean canUseHighExplosive;
     public boolean turretFollow;
     public int accelerationTime;
-    double lastSpeed = 0;
     private boolean breakableBlocks;
-    private int speedPercent;
 
     public BaseTankEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends Animal>) entityType, world);
@@ -219,27 +208,15 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
                 if (f1 <= 0.0F) {
                     f1 *= 0.25F;
                 }
-                if (getFuelAmount() > 0) {
-
-                    if (accelerationTime > 0) {
-                        // if we stopped, reset accelerationTime
-                        if (this.getTankSpeed() == 0.0f) {
-                            accelerationTime = 0;
-                        }
-                        this.setTankSpeed(Math.max((float) speed * (accelerationTime / 160.0f), (float) (speed * 0.25f)));
-                        this.setSpeed(getTankSpeed());
-                    }
+                if (getFuelAmount() > 0) { // If we have fuel
+                    this.setSpeed(Math.max((float) speedMultiplier * (accelerationTime / 160.0f), (float) (speedMultiplier * 0.25f)));
                 }
                 super.travel(new Vec3((double) f, pos.y, (double) f1));
             }
             super.travel(pos);
-            this.setTankSpeed(0);
-            this.setSpeed(getSpeed());
+            this.setSpeed(0f); // If nobody riding tank, stop tank (Outside of 'if (this.isVehicle())'
             this.flyingSpeed = 0.02f;
         }
-    }
-    public int getSpeedPercent() {
-        return speedPercent;
     }
 
 
@@ -280,11 +257,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
 
         return flag;
     }
-
-
-
-
-
 
     @Override
     public boolean shouldRiderSit() {
@@ -345,7 +317,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     protected void fuelTick() {
         int fuel = getFuelAmount();
         if (this.isMoving()) {
-            fuelTick();
             if (level.isClientSide) {
                 if (this.isVehicle()) {
                     removeFuel(1);
@@ -358,7 +329,9 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         if (this.isMoving() && this.isVehicle() && accelerationTime <= 160) {
             accelerationTime++;
         }
+
         if (accelerationTime >= 0) {
+            // Decrease AccTime when not moving OR not in tank OR no fuel
             if (!this.isVehicle() || !this.isMoving() || getFuelAmount() == 0) {
                 accelerationTime -= 2;
                 if (accelerationTime < 0) {
@@ -376,27 +349,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         if (!this.level.isClientSide) {
             this.breakableBlocks = this.destroyBlocks(this.getBoundingBox());
         }
-        
-        
-        if (this.isVehicle()) {
-                if (accelerationTime < 10) speedPercent = 25;
-                if (accelerationTime >= 10) speedPercent = 30;
-                if (accelerationTime >= 30) speedPercent = 35;
-                if (accelerationTime >= 40) speedPercent = 40;
-                if (accelerationTime >= 50) speedPercent = 45;
-                if (accelerationTime >= 60) speedPercent = 50;
-                if (accelerationTime >= 70) speedPercent = 55;
-                if (accelerationTime >= 80) speedPercent = 60;
-                if (accelerationTime >= 90) speedPercent = 65;
-                if (accelerationTime >= 100) speedPercent = 70;
-                if (accelerationTime >= 110) speedPercent = 75;
-                if (accelerationTime >= 120) speedPercent = 80;
-                if (accelerationTime >= 130) speedPercent = 85;
-                if (accelerationTime >= 140) speedPercent = 90;
-                if (accelerationTime >= 150) speedPercent = 95;
-                if (accelerationTime >= 160) speedPercent = 100;
-            }
-        }
+    }
 
 
     private void removeFuel(int amount) {
@@ -421,12 +374,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     public void setFuelAmount(int fuel) {
         this.entityData.set(FUEL_AMOUNT, fuel);
     }
-    public void setTankSpeed(float newSpeed) {
-        this.entityData.set(SPEED, newSpeed);
-    }
-    public float getTankSpeed() {
-        return this.entityData.get(SPEED);
-    }
 
     public int getFuelAmount() {
         return this.entityData.get(FUEL_AMOUNT);
@@ -436,14 +383,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
         setFuelAmount(pCompound.getInt("fuel"));
-        setTankSpeed(pCompound.getFloat("speed"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
         pCompound.putInt("fuel", getFuelAmount());
-        pCompound.putFloat("speed", getTankSpeed());
     }
 
 
@@ -561,5 +506,9 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     @Override
     public float getStepHeight() {
         return 1.0f;
+    }
+
+    public double getOverlaySpeed() {
+        return (Math.sqrt(Math.pow(this.getX() - this.xo, 2) + Math.pow(this.getZ() - this.zo, 2)) * 20);
     }
 }
