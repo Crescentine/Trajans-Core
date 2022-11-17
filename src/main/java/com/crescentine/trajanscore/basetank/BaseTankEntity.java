@@ -27,6 +27,8 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -41,8 +43,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.core.processor.IBone;
 
 import javax.annotation.Nullable;
 
@@ -250,10 +254,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
             }
         }
 
-        if (flag1) {
+      /*  if (flag1) {
             BlockPos blockpos1 = new BlockPos(i + this.random.nextInt(l - i + 1), j + this.random.nextInt(i1 - j + 1), k + this.random.nextInt(j1 - k + 1));
             this.level.levelEvent(2008, blockpos1, 0);
-        }
+        } */
 
         return flag;
     }
@@ -308,10 +312,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         accelerationTick();
         age++;
         if (time < shootingCooldown) time++;
-        if (level.isClientSide() && this.isVehicle() && this.age % 10 == 0 && getFuelAmount() > 0) {
+    /*    if (level.isClientSide() && this.isVehicle() && this.age % 10 == 0 && getFuelAmount() > 0) {
             this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
             this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
-        }
+        } */
     }
 
     protected void fuelTick() {
@@ -508,7 +512,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         return 1.0f;
     }
 
-    public double getOverlaySpeed() {
-        return (Math.sqrt(Math.pow(this.getX() - this.xo, 2) + Math.pow(this.getZ() - this.zo, 2)) * 20);
+    public boolean canBeAffected(@NotNull MobEffectInstance pPotioneffect) {
+        return false;
+    }
+    public boolean isMoving() {
+        return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
     }
 }
