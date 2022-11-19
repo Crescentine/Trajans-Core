@@ -9,6 +9,7 @@ import com.crescentine.trajanscore.tankshells.heat.HeatShell;
 import com.crescentine.trajanscore.tankshells.highexplosive.HighExplosiveShell;
 import com.crescentine.trajanscore.tankshells.standard.StandardShell;
 import com.google.common.collect.ImmutableList;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -34,7 +35,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -70,9 +73,13 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     double d0 = this.random.nextGaussian() * 0.03D;
     double d1 = this.random.nextGaussian() * 0.03D;
     double d2 = this.random.nextGaussian() * 0.03D;
+    private static final Ingredient FUELS = Ingredient.of(Items.COAL, Items.CHARCOAL, Items.COAL_BLOCK);
     private static final Ingredient COAL_FUEL = Ingredient.of(Items.COAL, Items.CHARCOAL);
     private static final Ingredient COAL_BLOCK_FUEL = Ingredient.of(Items.COAL_BLOCK);
     private static final Ingredient LAVA_FUEL = Ingredient.of(Items.LAVA_BUCKET);
+    private static final Ingredient HEALS = Ingredient.of(Items.IRON_BLOCK, Items.IRON_INGOT);
+    private static final Ingredient IRON_INGOT = Ingredient.of(Items.IRON_INGOT);
+    private static final Ingredient IRON_BLOCK = Ingredient.of(Items.IRON_BLOCK);
     public static final Ingredient AMMO = Ingredient.of(TrajansCoreItems.APCR_SHELL.get(), TrajansCoreItems.ARMOR_PIERCING_SHELL.get(), TrajansCoreItems.HEAT_SHELL.get(), TrajansCoreItems.STANDARD_SHELL.get(), TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get());
     private ImmutableList<Entity> passengers = ImmutableList.of();
     public boolean showFuel;
@@ -100,33 +107,33 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     @Override
     public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (itemstack.is(Items.IRON_BLOCK) && this.getHealth() < this.health) {
-            healTank(healAmount);
-            itemstack.shrink(1);
-            return InteractionResult.SUCCESS;
+        if (this.getHealth() < this.health) {
+            if (HEALS.test(itemstack)) {
+                if (itemstack.is(Items.IRON_BLOCK)) {
+                    healTank(healAmount);
+                    if (itemstack.is(Items.IRON_INGOT)) {
+                        healTank(healAmount / 9);
+                    }
+                    itemstack.shrink(1);
+                    return InteractionResult.SUCCESS;
+                }
+            }
         }
-        if (itemstack.is(Items.IRON_INGOT) && this.getHealth() < this.health) {
-            healTank(healAmount / 9);
-            itemstack.shrink(1);
-            return InteractionResult.SUCCESS;
-        }
-        if (TrajansCoreConfig.fuelSystemEnabled.get() && getFuelAmount() < maxFuel) {
-            if (COAL_FUEL.test(itemstack) && getFuelAmount() < maxFuel && TrajansCoreConfig.fuelSystemEnabled.get()) {
+        if (getFuelAmount() < maxFuel && FUELS.test(itemstack)) {
+            if (COAL_FUEL.test(itemstack)) {
                 fuelTankWithItem((int) coalFuelAmount * 20);
                 itemstack.shrink(1);
-                return InteractionResult.SUCCESS;
             }
-            if (COAL_BLOCK_FUEL.test(itemstack) && getFuelAmount() < maxFuel && TrajansCoreConfig.fuelSystemEnabled.get()) {
+            if (COAL_BLOCK_FUEL.test(itemstack)) {
                 fuelTankWithItem((int) coalFuelAmount * 180);
                 itemstack.shrink(1);
-                return InteractionResult.SUCCESS;
             }
-            if (LAVA_FUEL.test(itemstack) && getFuelAmount() < maxFuel && TrajansCoreConfig.fuelSystemEnabled.get()) {
+            if (LAVA_FUEL.test(itemstack)) {
                 fuelTankWithItem((int) lavaFuelAmount * 20);
+                player.getInventory().add(itemstack.getItem().getCraftingRemainingItem().getDefaultInstance());
                 itemstack.shrink(1);
-                player.setItemInHand(hand, new ItemStack(Items.BUCKET));
-                return InteractionResult.SUCCESS;
             }
+            return InteractionResult.SUCCESS;
         }
         if (canAddPassenger(player)) {
             player.startRiding(this, true);
@@ -135,7 +142,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         return InteractionResult.FAIL;
     }
     public void healTank(double healAmount) {
-        // stops overhealing
         if (this.getMaxHealth() - this.getHealth() > healAmount) {
             this.setHealth((float) this.getHealth() + (float) healAmount);
             this.level.addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
@@ -158,7 +164,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
             }
         }
     }
-
     @Override
     protected boolean canAddPassenger(Entity entity) {
         return this.passengers.isEmpty();
@@ -320,12 +325,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
 
     protected void fuelTick() {
         int fuel = getFuelAmount();
-        if (this.isMoving()) {
-            if (level.isClientSide) {
-                if (this.isVehicle()) {
-                    removeFuel(1);
-                }
-            }
+        if (this.isMoving() && this.isVehicle() && fuel > 0) {
+            removeFuel(1);
         }
     }
 
@@ -511,11 +512,31 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     public float getStepHeight() {
         return 1.0f;
     }
-
     public boolean canBeAffected(@NotNull MobEffectInstance pPotioneffect) {
         return false;
     }
     public boolean isMoving() {
         return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
     }
+    @Override
+    public boolean fireImmune() {
+        if (TrajansCoreConfig.tanksImmuneToFire.get()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        Entity entity = pSource.getDirectEntity();
+        if (!TrajansCoreConfig.arrowsDamageTanks.get()) {
+            if (entity instanceof AbstractArrow) {
+                return false;
+            }
+        }
+        if (pSource != DamageSource.DROWN) {
+            return false;
+        }
+            return super.hurt(pSource, pAmount);
+        }
 }

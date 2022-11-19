@@ -9,6 +9,8 @@ public class TrajansCoreConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> fuelSystemEnabled;
     public static final ForgeConfigSpec.ConfigValue<Double> coalFuelAmount;
     public static final ForgeConfigSpec.ConfigValue<Double> lavaFuelAmount;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> tanksImmuneToFire;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> arrowsDamageTanks;
 
 
     public static final ForgeConfigSpec.ConfigValue<Double> standardShellDamage;
@@ -34,6 +36,8 @@ public class TrajansCoreConfig {
 
         BUILDER.push("General");
         fuelSystemEnabled = BUILDER.define("Set to false to disable tanks requiring fuel", true);
+        tanksImmuneToFire = BUILDER.define("Set to true to make tanks affected by fire", false);
+        arrowsDamageTanks = BUILDER.define("Set to true to make tanks affected by arrows", false);
         coalFuelAmount = BUILDER.define("How Much Fuel Coal and Charcoal Gives (seconds)", 6.0);
         lavaFuelAmount = BUILDER.define("How Much Fuel Lava Gives (seconds)", 60.0);
         BUILDER.pop();
