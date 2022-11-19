@@ -6,6 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class ExampleTankModel extends AnimatedGeoModel<ExampleTankEntity> {
@@ -21,12 +22,13 @@ public class ExampleTankModel extends AnimatedGeoModel<ExampleTankEntity> {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "animations/tank.json");
     }
     @Override
-    public void setLivingAnimations(ExampleTankEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
-        super.setLivingAnimations(entity, uniqueID, customPredicate);
+    public void setCustomAnimations(ExampleTankEntity animatable, int instanceId, AnimationEvent animationEvent) {
+        super.setCustomAnimations(animatable, instanceId, animationEvent);
         IBone turret = this.getAnimationProcessor().getBone("TopPart");
-        Entity rider = entity.getControllingPassenger();
-        if (entity.isVehicle() && rider instanceof Player) {
-            turret.setRotationY((float) -Math.toRadians(rider.getYHeadRot() - entity.getYRot()));
+        Entity rider = animatable.getControllingPassenger();
+        if (animatable.isVehicle() && rider instanceof Player) {
+            turret.setRotationY((float) -Math.toRadians(rider.getYHeadRot() - animatable.getYRot()));
         }
     }
+
 }
