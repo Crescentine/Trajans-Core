@@ -7,6 +7,7 @@ import com.crescentine.trajanscore.block.shellworkbench.ShellWorkbenchRenderer;
 import com.crescentine.trajanscore.block.steelmanufacturer.SteelManufacturerRenderer;
 import com.crescentine.trajanscore.block.turretfactory.TurretFactoryRenderer;
 import com.crescentine.trajanscore.container.TankModContainers;
+import com.crescentine.trajanscore.example_at.ExampleATRenderer;
 import com.crescentine.trajanscore.example_tank.ExampleTankRenderer;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.packet.TrajansCoreNetwork;
@@ -88,6 +89,7 @@ public class TrajansCoreMod {
             EntityRenderers.register(TrajansCoreEntities.APCR_SHELL.get(), APCRShellRenderer::new);
 
             EntityRenderers.register(TrajansCoreEntities.EXAMPLE_TANK.get(), ExampleTankRenderer::new);
+            EntityRenderers.register(TrajansCoreEntities.EXAMPLE_AT.get(), ExampleATRenderer::new);
         }
     }
 }

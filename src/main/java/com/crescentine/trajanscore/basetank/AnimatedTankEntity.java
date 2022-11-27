@@ -64,5 +64,15 @@ public class AnimatedTankEntity extends Animal implements IAnimatable {
     @Override
     protected void registerGoals() {
     }
+    @Override
+    public boolean rideableUnderWater() {
+        return false;
+    }
+
+    @Override
+    protected int calculateFallDamage(float fallDistance, float damageMultiplier) {
+        return 0;
+    }
+
 
 }

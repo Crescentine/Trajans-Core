@@ -1,5 +1,6 @@
 package com.crescentine.trajanscore;
 
+import com.crescentine.trajanscore.example_at.ExampleATEntity;
 import com.crescentine.trajanscore.example_tank.ExampleTankEntity;
 import com.crescentine.trajanscore.tankshells.apcr.APCRShell;
 import com.crescentine.trajanscore.tankshells.armorpiercing.ArmorPiercingShell;
@@ -52,6 +53,10 @@ public class TrajansCoreEntities {
             () -> EntityType.Builder.<ExampleTankEntity>of(ExampleTankEntity::new, MobCategory.MISC).sized(4.0F, 2.3F)
                     .clientTrackingRange(10).build("example_tank"));
 
+    public static final RegistryObject<EntityType<ExampleATEntity>> EXAMPLE_AT = ENTITY_TYPES.register("example_at",
+            () -> EntityType.Builder.<ExampleATEntity>of(ExampleATEntity::new, MobCategory.MISC).sized(1.65f, 1.05f)
+                    .clientTrackingRange(10).build("example_at"));
+
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
     }
@@ -59,5 +64,6 @@ public class TrajansCoreEntities {
     @SubscribeEvent
     public static void entityAttributesInit(EntityAttributeCreationEvent event) {
         event.put(EXAMPLE_TANK.get(), ExampleTankEntity.createAttributes().build());
+        event.put(EXAMPLE_AT.get(), ExampleATEntity.createAttributes().build());
     }
 }

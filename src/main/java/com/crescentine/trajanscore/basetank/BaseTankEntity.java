@@ -29,13 +29,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -49,7 +47,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.core.processor.IBone;
 
 import javax.annotation.Nullable;
 
@@ -103,7 +100,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
                 .add(Attributes.MOVEMENT_SPEED, 0.1)
                 .add(Attributes.FOLLOW_RANGE, 0.0D);
     }
-
     @Override
     public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
@@ -141,6 +137,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         }
         return InteractionResult.FAIL;
     }
+
     public void healTank(double healAmount) {
         if (this.getMaxHealth() - this.getHealth() > healAmount) {
             this.setHealth((float) this.getHealth() + (float) healAmount);
@@ -152,6 +149,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
             }
         }
     }
+
     public void fuelTankWithItem(int fuelAmount) {
         // Stops overfueing
         if (getFuelAmount() + fuelAmount < maxFuel) {
@@ -164,23 +162,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
             }
         }
     }
+
     @Override
     protected boolean canAddPassenger(Entity entity) {
         return this.passengers.isEmpty();
-    }
-
-    @Override
-    public void thunderHit(ServerLevel p_29473_, LightningBolt p_29474_) {
-    }
-
-    @Override
-    public boolean rideableUnderWater() {
-        return false;
-    }
-
-    @Override
-    protected int calculateFallDamage(float fallDistance, float damageMultiplier) {
-        return 0;
     }
 
     @Override
@@ -188,19 +173,18 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         return false;
     }
 
-
     @Override
     public int getMaxFallDistance() {
         return 30;
     }
+
     @Override
     public void travel(Vec3 pos) {
         if (this.isAlive()) {
             if (this.isVehicle()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
                 if (level.isClientSide) {
-                    if (TankModClient.SYNC_TURRET_WITH_TANK.consumeClick() && level.isClientSide && livingentity.isPassenger())
-                    {
+                    if (TankModClient.SYNC_TURRET_WITH_TANK.consumeClick() && level.isClientSide && livingentity.isPassenger()) {
                         turretFollow = !turretFollow;
                     }
                     if (turretFollow) {
@@ -243,9 +227,9 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         boolean flag = false;
         boolean flag1 = false;
 
-        for(int k1 = i; k1 <= l; ++k1) {
-            for(int l1 = j; l1 <= i1; ++l1) {
-                for(int i2 = k; i2 <= j1; ++i2) {
+        for (int k1 = i; k1 <= l; ++k1) {
+            for (int l1 = j; l1 <= i1; ++l1) {
+                for (int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
                     BlockState blockstate = this.level.getBlockState(blockpos);
                     if (!blockstate.isAir() && isBreakableBlock(blockstate)) {
@@ -290,26 +274,32 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         this.time = 0;
         return super.startRiding(p_21396_, p_21397_);
     }
+
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.GENERIC_EXPLODE;
     }
+
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.ARMOR_EQUIP_IRON;
     }
+
     @Override
     protected SoundEvent getAmbientSound() {
         return SoundEvents.ARMOR_EQUIP_IRON;
     }
+
     @Override
     protected SoundEvent getSwimSplashSound() {
         return SoundEvents.PLAYER_SPLASH;
     }
+
     @Override
     protected SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
     }
+
     @Override
     public void tick() {
         super.tick();
@@ -317,10 +307,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         accelerationTick();
         age++;
         if (time < shootingCooldown) time++;
-    /*    if (level.isClientSide() && this.isVehicle() && this.age % 10 == 0 && getFuelAmount() > 0) {
-            this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
-            this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
-        } */
     }
 
     protected void fuelTick() {
@@ -487,6 +473,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         time = 0;
         return true;
     }
+
     public boolean fuelLeft(Player player) {
         double fuel = getFuelAmount();
         if (fuel < 1200 && fuel > 1 && TrajansCoreConfig.fuelSystemEnabled.get()) {
@@ -512,12 +499,15 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     public float getStepHeight() {
         return 1.0f;
     }
+
     public boolean canBeAffected(@NotNull MobEffectInstance pPotioneffect) {
         return false;
     }
+
     public boolean isMoving() {
         return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
     }
+
     @Override
     public boolean fireImmune() {
         if (TrajansCoreConfig.tanksImmuneToFire.get()) {
@@ -534,9 +524,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
                 return false;
             }
         }
-        if (pSource != DamageSource.DROWN) {
+        if (pSource == DamageSource.DROWN) {
             return false;
         }
-            return super.hurt(pSource, pAmount);
-        }
+        return super.hurt(pSource, pAmount);
+    }
+    public double getOverlaySpeed() {
+        return this.getDeltaMovement().length() * 20;
+    }
 }
