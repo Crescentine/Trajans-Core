@@ -88,6 +88,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     public boolean turretFollow;
     public int accelerationTime;
     private boolean breakableBlocks;
+    public int timeInVehicle;
+    public double blocksPerSecond = 0.00;
 
     public BaseTankEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends Animal>) entityType, world);
@@ -307,6 +309,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         accelerationTick();
         age++;
         if (time < shootingCooldown) time++;
+        if (this.isVehicle()) {
+            timeInVehicle++;
+        }
+        if (timeInVehicle % 20 == 0) {
+            blocksPerSecond = this.getDeltaMovement().horizontalDistance() * 20;
+        }
     }
 
     protected void fuelTick() {
@@ -530,6 +538,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
         return super.hurt(pSource, pAmount);
     }
     public double getOverlaySpeed() {
-        return this.getDeltaMovement().length() * 20;
+        return blocksPerSecond;
+    }
+
+    @Override
+    protected void removePassenger(Entity pPassenger) {
+        this.timeInVehicle = 0;
+        super.removePassenger(pPassenger);
     }
 }

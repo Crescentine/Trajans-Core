@@ -61,7 +61,6 @@ public class TrajansCoreItems {
     public static final RegistryObject<Item> LIGHT_ENGINE = ITEMS.register("light_engine", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> LIGHT_TANK_PLATING = ITEMS.register("light_tank_plating", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> LIGHT_TANK_TRACKS = ITEMS.register("light_tank_tracks", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
-    public static final RegistryObject<Item> PANZER_TWO_BLUEPRINT = ITEMS.register("panzer_two_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> TANK_CONTROLLER = ITEMS.register("steering_crafting_item", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
 
     //Parts for Tiger
@@ -69,20 +68,12 @@ public class TrajansCoreItems {
     public static final RegistryObject<Item> HEAVY_ENGINE = ITEMS.register("heavy_engine", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> HEAVY_TANK_PLATING = ITEMS.register("heavy_tank_plating", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> HEAVY_TANK_TRACKS = ITEMS.register("heavy_tank_tracks", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
-    public static final RegistryObject<Item> TIGER_BLUEPRINT = ITEMS.register("tiger_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
-
 
     //Parts for T34
     public static final RegistryObject<Item> MEDIUM_TANK_TURRET = ITEMS.register("medium_tank_turret", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> MEDIUM_ENGINE = ITEMS.register("medium_engine", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> MEDIUM_TANK_PLATING = ITEMS.register("medium_tank_plating", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
     public static final RegistryObject<Item> MEDIUM_TANK_TRACMS = ITEMS.register("medium_tank_tracks", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
-    public static final RegistryObject<Item> T34_BLUEPRINT = ITEMS.register("t34_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
-
-    public static final RegistryObject<Item> ARCHER_BLUEPRINT = ITEMS.register("archer_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
-
-    public static final RegistryObject<Item> CRUISERMK1_BLUEPRINT = ITEMS.register("cruisermk1_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
-    public static final RegistryObject<Item> M4SHERMAN_BLUEPRINT = ITEMS.register("m4sherman_blueprint", () -> new Item(new Item.Properties().tab(PartsItemGroup.TANK_MOD_PARTS)));
 
     //Shells
     public static final RegistryObject<Item> APCR_SHELL = ITEMS.register("apcr_shell",
