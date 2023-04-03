@@ -2,9 +2,9 @@ package com.crescentine.trajanscore.item.machines.steel_manufacturer;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class SteelManufacturerItemModel extends AnimatedGeoModel<SteelManufacturerItem> {
+public class SteelManufacturerItemModel extends GeoModel<SteelManufacturerItem> {
     @Override
     public ResourceLocation getAnimationResource(SteelManufacturerItem animatable) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "animations/steel_manufacturer.animation.json");

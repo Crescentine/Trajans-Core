@@ -12,50 +12,42 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.example.registry.SoundRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class PlatingPressItem extends BlockItem implements IAnimatable {
+public class PlatingPressItem extends BlockItem implements GeoItem {
     public PlatingPressItem(Block block, Properties properties) {
         super(block, properties);
     }
-    private final AnimationFactory factory = new AnimationFactory(this);
 
-    @Override
-    public void registerControllers(AnimationData data) {
-        AnimationController<PlatingPressItem> controller = new AnimationController<PlatingPressItem>(this, "controller", 20, this::predicate);
-        data.addAnimationController(controller);
-    }
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    private <E extends Item & IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().transitionLengthTicks = 0;
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("pressing", true));
-        return PlayState.CONTINUE;
-    }
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        super.initializeClient(consumer);
         consumer.accept(new IClientItemExtensions() {
-            private final BlockEntityWithoutLevelRenderer renderer = new PlatingPressItemRenderer();
+            private PlatingPressItemRenderer renderer;
+
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return renderer;
+                if (this.renderer == null)
+                    this.renderer = new PlatingPressItemRenderer();
+
+                return this.renderer;
             }
         });
     }
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 
+    }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return null;
     }
 }

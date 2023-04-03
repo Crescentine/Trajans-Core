@@ -2,9 +2,9 @@ package com.crescentine.trajanscore.item.machines.turret_factory;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class TurretFactoryItemModel extends AnimatedGeoModel<TurretFactoryItem> {
+public class TurretFactoryItemModel extends GeoModel<TurretFactoryItem> {
     @Override
     public ResourceLocation getAnimationResource(TurretFactoryItem animatable) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "animations/turret)factory.animation.json");

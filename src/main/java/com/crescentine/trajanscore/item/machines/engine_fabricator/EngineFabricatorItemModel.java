@@ -2,9 +2,9 @@ package com.crescentine.trajanscore.item.machines.engine_fabricator;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class EngineFabricatorItemModel extends AnimatedGeoModel<EngineFabricatorItem> {
+public class EngineFabricatorItemModel extends GeoModel<EngineFabricatorItem> {
     @Override
     public ResourceLocation getAnimationResource(EngineFabricatorItem animatable) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "animations/engine_fabricator.animation.json");

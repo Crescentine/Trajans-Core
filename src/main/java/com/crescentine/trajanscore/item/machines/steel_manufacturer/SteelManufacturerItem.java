@@ -1,41 +1,46 @@
 package com.crescentine.trajanscore.item.machines.steel_manufacturer;
 
 import com.crescentine.trajanscore.item.machines.engine_fabricator.EngineFabricatorItemRenderer;
+import com.crescentine.trajanscore.item.machines.shell_workbench.ShellWorkbenchItemRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class SteelManufacturerItem extends BlockItem implements IAnimatable {
+public class SteelManufacturerItem extends BlockItem implements GeoItem {
     public SteelManufacturerItem(Block block, Properties properties) {
         super(block, properties);
     }
-    private final AnimationFactory factory = new AnimationFactory(this);
-
-    @Override
-    public void registerControllers(AnimationData data) {
-    }
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        super.initializeClient(consumer);
         consumer.accept(new IClientItemExtensions() {
-            private final BlockEntityWithoutLevelRenderer renderer = new SteelManufacturerItemRenderer();
+            private SteelManufacturerItemRenderer renderer;
+
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                return renderer;
+                if (this.renderer == null)
+                    this.renderer = new SteelManufacturerItemRenderer();
+
+                return this.renderer;
             }
         });
     }
 
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
+    }
 
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }

@@ -3,8 +3,11 @@ package com.crescentine.trajanscore.example_at;
 import com.crescentine.trajanscore.basetank.BaseATEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class ExampleATEntity extends BaseATEntity {
+public class ExampleATEntity extends BaseATEntity implements GeoEntity {
     public ExampleATEntity(EntityType<?> entityType, Level world) {
         super(entityType, world);
         this.health = 20;
@@ -19,5 +22,14 @@ public class ExampleATEntity extends BaseATEntity {
     @Override
     public double getPassengersRidingOffset() {
         return 0.3;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return null;
     }
 }

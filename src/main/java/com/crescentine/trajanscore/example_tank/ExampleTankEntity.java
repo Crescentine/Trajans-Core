@@ -3,9 +3,6 @@ package com.crescentine.trajanscore.example_tank;
 import com.crescentine.trajanscore.basetank.BaseTankEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 
 public class ExampleTankEntity extends BaseTankEntity  {
     public ExampleTankEntity(EntityType<?> entityType, Level world) {
@@ -23,9 +20,4 @@ public class ExampleTankEntity extends BaseTankEntity  {
         this.canUseHighExplosive = true;
         this.canUseStandard = true;
     }
-    @Override
-    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        return PlayState.STOP;
-    }
-
 }

@@ -2,9 +2,9 @@ package com.crescentine.trajanscore.item.machines.plating_press;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class PlatingPressItemModel extends AnimatedGeoModel<PlatingPressItem> {
+public class PlatingPressItemModel extends GeoModel<PlatingPressItem> {
     @Override
     public ResourceLocation getAnimationResource(PlatingPressItem animatable) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "animations/plating_press.animation.json");

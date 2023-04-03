@@ -3,9 +3,9 @@ package com.crescentine.trajanscore.example_at;
 import com.crescentine.trajanscore.TrajansCoreMod;
 import com.crescentine.trajanscore.example_tank.ExampleTankEntity;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ExampleATModel extends AnimatedGeoModel<ExampleATEntity> {
+public class ExampleATModel extends GeoModel<ExampleATEntity> {
     public ResourceLocation getModelResource(ExampleATEntity object) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "geo/artillery.geo.json");
     }
