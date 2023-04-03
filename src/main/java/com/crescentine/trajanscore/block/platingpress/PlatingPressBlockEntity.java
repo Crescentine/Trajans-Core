@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -28,27 +29,24 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider, IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+@SuppressWarnings("ALL")
+public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider, GeoBlockEntity {
+    private static final RawAnimation PRESSING = RawAnimation.begin().thenPlay("pressing").thenLoop("pressing");
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     @SuppressWarnings("unchecked")
-
-    private <E extends BlockEntity & IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().transitionLengthTicks = 0;
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("pressing", true));
-        return PlayState.CONTINUE;
-    }
     private final ItemStackHandler itemHandler = new ItemStackHandler(6) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -202,15 +200,15 @@ public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(5).getMaxStackSize() > inventory.getItem(5).getCount();
     }
-
     @Override
-    public void registerControllers(AnimationData data) {
-        AnimationController<PlatingPressBlockEntity> controller = new AnimationController<PlatingPressBlockEntity>(this, "controller", 20, this::predicate);
-        data.addAnimationController(controller);
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, state -> {
+            return state.setAndContinue(PRESSING);
+        }));
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
 }

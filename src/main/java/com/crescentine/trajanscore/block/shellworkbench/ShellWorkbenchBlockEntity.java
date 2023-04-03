@@ -27,16 +27,17 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class ShellWorkbenchBlockEntity extends BlockEntity implements MenuProvider, IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class ShellWorkbenchBlockEntity extends BlockEntity implements MenuProvider, GeoBlockEntity {
+    private final AnimatableInstanceCache factory = GeckoLibUtil.createInstanceCache(this);
     private final ItemStackHandler itemHandler = new ItemStackHandler(8) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -193,14 +194,13 @@ public class ShellWorkbenchBlockEntity extends BlockEntity implements MenuProvid
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(7).getMaxStackSize() > inventory.getItem(7).getCount();
     }
-
     @Override
-    public void registerControllers(AnimationData data) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 
     }
 
     @Override
-    public AnimationFactory getFactory() {
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
         return factory;
     }
 }

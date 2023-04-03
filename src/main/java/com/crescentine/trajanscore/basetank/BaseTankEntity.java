@@ -45,13 +45,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 
-public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     public double healAmount = 0;
     public boolean armored;
     public double speedMultiplier = 0;
@@ -545,5 +547,15 @@ public class BaseTankEntity extends AnimatedTankEntity implements IAnimatable {
     protected void removePassenger(Entity pPassenger) {
         this.timeInVehicle = 0;
         super.removePassenger(pPassenger);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }
