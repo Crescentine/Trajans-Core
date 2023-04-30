@@ -14,7 +14,6 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import software.bernie.geckolib3.core.IAnimatable;
 
 public class StandardShell extends BaseShell {
     public StandardShell(EntityType<StandardShell> entityType, Level world) {

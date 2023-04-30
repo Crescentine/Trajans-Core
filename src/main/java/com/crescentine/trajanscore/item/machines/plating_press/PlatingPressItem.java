@@ -23,7 +23,6 @@ public class PlatingPressItem extends BlockItem implements GeoItem {
     public PlatingPressItem(Block block, Properties properties) {
         super(block, properties);
     }
-
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 
@@ -48,6 +47,6 @@ public class PlatingPressItem extends BlockItem implements GeoItem {
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return null;
+        return cache;
     }
 }

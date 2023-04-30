@@ -2,9 +2,9 @@ package com.crescentine.trajanscore.tankshells.apcr;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class APCRShellModel extends AnimatedGeoModel<APCRShell> {
+public class APCRShellModel extends GeoModel<APCRShell> {
     @Override
     public ResourceLocation getModelResource(APCRShell object) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "geo/apcr_shell.geo.json");

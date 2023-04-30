@@ -1,9 +1,9 @@
 package com.crescentine.trajanscore.tankshells.heat;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import software.bernie.geckolib3.renderers.geo.GeoProjectilesRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class HeatShellRenderer extends GeoProjectilesRenderer<HeatShell> {
+public class HeatShellRenderer extends GeoEntityRenderer<HeatShell> {
     public HeatShellRenderer(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new HeatShellModel());
         this.shadowRadius = 0.2F;

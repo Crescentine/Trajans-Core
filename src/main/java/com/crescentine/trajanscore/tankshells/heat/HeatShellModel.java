@@ -2,9 +2,9 @@ package com.crescentine.trajanscore.tankshells.heat;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class HeatShellModel extends AnimatedGeoModel<HeatShell> {
+public class HeatShellModel extends GeoModel<HeatShell> {
     @Override
     public ResourceLocation getModelResource(HeatShell object) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "geo/heat_shell.geo.json");

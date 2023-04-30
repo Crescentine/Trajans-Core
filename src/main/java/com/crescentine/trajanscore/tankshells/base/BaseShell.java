@@ -2,6 +2,7 @@ package com.crescentine.trajanscore.tankshells.base;
 
 import com.crescentine.trajanscore.item.TrajansCoreItems;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -14,15 +15,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BaseShell extends ThrowableItemProjectile implements IAnimatable {
+public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
     public double damage;
     public int explosionRadius;
     public boolean fire;
-    private final AnimationFactory factory = new AnimationFactory(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     public BaseShell(EntityType<?> entityType, Level world) {
         super((EntityType<? extends ThrowableItemProjectile>) entityType, world);
         this.setNoGravity(true);
@@ -33,10 +35,7 @@ public class BaseShell extends ThrowableItemProjectile implements IAnimatable {
     public BaseShell(EntityType<?> entityType, LivingEntity player, Level world) {
         super((EntityType<? extends ThrowableItemProjectile>) entityType, player, world);
     }
-    @Override
-    public Packet<?> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
-    }
+
     @Override
     protected Item getDefaultItem() {
         return TrajansCoreItems.STANDARD_SHELL.get();
@@ -44,9 +43,6 @@ public class BaseShell extends ThrowableItemProjectile implements IAnimatable {
     @Override
     protected float getGravity() {
         return 0.026f;
-    }
-    @Override
-    public void registerControllers(AnimationData data) {
     }
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
@@ -64,13 +60,22 @@ public class BaseShell extends ThrowableItemProjectile implements IAnimatable {
         if (!this.level.isClientSide) { // checks if the world is client
             this.level.broadcastEntityEvent(this, (byte) 3); // particle?
             if (!level.isClientSide) {
-                this.level.explode(this, getX(), getY(), getZ(), explosionRadius, fire, Explosion.BlockInteraction.BREAK);
+                this.level.explode(this, getX(), getY(), getZ(), explosionRadius, fire, Level.ExplosionInteraction.BLOCK);
                 this.kill();
             }
         }
     }
     @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return null;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

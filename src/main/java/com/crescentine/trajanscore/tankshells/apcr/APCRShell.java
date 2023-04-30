@@ -4,10 +4,13 @@ import com.crescentine.trajanscore.TrajansCoreConfig;
 import com.crescentine.trajanscore.TrajansCoreEntities;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.tankshells.base.BaseShell;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public class APCRShell extends BaseShell {
     public APCRShell(EntityType<APCRShell> entityType, Level world) {
@@ -34,4 +37,18 @@ public class APCRShell extends BaseShell {
         return TrajansCoreItems.APCR_SHELL.get();
     }
 
+    @Override
+    public boolean alwaysAccepts() {
+        return super.alwaysAccepts();
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return null;
+    }
 }

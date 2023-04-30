@@ -8,15 +8,13 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class AnimatedTankEntity extends Animal implements IAnimatable {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class AnimatedTankEntity extends Animal implements GeoEntity {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected AnimatedTankEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
@@ -26,10 +24,6 @@ public class AnimatedTankEntity extends Animal implements IAnimatable {
     public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
         return null;
     }
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
 
     @Override
     public boolean isBaby() {
@@ -38,15 +32,6 @@ public class AnimatedTankEntity extends Animal implements IAnimatable {
 
     protected boolean isMoving() {
         return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
-    }
-
-    protected <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        return PlayState.STOP;
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
     }
     @Override
     public boolean requiresCustomPersistence() {
@@ -75,4 +60,13 @@ public class AnimatedTankEntity extends Animal implements IAnimatable {
     }
 
 
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
 }

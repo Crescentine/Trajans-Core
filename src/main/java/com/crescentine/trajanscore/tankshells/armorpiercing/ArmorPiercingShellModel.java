@@ -2,9 +2,9 @@ package com.crescentine.trajanscore.tankshells.armorpiercing;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ArmorPiercingShellModel extends AnimatedGeoModel<ArmorPiercingShell> {
+public class ArmorPiercingShellModel extends GeoModel<ArmorPiercingShell> {
     @Override
     public ResourceLocation getModelResource(ArmorPiercingShell object) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "geo/armor_piercing.geo.json");

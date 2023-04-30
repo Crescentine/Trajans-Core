@@ -2,9 +2,9 @@ package com.crescentine.trajanscore.tankshells.standard;
 
 import com.crescentine.trajanscore.TrajansCoreMod;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class StandardShellModel extends AnimatedGeoModel<StandardShell> {
+public class StandardShellModel extends GeoModel<StandardShell> {
     @Override
     public ResourceLocation getModelResource(StandardShell object) {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "geo/standard_shell.geo.json");
