@@ -19,6 +19,7 @@ public class APCRShell extends BaseShell {
         explosionRadius = TrajansCoreConfig.APCRShellExplosionRadius.get();
         fire = false;
     }
+
     public APCRShell(EntityType<APCRShell> entityType, double x, double y, double z, Level world) {
         super(TrajansCoreEntities.APCR_SHELL.get(), x, y, z, world);
         damage = TrajansCoreConfig.APCRShellDamage.get();
@@ -32,6 +33,7 @@ public class APCRShell extends BaseShell {
         explosionRadius = TrajansCoreConfig.APCRShellExplosionRadius.get();
         fire = false;
     }
+
     @Override
     protected Item getDefaultItem() {
         return TrajansCoreItems.APCR_SHELL.get();
@@ -45,10 +47,5 @@ public class APCRShell extends BaseShell {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return null;
     }
 }

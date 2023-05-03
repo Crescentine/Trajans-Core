@@ -71,7 +71,7 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return null;
+        return cache;
     }
 
     @Override
