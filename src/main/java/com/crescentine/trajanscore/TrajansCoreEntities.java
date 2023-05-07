@@ -25,27 +25,27 @@ public class TrajansCoreEntities {
 
     public static final RegistryObject<EntityType<StandardShell>> STANDARD_SHELL = ENTITY_TYPES.register("standard_shell",
             () -> EntityType.Builder.<StandardShell>of(StandardShell::new, MobCategory.MISC).sized(0.5f, 0.5f)
-                    .clientTrackingRange(8).updateInterval(10)
+                    .clientTrackingRange(8).updateInterval(3)
                     .build(new ResourceLocation(TrajansCoreMod.MOD_ID, "heat_shell").toString()));
 
     public static final RegistryObject<EntityType<HighExplosiveShell>> HIGH_EXPLOSIVE_SHELL = ENTITY_TYPES.register("high_explosive_shell",
             () -> EntityType.Builder.<HighExplosiveShell>of(HighExplosiveShell::new, MobCategory.MISC).sized(0.5f, 0.5f)
-                    .clientTrackingRange(8).updateInterval(10)
+                    .clientTrackingRange(8).updateInterval(3)
                     .build(new ResourceLocation(TrajansCoreMod.MOD_ID, "heat_shell").toString()));
 
     public static final RegistryObject<EntityType<HeatShell>> HEAT_SHELL = ENTITY_TYPES.register("heat_shell",
             () -> EntityType.Builder.<HeatShell>of(HeatShell::new, MobCategory.MISC).sized(0.5f, 0.5f)
-                    .clientTrackingRange(8).updateInterval(10)
+                    .clientTrackingRange(8).updateInterval(3)
                     .build(new ResourceLocation(TrajansCoreMod.MOD_ID, "heat_shell").toString()));
 
     public static final RegistryObject<EntityType<ArmorPiercingShell>> ARMOR_PIERCING_SHELL = ENTITY_TYPES.register("armor_piercing_shell",
             () -> EntityType.Builder.<ArmorPiercingShell>of(ArmorPiercingShell::new, MobCategory.MISC).sized(0.5f, 0.5f)
-                    .clientTrackingRange(8).updateInterval(10)
+                    .clientTrackingRange(8).updateInterval(3)
                     .build(new ResourceLocation(TrajansCoreMod.MOD_ID, "armor_piercing_shell").toString()));
 
     public static final RegistryObject<EntityType<APCRShell>> APCR_SHELL = ENTITY_TYPES.register("apcr_shell",
             () -> EntityType.Builder.<APCRShell>of(APCRShell::new, MobCategory.MISC).sized(0.5f, 0.5f)
-                    .clientTrackingRange(8).updateInterval(10)
+                    .clientTrackingRange(8).updateInterval(3)
                     .build(new ResourceLocation(TrajansCoreMod.MOD_ID, "apcr_shell").toString()));
 
 

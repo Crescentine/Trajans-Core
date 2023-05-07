@@ -1,5 +1,5 @@
 {
-  "itemGroup.trajanstanks_parts" : "Trajan's Tanks: Parts",
+  "itemgroup.trajanstanks_parts" : "Trajan's Tanks: Parts",
   "container.trajanscore.crafter" : "Tank Crafter",
   "block.trajanscore.crafter_block" : "Tank Crafting Machine",
   "item.trajanscore.light_tank_turret" : "Light Tank Turret",
@@ -35,7 +35,7 @@
   "key.trajanscore.shootKey" : "Shoot (Trajan's Tanks)",
   "key.trajanscore.fuelRemaining" : "Print Amount of Fuel Remaining",
 
-  "itemGroup.trajanscore_shells" : "Tank Shells",
+  "itemgroup.trajanscore_shells" : "Tank Shells",
   "item.trajanscore.apcr_shell" : "APCR Shell",
   "item.trajanscore.standard_shell" : "Standard Shell",
   "item.trajanscore.heat_shell" : "HEAT Shell",

@@ -40,10 +40,10 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
     protected Item getDefaultItem() {
         return TrajansCoreItems.STANDARD_SHELL.get();
     }
-    @Override
+    /*  @Override
     protected float getGravity() {
         return 0.026f;
-    }
+    } */
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);

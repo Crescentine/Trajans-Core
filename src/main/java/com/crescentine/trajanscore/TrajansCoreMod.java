@@ -83,9 +83,9 @@ public class TrajansCoreMod {
     public static CreativeModeTab SHELLS_TAB;
 
     public void registerTabs(CreativeModeTabEvent.Register event) {
-        PARTS_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "trajanstanks_parts"), builder -> builder
+        PARTS_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "itemgroup.trajanstanks_parts"), builder -> builder
                 .icon(() -> new ItemStack(TrajansCoreItems.TANK_CONTROLLER.get()))
-                .title(Component.translatable("trajanstanks_parts"))
+                .title(Component.translatable("itemgroup.trajanstanks_parts"))
                 .displayItems((featureFlags, output, hasOp) -> {
                     output.accept(TrajansCoreItems.CRAFTER_BLOCK_ITEM.get());
                     output.accept(TrajansCoreItems.PLATE_PRESS_BLOCK_ITEM.get());
@@ -108,9 +108,9 @@ public class TrajansCoreMod {
                     output.accept(TrajansCoreItems.BOLSTER_PLATE.get());
                 })
         );
-        SHELLS_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "trajanscore_shells"), builder -> builder
+        SHELLS_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "itemgroup.trajanscore_shells"), builder -> builder
                 .icon(() -> new ItemStack(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get()))
-                .title(Component.translatable("trajanscore_shells"))
+                .title(Component.translatable("itemgroup.trajanscore_shells"))
                 .displayItems((featureFlags, output, hasOp) -> {
                     output.accept(TrajansCoreItems.STANDARD_SHELL.get());
                     output.accept(TrajansCoreItems.APCR_SHELL.get());
