@@ -8,7 +8,7 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class CrafterContainer extends AbstractContainerMenu {
@@ -19,10 +19,10 @@ public class CrafterContainer extends AbstractContainerMenu {
                             Inventory playerInv, Player player) {
         super(TankModContainers.CRAFTER_CONTAINER.get(), id);
         this.blockEntity = level.getBlockEntity(pos);
-        this.containerAccess = ContainerLevelAccess.create(playerInv.player.level, pos);
+        this.containerAccess = ContainerLevelAccess.create(playerInv.player.level(), pos);
 
         if(blockEntity != null) {
-            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+            blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(h -> {
                 //Top Row
                 addSlot(new SlotItemHandler(h, 0, 44, 17));
                 //Row 2

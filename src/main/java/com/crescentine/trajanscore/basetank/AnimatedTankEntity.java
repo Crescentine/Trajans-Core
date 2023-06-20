@@ -33,7 +33,7 @@ public class AnimatedTankEntity extends Animal implements GeoEntity {
     }
 
     protected boolean isMoving() {
-        return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
+        return this.onGround() && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
     }
     @Override
     public boolean requiresCustomPersistence() {

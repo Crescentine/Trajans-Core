@@ -9,7 +9,7 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class TurretFactoryContainer extends AbstractContainerMenu {
@@ -18,14 +18,14 @@ public class TurretFactoryContainer extends AbstractContainerMenu {
     private final ContainerData data;
 
     public TurretFactoryContainer(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
     public TurretFactoryContainer(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(TankModContainers.TURRET_FACTORY_CONTAINER.get(), pContainerId);
         checkContainerSize(inv, 9);
         blockEntity = ((TurretFactoryBlockEntity) entity);
-        this.level = inv.player.level;
+        this.level = inv.player.level();
         this.data = data;
 
         for (int row = 0; row < 3; row++) {
@@ -37,7 +37,7 @@ public class TurretFactoryContainer extends AbstractContainerMenu {
             this.addSlot(new Slot(inv, col, 8 + col * 18, 142));
         }
 
-        this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        this.blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
             this.addSlot(new SlotItemHandler(handler, 0, 44, 17));
             this.addSlot(new SlotItemHandler(handler, 1, 26, 35));
             this.addSlot(new SlotItemHandler(handler, 2, 44, 35));

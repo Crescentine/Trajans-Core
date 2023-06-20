@@ -145,11 +145,11 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public void healTank(double healAmount) {
         if (this.getMaxHealth() - this.getHealth() > healAmount) {
             this.setHealth((float) this.getHealth() + (float) healAmount);
-            this.level.addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+            this.level().addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
         } else {
             if (this.getHealth() < this.getMaxHealth()) {
                 this.setHealth(this.getMaxHealth());
-                this.level.addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+                this.level().addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         }
     }
@@ -158,11 +158,11 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         // Stops overfueing
         if (getFuelAmount() + fuelAmount < maxFuel) {
             setFuelAmount(getFuelAmount() + fuelAmount);
-            this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+            this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
         } else {
             if (getFuelAmount() < maxFuel) {
                 setFuelAmount((int) maxFuel);
-                this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+                this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
             }
         }
     }
@@ -187,8 +187,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         if (this.isAlive()) {
             if (this.isVehicle()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
-                if (level.isClientSide) {
-                    if (TankModClient.SYNC_TURRET_WITH_TANK.consumeClick() && level.isClientSide && livingentity.isPassenger()) {
+                if (level().isClientSide) {
+                    if (TankModClient.SYNC_TURRET_WITH_TANK.consumeClick() && level().isClientSide && livingentity.isPassenger()) {
                         turretFollow = !turretFollow;
                     }
                     if (turretFollow) {
@@ -217,7 +217,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
 
     public boolean isBreakableBlock(BlockState blockstate) {
-        return blockstate.is(BlockTags.REPLACEABLE_PLANTS) || blockstate.is(BlockTags.LEAVES) || blockstate.is(BlockTags.FLOWERS);
+        return blockstate.is(BlockTags.REPLACEABLE) || blockstate.is(BlockTags.LEAVES) || blockstate.is(BlockTags.FLOWERS);
     }
 
     private boolean destroyBlocks(AABB pArea) {
@@ -234,10 +234,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             for (int l1 = j; l1 <= i1; ++l1) {
                 for (int i2 = k; i2 <= j1; ++i2) {
                     BlockPos blockpos = new BlockPos(k1, l1, i2);
-                    BlockState blockstate = this.level.getBlockState(blockpos);
+                    BlockState blockstate = this.level().getBlockState(blockpos);
                     if (!blockstate.isAir() && isBreakableBlock(blockstate)) {
-                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level, blockpos, this) && isBreakableBlock(blockstate)) {
-                            flag1 = this.level.removeBlock(blockpos, false) || flag1;
+                        if (net.minecraftforge.common.ForgeHooks.canEntityDestroy(this.level(), blockpos, this) && isBreakableBlock(blockstate)) {
+                            flag1 = this.level().removeBlock(blockpos, false) || flag1;
                         } else {
                             flag = true;
                         }
@@ -336,12 +336,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         }
         age++;
         if (time < shootingCooldown) time++;
-        if (level.isClientSide() && this.isVehicle() && this.age % 10 == 0 && getFuelAmount() > 0) {
-            this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
-            this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+        if (level().isClientSide() && this.isVehicle() && this.age % 10 == 0 && getFuelAmount() > 0) {
+            this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
+            this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getX() + 1.0D, this.getY() + 1.0D, this.getZ(), d0, d1, d2);
         }
 
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             this.breakableBlocks = this.destroyBlocks(this.getBoundingBox());
         }
     }
@@ -509,7 +509,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     }
 
     public boolean isMoving() {
-        return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
+        return this.onGround() && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
     }
 
     @Override
@@ -528,7 +528,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
                 return false;
             }
         }
-        if (pSource == level.damageSources().drown()) {
+        if (pSource == level().damageSources().drown()) {
             return false;
         }
         return super.hurt(pSource, pAmount);

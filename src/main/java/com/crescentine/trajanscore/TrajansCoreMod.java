@@ -28,8 +28,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.common.CreativeModeTabRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -52,9 +52,9 @@ public class TrajansCoreMod {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         TrajansCoreItems.ITEMS.register(eventBus);
         TrajansCoreItems.BLOCKS.register(eventBus);
-        eventBus.addListener(this::registerTabs);
         MinecraftForge.EVENT_BUS.register(this);
         TankModContainers.register(eventBus);
+        TrajansCoreCreativeTabs.register(eventBus);
         eventBus.addListener(this::commonSetup);
         TankModBlockEntities.register(eventBus);
         TrajansCoreEntities.register(eventBus);
@@ -77,48 +77,6 @@ public class TrajansCoreMod {
         MenuScreens.register(TankModContainers.SHELL_WORKBENCH_CONTAINER.get(), ShellWorkbenchScreen::new);
 
         ClientEventHandler.setup();
-    }
-
-    public static CreativeModeTab PARTS_TAB;
-    public static CreativeModeTab SHELLS_TAB;
-
-    public void registerTabs(CreativeModeTabEvent.Register event) {
-        PARTS_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "itemgroup.trajanstanks_parts"), builder -> builder
-                .icon(() -> new ItemStack(TrajansCoreItems.TANK_CONTROLLER.get()))
-                .title(Component.translatable("itemgroup.trajanstanks_parts"))
-                .displayItems((parameters, output) -> {
-                    output.accept(TrajansCoreItems.CRAFTER_BLOCK_ITEM.get());
-                    output.accept(TrajansCoreItems.PLATE_PRESS_BLOCK_ITEM.get());
-                    output.accept(TrajansCoreItems.TURRET_FACTORY_BLOCK_ITEM.get());
-                    output.accept(TrajansCoreItems.ENGINE_FABRICATOR_ITEM.get());
-                    output.accept(TrajansCoreItems.STEEL_MANUFACTURER_ITEM.get());
-                    output.accept(TrajansCoreItems.LIGHT_TANK_TURRET.get());
-                    output.accept(TrajansCoreItems.LIGHT_ENGINE.get());
-                    output.accept(TrajansCoreItems.LIGHT_TANK_PLATING.get());
-                    output.accept(TrajansCoreItems.LIGHT_TANK_TRACKS.get());
-                    output.accept(TrajansCoreItems.MEDIUM_TANK_TURRET.get());
-                    output.accept(TrajansCoreItems.MEDIUM_ENGINE.get());
-                    output.accept(TrajansCoreItems.MEDIUM_TANK_PLATING.get());
-                    output.accept(TrajansCoreItems.MEDIUM_TANK_TRACMS.get());
-                    output.accept(TrajansCoreItems.HEAVY_TANK_TURRET.get());
-                    output.accept(TrajansCoreItems.HEAVY_ENGINE.get());
-                    output.accept(TrajansCoreItems.HEAVY_TANK_PLATING.get());
-                    output.accept(TrajansCoreItems.HEAVY_TANK_TRACKS.get());
-                    output.accept(TrajansCoreItems.HAMMER.get());
-                    output.accept(TrajansCoreItems.BOLSTER_PLATE.get());
-                })
-        );
-        SHELLS_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "itemgroup.trajanscore_shells"), builder -> builder
-                .icon(() -> new ItemStack(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get()))
-                .title(Component.translatable("itemgroup.trajanscore_shells"))
-                .displayItems((parameters, output) -> {
-                    output.accept(TrajansCoreItems.STANDARD_SHELL.get());
-                    output.accept(TrajansCoreItems.APCR_SHELL.get());
-                    output.accept(TrajansCoreItems.ARMOR_PIERCING_SHELL.get());
-                    output.accept(TrajansCoreItems.HEAT_SHELL.get());
-                    output.accept(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get());
-                })
-        );
     }
     @Mod.EventBusSubscriber(modid = TrajansCoreMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public final class RegistryEvents {

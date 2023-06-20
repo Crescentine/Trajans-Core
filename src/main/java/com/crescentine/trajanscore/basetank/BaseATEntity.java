@@ -206,7 +206,7 @@ public class BaseATEntity extends AnimatedTankEntity {
     }
 
     public boolean isMoving() {
-        return this.onGround && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
+        return this.onGround() && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
     }
 
     @Override
@@ -225,7 +225,7 @@ public class BaseATEntity extends AnimatedTankEntity {
                 return false;
             }
         }
-        if (pSource == level.damageSources().drown()) {
+        if (pSource == level().damageSources().drown()) {
             return false;
         }
         return super.hurt(pSource, pAmount);
@@ -235,7 +235,7 @@ public class BaseATEntity extends AnimatedTankEntity {
     public void travel(Vec3 pTravelVector) {
         if (this.isAlive()) {
             if (this.isVehicle()) {
-                if (level.isClientSide) {
+                if (level().isClientSide) {
                     LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
                     this.setYRot(livingentity.getYRot());
                     this.yRotO = this.getYRot();

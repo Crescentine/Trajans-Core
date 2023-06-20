@@ -38,9 +38,9 @@ public class ArmorPiercingShell extends BaseShell {
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
-        entity.hurt(entity.getLevel().damageSources().thrown(this, this.getOwner()), (float) damage);
+        entity.hurt(entity.level().damageSources().thrown(this, this.getOwner()), (float) damage);
         if (entity instanceof BaseTankEntity tank && tank.armored) {
-            entity.hurt(entity.getLevel().damageSources().thrown(this, this.getOwner()), (float) antiTankDamage);
+            entity.hurt(entity.level().damageSources().thrown(this, this.getOwner()), (float) antiTankDamage);
         }
     }
     @Override

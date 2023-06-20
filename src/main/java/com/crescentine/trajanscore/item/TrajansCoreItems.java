@@ -13,11 +13,11 @@ import com.crescentine.trajanscore.item.machines.shell_workbench.ShellWorkbenchI
 import com.crescentine.trajanscore.item.machines.steel_manufacturer.SteelManufacturerItem;
 import com.crescentine.trajanscore.item.machines.turret_factory.TurretFactoryItem;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -42,7 +42,7 @@ public class TrajansCoreItems {
             () -> new ShellWorkbenchItem(TrajansCoreItems.SHELL_WORKBENCH_BLOCK.get(), new Item.Properties()));
     //Blocks
     public static final RegistryObject<Block> CRAFTER_BLOCK = registerBlock("crafter_block",
-        () -> new CrafterBlock(BlockBehaviour.Properties.of(Material.METAL).strength(1.0f)));
+        () -> new CrafterBlock(BlockBehaviour.Properties.of().strength(1.0f)));
     public static final RegistryObject<Block> PLATE_PRESS_BLOCK = registerBlock("plate_press_block", PlatingPressBlock::new);
     public static final RegistryObject<Block> ENGINE_FABRICATOR = registerBlock("engine_fabricator",
             EngineFabricatorBlock::new);

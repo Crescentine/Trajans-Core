@@ -57,10 +57,10 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
     @Override
     protected void onHit (HitResult p_70227_1_){
         super.onHit(p_70227_1_);
-        if (!this.level.isClientSide) { // checks if the world is client
-            this.level.broadcastEntityEvent(this, (byte) 3); // particle?
-            if (!level.isClientSide) {
-                this.level.explode(this, getX(), getY(), getZ(), explosionRadius, fire, Level.ExplosionInteraction.BLOCK);
+        if (!this.level().isClientSide) { // checks if the world is client
+            this.level().broadcastEntityEvent(this, (byte) 3); // particle?
+            if (!level().isClientSide) {
+                this.level().explode(this, getX(), getY(), getZ(), explosionRadius, fire, Level.ExplosionInteraction.BLOCK);
                 this.kill();
             }
         }

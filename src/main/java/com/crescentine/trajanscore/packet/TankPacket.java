@@ -30,11 +30,11 @@ public class TankPacket {
                     if (player == null || !player.isAlive()) return;
                     if (player.getVehicle() instanceof BaseTankEntity) {
                         BaseTankEntity Tank = (BaseTankEntity) player.getVehicle();
-                        Tank.shoot(player, Tank, player.level);
+                        Tank.shoot(player, Tank, player.level());
                     }
                     if (player.getVehicle() instanceof BaseATEntity) {
                         BaseATEntity AT = (BaseATEntity) player.getVehicle();
-                        AT.shoot(player, AT, player.level);
+                        AT.shoot(player, AT, player.level());
                     }
                 }
         );
