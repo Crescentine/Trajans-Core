@@ -57,6 +57,6 @@ public class PlatingPressRecipeCategory implements IRecipeCategory<PlatingPressR
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 19).addIngredients(recipe.getIngredients().get(3));
         builder.addSlot(RecipeIngredientRole.INPUT, 19, 42).addIngredients(recipe.getIngredients().get(4));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 91, 35).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 91, 35).addItemStack(recipe.getResult());
     }
 }

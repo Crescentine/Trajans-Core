@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -57,19 +58,23 @@ public class BaseATEntity extends AnimatedTankEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0)
                 .add(Attributes.FOLLOW_RANGE, 0.0D);
     }
+
     @Override
     public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
         player.startRiding(this, true);
         return InteractionResult.SUCCESS;
     }
+
     @Override
     protected boolean canAddPassenger(Entity entity) {
         return !this.isVehicle();
     }
+
     @Override
     public boolean shouldRiderSit() {
         return true;
     }
+
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((float) health);
@@ -83,6 +88,7 @@ public class BaseATEntity extends AnimatedTankEntity {
         this.time = 0;
         return super.startRiding(p_21396_, p_21397_);
     }
+
     @Override
     protected SoundEvent getDeathSound() {
         return SoundEvents.GENERIC_EXPLODE;
@@ -194,6 +200,7 @@ public class BaseATEntity extends AnimatedTankEntity {
         time = 0;
         return true;
     }
+
     public boolean canBeAffected(@NotNull MobEffectInstance pPotioneffect) {
         return false;
     }
@@ -218,7 +225,7 @@ public class BaseATEntity extends AnimatedTankEntity {
                 return false;
             }
         }
-        if (pSource == DamageSource.DROWN) {
+        if (pSource == level.damageSources().drown()) {
             return false;
         }
         return super.hurt(pSource, pAmount);
@@ -240,9 +247,5 @@ public class BaseATEntity extends AnimatedTankEntity {
             }
             super.travel(pTravelVector);
         }
-    }
-    @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
     }
 }

@@ -212,7 +212,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             }
             super.travel(pos);
             this.setSpeed(0f); // If nobody riding tank, stop tank (Outside of 'if (this.isVehicle())'
-            this.flyingSpeed = 0.02f;
         }
     }
 
@@ -258,11 +257,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     @Override
     public boolean shouldRiderSit() {
         return false;
-    }
-
-    @Nullable
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : this.getPassengers().get(0);
     }
 
     @Override
@@ -534,7 +528,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
                 return false;
             }
         }
-        if (pSource == DamageSource.DROWN) {
+        if (pSource == level.damageSources().drown()) {
             return false;
         }
         return super.hurt(pSource, pAmount);
@@ -557,5 +551,11 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public LivingEntity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (LivingEntity) this.getPassengers().get(0);
     }
 }

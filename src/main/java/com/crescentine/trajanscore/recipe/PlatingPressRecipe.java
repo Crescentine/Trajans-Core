@@ -4,6 +4,7 @@ import com.crescentine.trajanscore.TrajansCoreMod;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -40,19 +41,17 @@ public class PlatingPressRecipe implements Recipe<SimpleContainer> {
         return false;
     }
 
-
     @Override
-    public ItemStack assemble(SimpleContainer p_44001_) {
+    public ItemStack assemble(SimpleContainer p_44001_, RegistryAccess p_267165_) {
         return output;
     }
-
     @Override
     public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
         return true;
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess p_267052_) {
         return output.copy();
     }
 
@@ -105,7 +104,10 @@ public class PlatingPressRecipe implements Recipe<SimpleContainer> {
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buf);
             }
-            buf.writeItemStack(recipe.getResultItem(), false);
+            buf.writeItemStack(recipe.output.copy(), false);
         }
+    }
+    public ItemStack getResult() {
+        return this.output.copy();
     }
 }

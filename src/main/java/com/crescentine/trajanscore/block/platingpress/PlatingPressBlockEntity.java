@@ -164,7 +164,7 @@ public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider
                 .getRecipeFor(ModRecipes.PLATING_PRESS_RECIPE.get(), inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResult());
     }
     private static void craftItem(PlatingPressBlockEntity entity, BlockPos pos, BlockState state) {
         Level level = entity.level;
@@ -182,7 +182,7 @@ public class PlatingPressBlockEntity extends BlockEntity implements MenuProvider
             entity.itemHandler.extractItem(2, 1, false);
             entity.itemHandler.extractItem(3, 1, false);
             entity.itemHandler.getStackInSlot(4).hurt(1, level.getRandom(), null);
-            entity.itemHandler.setStackInSlot(5, new ItemStack(match.get().getResultItem().getItem(),
+            entity.itemHandler.setStackInSlot(5, new ItemStack(match.get().getResult().getItem(),
                     entity.itemHandler.getStackInSlot(5).getCount() + 1));
             level.playSound(null, pos, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 1f, 1f);
             entity.resetProgress();

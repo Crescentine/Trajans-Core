@@ -153,7 +153,7 @@ public class EngineFabricatorBlockEntity extends BlockEntity implements MenuProv
                 .getRecipeFor(ModRecipes.ENGINE_FABRICATOR_RECIPE.get(), inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResult());
     }
     private static void craftItem(EngineFabricatorBlockEntity entity) {
         Level level = entity.level;
@@ -176,7 +176,7 @@ public class EngineFabricatorBlockEntity extends BlockEntity implements MenuProv
             entity.itemHandler.extractItem(7,1, false);
             entity.itemHandler.extractItem(8,1, false);
 
-            entity.itemHandler.setStackInSlot(9, new ItemStack(match.get().getResultItem().getItem(),
+            entity.itemHandler.setStackInSlot(9, new ItemStack(match.get().getResult().getItem(),
                     entity.itemHandler.getStackInSlot(9).getCount() + 1));
 
             entity.resetProgress();

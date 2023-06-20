@@ -3,10 +3,13 @@ package com.crescentine.trajanscore;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 public class TankModClient {
@@ -28,6 +31,11 @@ public class TankModClient {
             event.register(SYNC_TURRET_WITH_TANK);
             event.register(SHOOT_KEY);
             event.register(FUEL_CHECK);
+        }
+        @SubscribeEvent
+        public static void registerGui(RegisterGuiOverlaysEvent event) {
+            StatsOverlay overlay = new StatsOverlay();
+            event.registerAboveAll("overlay", overlay);
         }
     }
 }

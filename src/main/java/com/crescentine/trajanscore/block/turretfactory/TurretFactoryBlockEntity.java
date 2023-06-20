@@ -153,7 +153,7 @@ public class TurretFactoryBlockEntity extends BlockEntity implements MenuProvide
                 .getRecipeFor(ModRecipes.TURRET_FACTORY_RECIPE.get(), inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResult());
     }
     private static void craftItem(TurretFactoryBlockEntity entity) {
         Level level = entity.level;
@@ -176,7 +176,7 @@ public class TurretFactoryBlockEntity extends BlockEntity implements MenuProvide
             entity.itemHandler.getStackInSlot(7).hurt(1, level.getRandom(), null);
 
 
-            entity.itemHandler.setStackInSlot(8, new ItemStack(match.get().getResultItem().getItem(),
+            entity.itemHandler.setStackInSlot(8, new ItemStack(match.get().getResult().getItem(),
                     entity.itemHandler.getStackInSlot(8).getCount() + 1));
 
             entity.resetProgress();

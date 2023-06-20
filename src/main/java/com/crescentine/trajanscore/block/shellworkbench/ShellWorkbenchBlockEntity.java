@@ -155,7 +155,7 @@ public class ShellWorkbenchBlockEntity extends BlockEntity implements MenuProvid
                 .getRecipeFor(ModRecipes.SHELL_WORKBENCH.get(), inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResult());
     }
     private static void craftItem(ShellWorkbenchBlockEntity entity) {
         Level level = entity.level;
@@ -176,7 +176,7 @@ public class ShellWorkbenchBlockEntity extends BlockEntity implements MenuProvid
             entity.itemHandler.extractItem(5,1, false);
             entity.itemHandler.extractItem(6,1, false);
 
-            entity.itemHandler.setStackInSlot(7, new ItemStack(match.get().getResultItem().getItem(),
+            entity.itemHandler.setStackInSlot(7, new ItemStack(match.get().getResult().getItem(),
                     entity.itemHandler.getStackInSlot(7).getCount() + 1));
 
             entity.resetProgress();

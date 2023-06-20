@@ -154,7 +154,7 @@ public class SteelManufacturerBlockEntity extends BlockEntity implements MenuPro
                 .getRecipeFor(ModRecipes.STEEL_MANUFACTURER_RECIPE.get(), inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResult());
     }
     private static void craftItem(SteelManufacturerBlockEntity entity) {
         Level level = entity.level;
@@ -180,7 +180,7 @@ public class SteelManufacturerBlockEntity extends BlockEntity implements MenuPro
             entity.itemHandler.getStackInSlot(9).hurt(1, level.getRandom(), null);
 
 
-            entity.itemHandler.setStackInSlot(10, new ItemStack(match.get().getResultItem().getItem(),
+            entity.itemHandler.setStackInSlot(10, new ItemStack(match.get().getResult().getItem(),
                     entity.itemHandler.getStackInSlot(10).getCount() + 1));
 
             entity.resetProgress();

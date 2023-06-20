@@ -57,7 +57,7 @@ public class CrafterBlockEntity extends InventoryBlockEntity implements MenuProv
 
         return match.isPresent()
                 && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResult());
 
     }
 
@@ -80,7 +80,7 @@ public class CrafterBlockEntity extends InventoryBlockEntity implements MenuProv
             entity.extractItem(4);
             entity.extractItem(5);
             entity.extractItem(6);
-            entity.insertItem(8, new ItemStack(match.get().getResultItem().getItem(),
+            entity.insertItem(8, new ItemStack(match.get().getResult().getItem(),
                     1));
         }
     }

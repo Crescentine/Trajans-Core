@@ -2,11 +2,13 @@ package com.crescentine.trajanscore.basetank;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -49,11 +51,11 @@ public class AnimatedTankEntity extends Animal implements GeoEntity {
     @Override
     protected void registerGoals() {
     }
+
     @Override
-    public boolean rideableUnderWater() {
+    public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
         return false;
     }
-
     @Override
     protected int calculateFallDamage(float fallDistance, float damageMultiplier) {
         return 0;

@@ -63,6 +63,6 @@ public class EngineFabricatorRecipeCategory implements IRecipeCategory<EngineFab
         builder.addSlot(RecipeIngredientRole.INPUT, 37, 37).addIngredients(recipe.getIngredients().get(8));
 
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 109, 19).addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 109, 19).addItemStack(recipe.getResult());
     }
 }

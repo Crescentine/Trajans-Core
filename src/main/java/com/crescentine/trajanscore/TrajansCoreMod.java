@@ -86,7 +86,7 @@ public class TrajansCoreMod {
         PARTS_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "itemgroup.trajanstanks_parts"), builder -> builder
                 .icon(() -> new ItemStack(TrajansCoreItems.TANK_CONTROLLER.get()))
                 .title(Component.translatable("itemgroup.trajanstanks_parts"))
-                .displayItems((featureFlags, output, hasOp) -> {
+                .displayItems((parameters, output) -> {
                     output.accept(TrajansCoreItems.CRAFTER_BLOCK_ITEM.get());
                     output.accept(TrajansCoreItems.PLATE_PRESS_BLOCK_ITEM.get());
                     output.accept(TrajansCoreItems.TURRET_FACTORY_BLOCK_ITEM.get());
@@ -111,7 +111,7 @@ public class TrajansCoreMod {
         SHELLS_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "itemgroup.trajanscore_shells"), builder -> builder
                 .icon(() -> new ItemStack(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get()))
                 .title(Component.translatable("itemgroup.trajanscore_shells"))
-                .displayItems((featureFlags, output, hasOp) -> {
+                .displayItems((parameters, output) -> {
                     output.accept(TrajansCoreItems.STANDARD_SHELL.get());
                     output.accept(TrajansCoreItems.APCR_SHELL.get());
                     output.accept(TrajansCoreItems.ARMOR_PIERCING_SHELL.get());
@@ -120,10 +120,10 @@ public class TrajansCoreMod {
                 })
         );
     }
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class RegistryEvents {
+    @Mod.EventBusSubscriber(modid = TrajansCoreMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public final class RegistryEvents {
         @SubscribeEvent
-        public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
             BlockEntityRenderers.register(TankModBlockEntities.PLATING_PRESS.get(),context -> new PlatingPressRenderer());
             BlockEntityRenderers.register(TankModBlockEntities.TURRET_FACTORY.get(), context -> new TurretFactoryRenderer());
             BlockEntityRenderers.register(TankModBlockEntities.STEEL_MANUFACTURER.get(), context -> new SteelManufacturerRenderer());

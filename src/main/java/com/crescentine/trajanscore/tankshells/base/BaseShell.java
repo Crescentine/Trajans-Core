@@ -50,7 +50,7 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
         Entity entity = entityHitResult.getEntity();
         entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
         if (entity instanceof LivingEntity) {
-            entity.hurt(DamageSource.thrown(this, this.getOwner()), (float) (damage * 1.0f));
+            entity.hurt(damageSources().thrown(this, this.getOwner()), (float) damage);
             entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
         }
     }
