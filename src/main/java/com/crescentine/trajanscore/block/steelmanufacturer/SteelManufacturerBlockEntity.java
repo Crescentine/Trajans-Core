@@ -205,6 +205,6 @@ public class SteelManufacturerBlockEntity extends BlockEntity implements MenuPro
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return null;
+        return factory;
     }
 }
