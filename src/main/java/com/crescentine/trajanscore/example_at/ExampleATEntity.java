@@ -6,8 +6,10 @@ import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class ExampleATEntity extends BaseATEntity implements GeoEntity {
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     public ExampleATEntity(EntityType<?> entityType, Level world) {
         super(entityType, world);
         this.health = 20;
@@ -30,6 +32,6 @@ public class ExampleATEntity extends BaseATEntity implements GeoEntity {
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return null;
+        return this.cache;
     }
 }
