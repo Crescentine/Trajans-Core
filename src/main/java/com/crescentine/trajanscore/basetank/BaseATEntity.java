@@ -7,6 +7,7 @@ import com.crescentine.trajanscore.tankshells.armorpiercing.ArmorPiercingShell;
 import com.crescentine.trajanscore.tankshells.heat.HeatShell;
 import com.crescentine.trajanscore.tankshells.highexplosive.HighExplosiveShell;
 import com.crescentine.trajanscore.tankshells.standard.StandardShell;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -33,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public class BaseATEntity extends AnimatedTankEntity {
     public boolean canUseAPCR;
@@ -41,11 +43,14 @@ public class BaseATEntity extends AnimatedTankEntity {
     public boolean canUseHeat;
     public boolean canUseHighExplosive;
     public int shootingCooldown = 60;
+    private ImmutableList<Entity> passengers = ImmutableList.of();
+
     public int time;
     public double armor = 0;
     static int shellsUsed = 1;
     public double health = 0;
     public double speedMultiplier = 0;
+
 
     public BaseATEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends Animal>) entityType, world);
@@ -62,13 +67,14 @@ public class BaseATEntity extends AnimatedTankEntity {
     @Override
     public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
         player.startRiding(this, true);
-        return InteractionResult.SUCCESS;
+        return InteractionResult.FAIL;
     }
 
     @Override
     protected boolean canAddPassenger(Entity entity) {
-        return !this.isVehicle();
+        return this.passengers.isEmpty();
     }
+
 
     @Override
     public boolean shouldRiderSit() {
@@ -95,6 +101,11 @@ public class BaseATEntity extends AnimatedTankEntity {
     }
 
     @Override
+    protected void removePassenger(Entity pPassenger) {
+        super.removePassenger(pPassenger);
+    }
+
+    @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.ARMOR_EQUIP_IRON;
     }
@@ -117,7 +128,8 @@ public class BaseATEntity extends AnimatedTankEntity {
     @Override
     public void tick() {
         super.tick();
-        age++;
+
+
         if (time < shootingCooldown) time++;
     }
 
@@ -229,23 +241,25 @@ public class BaseATEntity extends AnimatedTankEntity {
             return false;
         }
         return super.hurt(pSource, pAmount);
+
+
+
     }
 
+
+
+
     @Override
-    public void travel(Vec3 pTravelVector) {
-        if (this.isAlive()) {
-            if (this.isVehicle()) {
-                if (level().isClientSide) {
-                    LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
-                    this.setYRot(livingentity.getYRot());
-                    this.yRotO = this.getYRot();
-                    this.setXRot(livingentity.getXRot() * 0.5F);
-                    this.setRot(this.getYRot(), this.getXRot());
-                    this.yBodyRot = this.getYRot();
-                    this.yHeadRot = this.yBodyRot;
-                }
-            }
-            super.travel(pTravelVector);
-        }
+    protected void tickRidden(Player pPlayer, Vec3 pos) {
+        this.setRot(pPlayer.getYRot(), pPlayer.getXRot() * 0.5F);
+        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+
+        super.tickRidden(pPlayer, pos);
+    }
+
+    @org.jetbrains.annotations.Nullable
+    @Override
+    public LivingEntity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (LivingEntity) this.getPassengers().get(0);
     }
 }

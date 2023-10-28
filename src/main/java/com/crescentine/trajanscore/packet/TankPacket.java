@@ -1,11 +1,14 @@
 package com.crescentine.trajanscore.packet;
 
+import com.crescentine.trajanscore.TankShootEvent;
 import com.crescentine.trajanscore.basetank.BaseATEntity;
 import com.crescentine.trajanscore.basetank.BaseTankEntity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkEvent;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class TankPacket {
@@ -30,7 +33,11 @@ public class TankPacket {
                     if (player == null || !player.isAlive()) return;
                     if (player.getVehicle() instanceof BaseTankEntity) {
                         BaseTankEntity Tank = (BaseTankEntity) player.getVehicle();
-                        Tank.shoot(player, Tank, player.level());
+                        if (Tank.getFuelAmount() != 0) {
+                            Tank.shoot(player, Tank, player.level());
+                        }
+
+
                     }
                     if (player.getVehicle() instanceof BaseATEntity) {
                         BaseATEntity AT = (BaseATEntity) player.getVehicle();

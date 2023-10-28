@@ -26,4 +26,8 @@ public class InputEvents {
             TrajansCoreNetwork.FUEL_REMAINING.sendToServer(new FuelRemainingPacket(key));
         }
     }
+
+
+
+
 }
