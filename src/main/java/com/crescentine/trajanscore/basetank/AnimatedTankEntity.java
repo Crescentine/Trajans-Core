@@ -65,7 +65,10 @@ public class AnimatedTankEntity extends Animal implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 
+
     }
+
+
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
