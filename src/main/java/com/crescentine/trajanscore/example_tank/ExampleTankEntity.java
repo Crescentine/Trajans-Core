@@ -37,13 +37,9 @@ public class ExampleTankEntity extends BaseTankEntity  {
 
 
     protected <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
-        if (event.getLimbSwingAmount() > 0.1F) {
-
+        if (event.isMoving()) {
             event.getController().setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
-
             return PlayState.CONTINUE;
-
-
         }
         return PlayState.STOP;
 

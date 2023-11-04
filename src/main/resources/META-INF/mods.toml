@@ -29,12 +29,12 @@ displayName="Trajan's Core" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="icon.png" #optional
 # A text field displayed in the mod UI
-credits="Mod by Trajan/Crescentine (coding) with Furiousky (models)" #optional
+credits="Current Programmers: Trajan, Royalty, Project Lead/Head Artist: Furiousky, Artist: LucasPelukas, former assistant programmer 21Carrot" #optional
 # A text field displayed in the mod UI
-authors="Trajan, Furiousky" #optional
-# The description text for the mod (multi line!) (#mandatory)
+authors="Trajan, Furiousky, Royalty, LucasPelukas" #optional
+# The description text for the mod (multi line!) (#mandatory)gr
 description='''
-A core mod for my mods.
+A core mod for our mods.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.trajanscore]] #optional
