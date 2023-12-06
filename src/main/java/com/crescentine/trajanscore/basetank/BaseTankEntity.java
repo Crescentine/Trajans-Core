@@ -64,13 +64,6 @@ import javax.annotation.Nullable;
 
 public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private static final ResourceLocation LOADING_1 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading1.png");
-    private static final ResourceLocation LOADING_2 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading2.png");
-    private static final ResourceLocation LOADING_3 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading3.png");
-    private static final ResourceLocation LOADING_4 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading4.png");
-    private static final ResourceLocation LOADING_5 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading5.png");
-
-    private static final ResourceLocation LOADING_6 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading6.png");
 
     public double healAmount = 0;
     public boolean armored;

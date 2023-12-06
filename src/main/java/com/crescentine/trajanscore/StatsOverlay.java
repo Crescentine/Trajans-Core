@@ -31,13 +31,6 @@ import java.util.Vector;
 public class StatsOverlay implements IGuiOverlay {
 
 
-    private static final ResourceLocation LOADING_1 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading1.png");
-    private static final ResourceLocation LOADING_2 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading2.png");
-    private static final ResourceLocation LOADING_3 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading3.png");
-    private static final ResourceLocation LOADING_4 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading4.png");
-    private static final ResourceLocation LOADING_5 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading5.png");
-
-    private static final ResourceLocation LOADING_6 = new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/gui/loading6.png");
 
 
 
@@ -49,19 +42,6 @@ public class StatsOverlay implements IGuiOverlay {
         if(player == null)
             return;
 
-
-
-
-
-
-
-
-
-
-
-
-        int x = screenWidth/2;
-        int y = screenHeight;
         Entity entity = player.getVehicle();
         if(!(entity instanceof BaseTankEntity tank))
             return;
@@ -70,30 +50,6 @@ public class StatsOverlay implements IGuiOverlay {
             return;
         }
 
-
-
-
-
-        if (tank.time < tank.shootingCooldown) {
-            float maxReloadTime = tank.shootingCooldown;
-            float reloadTimeRemaining = (tank.shootingCooldown - tank.time) / 20;
-            ResourceLocation[] loadingTextures = {
-                    LOADING_1, LOADING_2, LOADING_3, LOADING_4, LOADING_5, LOADING_6
-            };
-
-
-            int numTextures = loadingTextures.length;
-            int bars = (int) ((float) reloadTimeRemaining / numTextures * 6);
-            int barWidth = 16;
-            int barHeight = 16;
-            int startX = (screenWidth - barWidth) / 2;
-            int startY = screenHeight - barHeight + 30;
-            for (int i = 0; i < 6; i++) {
-                if (i < bars) {
-                    guiGraphics.blit(loadingTextures[i], startX, startY, 0, 0, barWidth, barHeight, barWidth, barHeight);
-                }
-            }
-        }
 
         DecimalFormat format1 = new DecimalFormat("0.00");
         String speed = format1.format(tank.getOverlaySpeed());
