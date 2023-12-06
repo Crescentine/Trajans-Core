@@ -18,6 +18,10 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
     }
 
     public ResourceLocation getTextureResource(ExampleTankEntity object) {
+        if (object.isCamoRed) {
+            return new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/item/red.png");
+
+        }
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/item/tank.png");
     }
 
@@ -34,22 +38,31 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
 
         turret.setRotY(0);
         if (animatable.hasControllingPassenger()) {
-        Entity rider = animatable.getControllingPassenger();
-        if (animatable.isVehicle() && rider instanceof Player player && player.level().isClientSide() && animatable.hasControllingPassenger()) {
-            turret.setRotY((float) -Math.toRadians(rider.getYHeadRot() - animatable.getYRot()));
-            /*float elevationAngle = (float) -Math.toRadians(rider.getXRot());
-            if (elevationAngle < 0.005) {
-                if (elevationAngle > 0.07) {
-                    gun.setRotZ(elevationAngle);
-                    manlet.setRotZ(elevationAngle);
+            Entity rider = animatable.getControllingPassenger();
+            if (animatable.isVehicle() && rider instanceof Player player && player.level().isClientSide() && animatable.hasControllingPassenger()) {
+                turret.setRotY((float) -Math.toRadians(rider.getYHeadRot() - animatable.getYRot()));
+                float elevationAngle = rider.getXRot();
+
+                float maxElevation = 5;
+                float minElevation = -3;
+
+                if (elevationAngle > maxElevation) {
+                    elevationAngle = maxElevation;
+                } else if (elevationAngle < minElevation) {
+                    elevationAngle = minElevation;
                 }
 
+                float targetGunRotZ = (float) Math.toRadians(elevationAngle);
+                float targetManletRotZ = (float) Math.toRadians(elevationAngle);
+
+                float lerpFactor = 1;
+
+                gun.setRotZ(targetGunRotZ);
+                manlet.setRotZ(targetManletRotZ);
+
+
             }
-            System.out.println(elevationAngle);
-            //System.out.println(rider.getEyeY() + " " + rider.getYRot() + " " + rider.getXRot() + " " + rider.getEyePosition().z + " ");*/
-
-
         }
     }
-}
+
 }

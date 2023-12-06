@@ -1,14 +1,18 @@
 package com.crescentine.trajanscore.basetank;
 
+import com.crescentine.trajanscore.ATShootEvent;
 import com.crescentine.trajanscore.TrajansCoreConfig;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
+import com.crescentine.trajanscore.sound.SoundRegistry;
 import com.crescentine.trajanscore.tankshells.apcr.APCRShell;
 import com.crescentine.trajanscore.tankshells.armorpiercing.ArmorPiercingShell;
+import com.crescentine.trajanscore.tankshells.base.BaseShell;
 import com.crescentine.trajanscore.tankshells.heat.HeatShell;
 import com.crescentine.trajanscore.tankshells.highexplosive.HighExplosiveShell;
 import com.crescentine.trajanscore.tankshells.standard.StandardShell;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
@@ -17,7 +21,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -31,10 +34,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
+
+import static com.crescentine.trajanscore.basetank.BaseTankEntity.AMMO;
 
 public class BaseATEntity extends AnimatedTankEntity {
     public boolean canUseAPCR;
@@ -42,7 +52,7 @@ public class BaseATEntity extends AnimatedTankEntity {
     public boolean canUseArmorPiercing;
     public boolean canUseHeat;
     public boolean canUseHighExplosive;
-    public int shootingCooldown = 60;
+    public int shootingCooldown = 180;
     private ImmutableList<Entity> passengers = ImmutableList.of();
 
     public int time;
@@ -67,6 +77,9 @@ public class BaseATEntity extends AnimatedTankEntity {
     @Override
     public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
         player.startRiding(this, true);
+        Minecraft mc = Minecraft.getInstance();
+
+        player.displayClientMessage(Component.literal("Press " + mc.options.keyShift.getKey().getDisplayName().getString() + " to dismount"), false);
         return InteractionResult.FAIL;
     }
 
@@ -120,6 +133,8 @@ public class BaseATEntity extends AnimatedTankEntity {
         return SoundEvents.PLAYER_SPLASH;
     }
 
+
+
     @Override
     protected SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
@@ -134,9 +149,35 @@ public class BaseATEntity extends AnimatedTankEntity {
     }
 
     public boolean shoot(Player player, BaseATEntity tank, Level world) {
+        ATShootEvent tankEvent = new ATShootEvent(this);
         Player playerEntity = (Player) player;
+
         ItemStack itemStack = ItemStack.EMPTY;
         BaseATEntity tankEntity = (BaseATEntity) tank;
+
+
+        if (!tankEvent.isCanceled()) {
+            boolean foundAmmo = false;
+
+            for (int i = 0; i < playerEntity.getInventory().getContainerSize(); ++i) {
+                ItemStack stack = playerEntity.getInventory().offhand.get(i);
+
+                if (!stack.isEmpty() && stack.getCount() >= shellsUsed && AMMO.test(stack)) {
+                    itemStack = stack;
+                    foundAmmo = true;
+                    break;
+                }
+            }
+            int l = shootingCooldown-time;
+            if (foundAmmo && !(l>0)) {
+                triggerAnim("shoot_controller", "shoot");
+                this.level().playSeededSound(null, this.getX(), this.getY(), this.getZ(), SoundRegistry.AT_SHOOT.get(), SoundSource.HOSTILE, 1f, 1f, 0);
+
+            }
+        }
+
+
+
         for (int i = 0; i < playerEntity.getInventory().getContainerSize(); ++i) {
             ItemStack stack = playerEntity.getInventory().offhand.get(i);
             if (stack.getCount() >= shellsUsed) {
@@ -150,9 +191,15 @@ public class BaseATEntity extends AnimatedTankEntity {
             world.playSound(null, player.blockPosition(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 1.0f);
             return false;
         }
+
+
+
         if (itemStack.is(TrajansCoreItems.STANDARD_SHELL.get()) && canUseStandard) {
             StandardShell shellEntity = new StandardShell(tankEntity, world);
-            shellEntity.shootFromRotation(tankEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            float xRot = playerEntity.getXRot();
+            xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            shellEntity.shootFromRotation(tankEntity, xRot, playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            MinecraftForge.EVENT_BUS.post(new ATShootEvent(this));
             world.addFreshEntity(shellEntity);
             itemStack.shrink(shellsUsed);
         }
@@ -162,9 +209,13 @@ public class BaseATEntity extends AnimatedTankEntity {
             return false;
         }
 
+
         if (itemStack.is(TrajansCoreItems.ARMOR_PIERCING_SHELL.get()) && canUseArmorPiercing) {
             ArmorPiercingShell shellEntity = new ArmorPiercingShell(tankEntity, world);
-            shellEntity.shootFromRotation(tankEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            float xRot = playerEntity.getXRot();
+            xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            shellEntity.shootFromRotation(tankEntity, xRot, playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            MinecraftForge.EVENT_BUS.post(new ATShootEvent(this));
             world.addFreshEntity(shellEntity);
             itemStack.shrink(shellsUsed);
         }
@@ -174,21 +225,28 @@ public class BaseATEntity extends AnimatedTankEntity {
             return false;
         }
 
+
         if (itemStack.is(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get()) && canUseHighExplosive) {
             HighExplosiveShell shellEntity = new HighExplosiveShell(tankEntity, world);
-            shellEntity.shootFromRotation(tankEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            float xRot = playerEntity.getXRot();
+            xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            shellEntity.shootFromRotation(tankEntity, xRot, playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            MinecraftForge.EVENT_BUS.post(new ATShootEvent(this));
             world.addFreshEntity(shellEntity);
             itemStack.shrink(shellsUsed);
         }
         if (itemStack.is(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get()) && !canUseHighExplosive) {
+
             player.displayClientMessage(Component.literal("Shell Type disabled with this vehicle!").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
             world.playSound(null, player.blockPosition(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 1.0f);
             return false;
         }
-
         if (itemStack.is(TrajansCoreItems.HEAT_SHELL.get()) && canUseHeat) {
             HeatShell shellEntity = new HeatShell(tankEntity, world);
-            shellEntity.shootFromRotation(tankEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            float xRot = playerEntity.getXRot();
+            xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            shellEntity.shootFromRotation(tankEntity, xRot, playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            MinecraftForge.EVENT_BUS.post(new ATShootEvent(this));
             world.addFreshEntity(shellEntity);
             itemStack.shrink(shellsUsed);
         }
@@ -200,10 +258,14 @@ public class BaseATEntity extends AnimatedTankEntity {
 
         if (itemStack.is(TrajansCoreItems.APCR_SHELL.get()) && canUseAPCR) {
             APCRShell shellEntity = new APCRShell(tankEntity, world);
-            shellEntity.shootFromRotation(tankEntity, playerEntity.getXRot(), playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            float xRot = playerEntity.getXRot();
+            xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            shellEntity.shootFromRotation(tankEntity, xRot, playerEntity.getYRot(), 0.0F, 3.5F, 0F);
+            MinecraftForge.EVENT_BUS.post(new ATShootEvent(this));
             world.addFreshEntity(shellEntity);
             itemStack.shrink(shellsUsed);
         }
+
         if (itemStack.is(TrajansCoreItems.APCR_SHELL.get()) && !canUseAPCR) {
             player.displayClientMessage(Component.literal("Shell Type disabled with this vehicle!").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
             world.playSound(null, player.blockPosition(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 1.0f);
@@ -211,6 +273,7 @@ public class BaseATEntity extends AnimatedTankEntity {
         }
         time = 0;
         return true;
+
     }
 
     public boolean canBeAffected(@NotNull MobEffectInstance pPotioneffect) {
@@ -232,17 +295,40 @@ public class BaseATEntity extends AnimatedTankEntity {
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         Entity entity = pSource.getDirectEntity();
+
+
+        if (pSource.type() == level().damageSources().cactus().type()) {
+            return false;
+        }
+
         if (!TrajansCoreConfig.arrowsDamageTanks.get()) {
             if (entity instanceof AbstractArrow) {
                 return false;
             }
         }
+
+        if (!(entity instanceof BaseShell)) {
+            if (!TrajansCoreConfig.meleeDamageTanks.get() && entity instanceof Player || !TrajansCoreConfig.meleeDamageTanks.get() && entity instanceof Mob) {
+                if (pSource.type() == level().damageSources().mobAttack((LivingEntity) entity).type()) {
+                    return false;
+                }
+                if (pSource.type() == level().damageSources().playerAttack((Player) entity).type()) {
+                    return false;
+
+                }
+            }
+        }
+
         if (pSource == level().damageSources().drown()) {
             return false;
         }
         return super.hurt(pSource, pAmount);
+    }
 
-
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "shoot_controller", state -> PlayState.STOP)
+                .triggerableAnim("shoot", RawAnimation.begin().then("shoot", Animation.LoopType.PLAY_ONCE)));
 
     }
 

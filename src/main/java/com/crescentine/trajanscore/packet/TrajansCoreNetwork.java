@@ -18,8 +18,16 @@ public class TrajansCoreNetwork {
             new ResourceLocation(TrajansCoreMod.MOD_ID, "fuel_remaining"), () -> NETWORK_VERSION,
             version -> version.equals(NETWORK_VERSION), version -> version.equals(NETWORK_VERSION));
 
+    public static final SimpleChannel IS_INVISIBLE = NetworkRegistry.newSimpleChannel(
+            new ResourceLocation(TrajansCoreMod.MOD_ID, "is_invisible"), () -> NETWORK_VERSION,
+            version -> version.equals(NETWORK_VERSION), version -> version.equals(NETWORK_VERSION));
+
+
     public static void init() {
         FUEL_REMAINING.registerMessage(++channel_id, FuelRemainingPacket.class, FuelRemainingPacket::writePacketData, FuelRemainingPacket::decode, FuelRemainingPacket::handle);
         TANK.registerMessage(++channel_id, TankPacket.class, TankPacket::writePacketData, TankPacket::decode, TankPacket::handle);
+        IS_INVISIBLE.registerMessage(++channel_id, VisibilityPacket.class, VisibilityPacket::writePacketData, VisibilityPacket::decode, VisibilityPacket::handle);
+
+
     }
 }

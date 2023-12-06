@@ -52,6 +52,8 @@ public class AnimatedTankEntity extends Animal implements GeoEntity {
     protected void registerGoals() {
     }
 
+
+
     @Override
     public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
         return false;

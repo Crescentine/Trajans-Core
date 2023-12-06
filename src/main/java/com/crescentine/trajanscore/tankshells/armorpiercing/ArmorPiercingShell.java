@@ -5,6 +5,7 @@ import com.crescentine.trajanscore.TrajansCoreEntities;
 import com.crescentine.trajanscore.basetank.BaseTankEntity;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.tankshells.base.BaseShell;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -34,6 +35,8 @@ public class ArmorPiercingShell extends BaseShell {
         explosionRadius = TrajansCoreConfig.armorPiercingExplosionRadius.get();
         fire = false;
     }
+
+
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
@@ -43,6 +46,10 @@ public class ArmorPiercingShell extends BaseShell {
             entity.hurt(entity.level().damageSources().thrown(this, this.getOwner()), (float) antiTankDamage);
         }
     }
+
+
+
+
     @Override
     protected Item getDefaultItem() {
         return TrajansCoreItems.ARMOR_PIERCING_SHELL.get();

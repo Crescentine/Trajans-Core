@@ -1,6 +1,7 @@
 package com.crescentine.trajanscore.tankshells.base;
 
 import com.crescentine.trajanscore.item.TrajansCoreItems;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
@@ -40,10 +41,10 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
     protected Item getDefaultItem() {
         return TrajansCoreItems.STANDARD_SHELL.get();
     }
-    /*  @Override
+    @Override
     protected float getGravity() {
-        return 0.026f;
-    } */
+        return 0.05f;
+    }
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
@@ -55,13 +56,30 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
         }
     }
     @Override
-    protected void onHit (HitResult p_70227_1_){
+    protected void onHit(HitResult p_70227_1_){
         super.onHit(p_70227_1_);
         if (!this.level().isClientSide) { // checks if the world is client
             this.level().broadcastEntityEvent(this, (byte) 3); // particle?
             if (!level().isClientSide) {
                 this.level().explode(this, getX(), getY(), getZ(), explosionRadius, fire, Level.ExplosionInteraction.BLOCK);
                 this.kill();
+            }
+        }
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.level().isClientSide)
+        {
+            for (int i = 5; i > 0; i--)
+            {
+                this.level().addParticle(ParticleTypes.CLOUD, false, this.getX() - (this.getDeltaMovement().x() / i), this.getY() - (this.getDeltaMovement().y() / i), this.getZ() - (this.getDeltaMovement().z() / i), 0, 0, 0);
+            }
+            if (this.level().random.nextInt(2) == 0)
+            {
+                this.level().addParticle(ParticleTypes.SMOKE, true, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+                this.level().addParticle(ParticleTypes.FLAME, true, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
             }
         }
     }

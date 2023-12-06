@@ -13,22 +13,19 @@ import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.packet.TrajansCoreNetwork;
 import com.crescentine.trajanscore.recipe.ModRecipes;
 import com.crescentine.trajanscore.screen.*;
+import com.crescentine.trajanscore.sound.SoundRegistry;
 import com.crescentine.trajanscore.tankshells.apcr.APCRShellRenderer;
 import com.crescentine.trajanscore.tankshells.armorpiercing.ArmorPiercingShellRenderer;
 import com.crescentine.trajanscore.tankshells.heat.HeatShellRenderer;
 import com.crescentine.trajanscore.tankshells.highexplosive.HighExplosiveShellRenderer;
+import com.crescentine.trajanscore.tankshells.low_caliber.LowCaliberShellRenderer;
 import com.crescentine.trajanscore.tankshells.standard.StandardShellRenderer;
+import com.crescentine.trajanscore.temp_luchs_test.LuchsTankRenderer;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.common.CreativeModeTabRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -48,10 +45,13 @@ public class TrajansCoreMod {
 
     public TrajansCoreMod() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, TrajansCoreConfig.SPEC, "trajanscore-config.toml");
+
         GeckoLib.initialize();
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         TrajansCoreItems.ITEMS.register(eventBus);
         TrajansCoreItems.BLOCKS.register(eventBus);
+        SoundRegistry.SOUNDS.register(eventBus);
+
         MinecraftForge.EVENT_BUS.register(this);
         TankModContainers.register(eventBus);
         TrajansCoreCreativeTabs.register(eventBus);
@@ -93,8 +93,11 @@ public class TrajansCoreMod {
             EntityRenderers.register(TrajansCoreEntities.HEAT_SHELL.get(), HeatShellRenderer::new);
             EntityRenderers.register(TrajansCoreEntities.ARMOR_PIERCING_SHELL.get(), ArmorPiercingShellRenderer::new);
             EntityRenderers.register(TrajansCoreEntities.APCR_SHELL.get(), APCRShellRenderer::new);
+            EntityRenderers.register(TrajansCoreEntities.LOW_CALIBER_SHELL.get(), LowCaliberShellRenderer::new);
+
 
             EntityRenderers.register(TrajansCoreEntities.EXAMPLE_TANK.get(), ExampleTankRenderer::new);
+            EntityRenderers.register(TrajansCoreEntities.LUCHS.get(), LuchsTankRenderer::new);
             EntityRenderers.register(TrajansCoreEntities.EXAMPLE_AT.get(), ExampleATRenderer::new);
         }
     }

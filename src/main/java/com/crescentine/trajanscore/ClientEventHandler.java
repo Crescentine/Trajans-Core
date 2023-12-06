@@ -5,5 +5,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class ClientEventHandler {
     public static void setup() {
         MinecraftForge.EVENT_BUS.register(new StatsOverlay());
+        MinecraftForge.EVENT_BUS.register(new RotationOverlay());
+
     }
 }

@@ -28,6 +28,7 @@ public class TrajansCoreItems {
     public static DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TrajansCoreMod.MOD_ID);
     public static DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TrajansCoreMod.MOD_ID);
 
+
     public static final RegistryObject<Item> CRAFTER_BLOCK_ITEM = ITEMS.register("crafter_block",
             () -> new BlockItem(TrajansCoreItems.CRAFTER_BLOCK.get(), new Item.Properties()));
     public static final RegistryObject<Item> PLATE_PRESS_BLOCK_ITEM = ITEMS.register("plate_press_block_item",
@@ -78,8 +79,14 @@ public class TrajansCoreItems {
             () -> new Item(new Item.Properties().stacksTo(32)));
     public static final RegistryObject<Item> HIGH_EXPLOSIVE_SHELL = ITEMS.register("high_explosive_shell",
             () -> new Item(new Item.Properties().stacksTo(32)));
+
+
     public static final RegistryObject<Item> STANDARD_SHELL = ITEMS.register("standard_shell",
             () -> new Item(new Item.Properties().stacksTo(32)));
+
+    public static final RegistryObject<Item> LOW_CALIBER_SHELL = ITEMS.register("low_caliber_shell",
+            () -> new Item(new Item.Properties().stacksTo(32)));
+
 
     //Machine Parts
     public static final RegistryObject<Item> HAMMER = ITEMS.register("hammer",
