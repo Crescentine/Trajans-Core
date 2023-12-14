@@ -98,7 +98,7 @@ public class TrajansCoreMod {
 
             EntityRenderers.register(TrajansCoreEntities.EXAMPLE_TANK.get(), ExampleTankRenderer::new);
             EntityRenderers.register(TrajansCoreEntities.LUCHS.get(), LuchsTankRenderer::new);
-            EntityRenderers.register(TrajansCoreEntities.EXAMPLE_AT.get(), ExampleATRenderer::new);
+            //EntityRenderers.register(TrajansCoreEntities.EXAMPLE_AT.get(), ExampleATRenderer::new);
         }
     }
 }

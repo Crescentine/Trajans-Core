@@ -44,6 +44,8 @@
   "item.trajanscore.heat_shell" : "HEAT Shell",
   "item.trajanscore.armor_piercing_shell" : "Armor Piercing Shell",
   "item.trajanscore.high_explosive_shell" : "High Explosive Shell",
+  "item.trajanscore.low_caliber_shell" : "Low-Caliber Shell",
+
   "sounds.trajanscore.at_shoot": "Anti-Tank Sound"
 
 

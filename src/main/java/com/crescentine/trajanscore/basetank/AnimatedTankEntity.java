@@ -1,13 +1,12 @@
 package com.crescentine.trajanscore.basetank;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -15,52 +14,59 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class AnimatedTankEntity extends Animal implements GeoEntity {
+public abstract class AnimatedTankEntity extends Entity implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    protected AnimatedTankEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
+    protected AnimatedTankEntity(EntityType<? extends Entity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
 
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel pLevel, AgeableMob pOtherParent) {
-        return null;
-    }
 
-    @Override
-    public boolean isBaby() {
-        return false;
-    }
 
     protected boolean isMoving() {
         return this.onGround() && this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D;
     }
-    @Override
-    public boolean requiresCustomPersistence() {
-        return true;
-    }
+
+
+
 
     @Override
-    public ItemStack getItemBySlot(EquipmentSlot slot) {
-        return ItemStack.EMPTY;
+    public void setItemSlot(EquipmentSlot pSlot, ItemStack pStack) {
+
     }
+
+
+
+    @Override
+    protected void defineSynchedData() {
+
+    }
+
     @Override
     public boolean isNoGravity() {
         return false;
     }
+
     @Override
-    protected void registerGoals() {
+    protected void readAdditionalSaveData(CompoundTag pCompound) {
+
     }
 
+    @Override
+    protected void addAdditionalSaveData(CompoundTag pCompound) {
+
+    }
 
 
     @Override
     public boolean canBeRiddenUnderFluidType(FluidType type, Entity rider) {
         return false;
     }
+
+
+
     @Override
-    protected int calculateFallDamage(float fallDistance, float damageMultiplier) {
-        return 0;
+    public Iterable<ItemStack> getArmorSlots() {
+        return null;
     }
 
 
@@ -76,4 +82,6 @@ public class AnimatedTankEntity extends Animal implements GeoEntity {
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
+
+
 }

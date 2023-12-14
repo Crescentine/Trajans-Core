@@ -6,6 +6,7 @@ import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animatable.model.CoreGeoModel;
 import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.model.GeoModel;
@@ -29,18 +30,23 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "animations/tank.json");
     }
 
-    @Override
+   @Override
     public void setCustomAnimations(ExampleTankEntity animatable, long instanceId, software.bernie.geckolib.core.animation.AnimationState<ExampleTankEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
-        CoreGeoBone turret = this.getAnimationProcessor().getBone("TopPart");
+        CoreGeoBone main = this.getAnimationProcessor().getBone("Tank");
+       CoreGeoBone rwl = this.getAnimationProcessor().getBone("RightWheel");
+       CoreGeoBone lwl = this.getAnimationProcessor().getBone("LeftWheel");
+
+
+        /*CoreGeoBone turret = this.getAnimationProcessor().getBone("TopPart");
         CoreGeoBone gun = this.getAnimationProcessor().getBone("TopPart").getChildBones().get(1);
         CoreGeoBone manlet = this.getAnimationProcessor().getBone("TopPart").getChildBones().get(0);
 
-        turret.setRotY(0);
+        turret.setRotY(0);*/
         if (animatable.hasControllingPassenger()) {
             Entity rider = animatable.getControllingPassenger();
             if (animatable.isVehicle() && rider instanceof Player player && player.level().isClientSide() && animatable.hasControllingPassenger()) {
-                turret.setRotY((float) -Math.toRadians(rider.getYHeadRot() - animatable.getYRot()));
+                /*turret.setRotY((float) -Math.toRadians(rider.getYHeadRot() - animatable.getYRot()));
                 float elevationAngle = rider.getXRot();
 
                 float maxElevation = 5;
@@ -59,10 +65,15 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
 
                 gun.setRotZ(targetGunRotZ);
                 manlet.setRotZ(targetManletRotZ);
+                main.setRotY((float) Math.toRadians(animatable.getYRot()));
+                rwl.setRotY((float) -Math.toRadians(animatable.getYRot()));
+                lwl.setRotY((float) -Math.toRadians(animatable.getYRot()));
+    */
 
 
             }
         }
     }
+
 
 }

@@ -58,7 +58,7 @@ import javax.annotation.Nullable;
 
 // Completely bare-bones tracked vehicle entity primarily to be used for addons.
 
-
+/*
 public class BaseTrackedVehicle extends AnimatedTankEntity implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -102,7 +102,7 @@ public class BaseTrackedVehicle extends AnimatedTankEntity implements GeoEntity 
 
 
     public BaseTrackedVehicle(EntityType<?> entityType, Level world) {
-        super((EntityType<? extends Animal>) entityType, world);
+        super((EntityType<? extends LivingEntity>) entityType, world);
     }
 
 
@@ -256,12 +256,7 @@ public class BaseTrackedVehicle extends AnimatedTankEntity implements GeoEntity 
         return false;
     }
 
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((float) health);
-        this.setHealth((float) health);
-        return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
-    }
+
 
     @Override
     public boolean startRiding(Entity p_21396_, boolean p_21397_) {
@@ -279,10 +274,6 @@ public class BaseTrackedVehicle extends AnimatedTankEntity implements GeoEntity 
         return SoundEvents.ARMOR_EQUIP_IRON;
     }
 
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.ARMOR_EQUIP_IRON;
-    }
 
     @Override
     protected SoundEvent getSwimSplashSound() {
@@ -457,3 +448,4 @@ public class BaseTrackedVehicle extends AnimatedTankEntity implements GeoEntity 
 
 
 }
+*/

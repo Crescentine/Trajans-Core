@@ -21,6 +21,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+
 @Mod.EventBusSubscriber(modid = TrajansCoreMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class TrajansCoreEntities {
     public static DeferredRegister<EntityType<?>> ENTITY_TYPES
@@ -69,9 +70,9 @@ public class TrajansCoreEntities {
             () -> EntityType.Builder.<LuchsTankEntity>of(LuchsTankEntity::new, MobCategory.MISC).sized(3.5F, 2.3F)
                     .clientTrackingRange(10).build("luchs"));
 
-    public static final RegistryObject<EntityType<ExampleATEntity>> EXAMPLE_AT = ENTITY_TYPES.register("example_at",
+    /*public static final RegistryObject<EntityType<ExampleATEntity>> EXAMPLE_AT = ENTITY_TYPES.register("example_at",
             () -> EntityType.Builder.<ExampleATEntity>of(ExampleATEntity::new, MobCategory.MISC).sized(1.65f, 1.05f)
-                    .clientTrackingRange(10).build("example_at"));
+                    .clientTrackingRange(10).build("example_at"));*/
 
     public static void register(IEventBus eventBus) {
         ENTITY_TYPES.register(eventBus);
@@ -79,8 +80,8 @@ public class TrajansCoreEntities {
 
     @SubscribeEvent
     public static void entityAttributesInit(EntityAttributeCreationEvent event) {
-        event.put(EXAMPLE_TANK.get(), ExampleTankEntity.createAttributes().build());
-        event.put(LUCHS.get(), LuchsTankEntity.createAttributes().build());
-        event.put(EXAMPLE_AT.get(), ExampleATEntity.createAttributes().build());
+        /*event.put(EXAMPLE_TANK.get(), ExampleTankEntity.createAttributes().build());
+        event.put(LUCHS.get(), LuchsTankEntity.createAttributes().build());*/
+        //event.put(EXAMPLE_AT.get(), ExampleATEntity.createAttributes().build());
     }
 }

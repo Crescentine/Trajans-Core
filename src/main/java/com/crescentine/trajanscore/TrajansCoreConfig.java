@@ -7,6 +7,9 @@ public class TrajansCoreConfig {
     public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> fuelSystemEnabled;
+
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ATMountMove;
+
     public static final ForgeConfigSpec.ConfigValue<Double> coalFuelAmount;
     public static final ForgeConfigSpec.ConfigValue<Double> lavaFuelAmount;
     public static final ForgeConfigSpec.ConfigValue<Boolean> tanksImmuneToFire;
@@ -47,6 +50,7 @@ public class TrajansCoreConfig {
         meleeDamageTanks = BUILDER.define("Set to true to make tanks affected by melee", false);
         coalFuelAmount = BUILDER.define("How Much Fuel Coal and Charcoal Gives (seconds)", 6.0);
         lavaFuelAmount = BUILDER.define("How Much Fuel Lava Gives (seconds)", 60.0);
+        ATMountMove = BUILDER.define("Allows you to move your AT slowly when mounted on it", true);
         BUILDER.pop();
 
         BUILDER.push("Standard Shell Stats");

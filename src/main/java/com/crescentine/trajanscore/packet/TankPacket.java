@@ -35,14 +35,15 @@ public class TankPacket {
                         BaseTankEntity Tank = (BaseTankEntity) player.getVehicle();
                         if (Tank.getFuelAmount() != 0) {
                             Tank.shoot(player, Tank, player.level());
+                            Tank.setYRot(Tank.getYRot());
                         }
 
 
                     }
-                    if (player.getVehicle() instanceof BaseATEntity) {
+                    /*if (player.getVehicle() instanceof BaseATEntity) {
                         BaseATEntity AT = (BaseATEntity) player.getVehicle();
                         AT.shoot(player, AT, player.level());
-                    }
+                    }*/
                 }
         );
         context.setPacketHandled(true);

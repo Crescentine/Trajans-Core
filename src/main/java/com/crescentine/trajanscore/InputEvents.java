@@ -25,6 +25,7 @@ public class InputEvents {
     }
 
     private static void onInput(Minecraft mc, int key, int action) {
+        /*
         if (mc.screen == null && TankModClient.SHOOT_KEY.consumeClick()) {
             TrajansCoreNetwork.TANK.sendToServer(new TankPacket(key));
 
@@ -34,7 +35,10 @@ public class InputEvents {
             TrajansCoreNetwork.FUEL_REMAINING.sendToServer(new FuelRemainingPacket(key));
 
         }
-
+        if (TankModClient.TOGGLE_VISIBILITY_KEY.consumeClick() && mc.player.getVehicle() instanceof BaseTankEntity b) {
+            b.isVisiblePlayer = !b.isVisiblePlayer;
+        }
+    */
     }
 
 

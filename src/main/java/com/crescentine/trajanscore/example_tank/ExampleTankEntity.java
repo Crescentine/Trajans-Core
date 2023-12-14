@@ -24,7 +24,7 @@ public class ExampleTankEntity extends BaseTankEntity  {
 
 
     public ExampleTankEntity(EntityType<?> entityType, Level world) {
-        super(entityType, world);
+        super((EntityType<? extends BaseTankEntity>) entityType, world);
         this.health = 20.0;
         this.speedMultiplier = 0.25;
         this.shootingCooldown = 260;

@@ -1,6 +1,7 @@
 package com.crescentine.trajanscore.basetank;
 
 import com.crescentine.trajanscore.ATShootEvent;
+import com.crescentine.trajanscore.TankModClient;
 import com.crescentine.trajanscore.TrajansCoreConfig;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.sound.SoundRegistry;
@@ -33,9 +34,11 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.Animation;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -47,7 +50,14 @@ import javax.annotation.Nullable;
 import static com.crescentine.trajanscore.basetank.BaseTankEntity.AMMO;
 
 public class BaseATEntity extends AnimatedTankEntity {
-    public boolean canUseAPCR;
+    protected BaseATEntity(EntityType<? extends LivingEntity> pEntityType, Level pLevel) {
+        super(pEntityType, pLevel);
+    }
+
+
+
+
+    /*public boolean canUseAPCR;
     public boolean canUseStandard;
     public boolean canUseArmorPiercing;
     public boolean canUseHeat;
@@ -63,7 +73,7 @@ public class BaseATEntity extends AnimatedTankEntity {
 
 
     public BaseATEntity(EntityType<?> entityType, Level world) {
-        super((EntityType<? extends Animal>) entityType, world);
+        super((EntityType<? extends LivingEntity>) entityType, world);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -94,13 +104,6 @@ public class BaseATEntity extends AnimatedTankEntity {
         return true;
     }
 
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_146746_, DifficultyInstance p_146747_, MobSpawnType p_146748_, @Nullable SpawnGroupData p_146749_, @Nullable CompoundTag p_146750_) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue((float) health);
-        this.getAttribute(Attributes.ARMOR).setBaseValue(armor);
-        this.setHealth((float) health);
-        return super.finalizeSpawn(p_146746_, p_146747_, p_146748_, p_146749_, p_146750_);
-    }
 
     @Override
     public boolean startRiding(Entity p_21396_, boolean p_21397_) {
@@ -123,10 +126,6 @@ public class BaseATEntity extends AnimatedTankEntity {
         return SoundEvents.ARMOR_EQUIP_IRON;
     }
 
-    @Override
-    protected SoundEvent getAmbientSound() {
-        return SoundEvents.ARMOR_EQUIP_IRON;
-    }
 
     @Override
     protected SoundEvent getSwimSplashSound() {
@@ -139,6 +138,8 @@ public class BaseATEntity extends AnimatedTankEntity {
     protected SoundEvent getSwimSound() {
         return SoundEvents.GENERIC_SWIM;
     }
+
+
 
     @Override
     public void tick() {
@@ -333,19 +334,38 @@ public class BaseATEntity extends AnimatedTankEntity {
     }
 
 
+    @Override
+    public void travel(Vec3 pTravelVector) {
+        if (this.isAlive() && TrajansCoreConfig.ATMountMove.get()) {
+            if (this.isVehicle()) {
+                LivingEntity livingEntity = (LivingEntity) this.getControllingPassenger();
+
+                float forward = livingEntity.zza; // Consider only forward/backward movement
+                if (forward <= 0.0F) {
+                    forward *= 0.25F;
+                }
+
+                this.setSpeed(0.045f);
+
+                super.travel(new Vec3(0, pTravelVector.y, forward));
+            }
+        }
+    }
 
 
     @Override
     protected void tickRidden(Player pPlayer, Vec3 pos) {
+        super.tickRidden(pPlayer, pos);
         this.setRot(pPlayer.getYRot(), pPlayer.getXRot() * 0.5F);
         this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
-
-        super.tickRidden(pPlayer, pos);
     }
+
 
     @org.jetbrains.annotations.Nullable
     @Override
     public LivingEntity getControllingPassenger() {
         return this.getPassengers().isEmpty() ? null : (LivingEntity) this.getPassengers().get(0);
     }
+
+     */
 }

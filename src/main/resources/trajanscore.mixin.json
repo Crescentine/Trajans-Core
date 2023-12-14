@@ -6,9 +6,9 @@
   ],
   "client": [
     "EntityRenderDispatcherMixin",
-    "GameRendererMixin",
     "GuiMixin",
-    "LivingEntityRendererMixin"
+    "LivingEntityRendererMixin",
+    "LocalPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
