@@ -34,8 +34,6 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
     public void setCustomAnimations(ExampleTankEntity animatable, long instanceId, software.bernie.geckolib.core.animation.AnimationState<ExampleTankEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
         CoreGeoBone main = this.getAnimationProcessor().getBone("Tank");
-       CoreGeoBone rwl = this.getAnimationProcessor().getBone("RightWheel");
-       CoreGeoBone lwl = this.getAnimationProcessor().getBone("LeftWheel");
 
 
         /*CoreGeoBone turret = this.getAnimationProcessor().getBone("TopPart");
@@ -65,10 +63,10 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
 
                 gun.setRotZ(targetGunRotZ);
                 manlet.setRotZ(targetManletRotZ);
+
+                 */
                 main.setRotY((float) Math.toRadians(animatable.getYRot()));
-                rwl.setRotY((float) -Math.toRadians(animatable.getYRot()));
-                lwl.setRotY((float) -Math.toRadians(animatable.getYRot()));
-    */
+
 
 
             }
