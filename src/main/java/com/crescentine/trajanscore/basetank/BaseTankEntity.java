@@ -20,8 +20,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
-import net.minecraft.network.protocol.game.ServerboundPaddleBoatPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -406,6 +404,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
     private void controlTank() {
         if (this.isVehicle() && this.getControllingPassenger() != null) {
+            this.setYBodyRot(this.getYRot());
             if (!this.onGround()) {
                 double gravity = 0.08D;
                 Vec3 motion = this.getDeltaMovement();
@@ -421,35 +420,38 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
                 if (livingEntity.isPassenger()) {
                     if (this.inputLeft) {
-                        this.setYRot(this.getYRot() + 1.0F); // Rotate left
+                        this.setYRot(this.getYRot() + 1.0F);
                     }
 
                     if (this.inputRight) {
-                        this.setYRot(this.getYRot() - 1.0F); // Rotate right
+                        this.setYRot(this.getYRot() - 1.0F);
                     }
+                    System.out.println(this.getYRot());
 
-
-
+                    double yawRad = Math.toRadians(this.getYRot());
+                    double x = Math.sin(yawRad);
+                    double z = -Math.cos(yawRad);
 
                     if (this.inputUp) {
-                        moveZ += 0.1;
+                        moveX += x * 0.1;
+                        moveZ += z * 0.1;
                     }
 
                     if (this.inputDown) {
-                        moveZ -= 0.1;
+                        moveX -= x * 0.1;
+                        moveZ -= z * 0.1;
                     }
 
                     this.move(MoverType.SELF, new Vec3(moveX, moveY, moveZ));
 
                     if (this.horizontalCollision && this.onGround()) {
-                        this.setDeltaMovement(this.getDeltaMovement().add((double)(Mth.sin(-this.getYRot() * ((float)Math.PI / 180F))), 0.0D, (double)(Mth.cos(this.getYRot() * ((float)Math.PI / 180F)))));
                         this.setDeltaMovement(this.getDeltaMovement().add(0.0, upwardForce, 0.0));
                     }
                 }
-
             }
         }
     }
+
 
 
 
