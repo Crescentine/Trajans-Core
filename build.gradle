@@ -72,7 +72,7 @@ minecraft {
             // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
             arg "-mixin.config=trajanscore.mixin.json"
-            args "--username", "Joseph"
+            args "--username", "George"
 
             mods {
                 examplemod {

@@ -403,8 +403,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
 
     private void controlTank() {
-        if (this.isVehicle() && this.getControllingPassenger() != null) {
-            this.setYBodyRot(this.getYRot());
+        if (this.isVehicle() && this.hasControllingPassenger()) {
             if (!this.onGround()) {
                 double gravity = 0.08D;
                 Vec3 motion = this.getDeltaMovement();
@@ -418,7 +417,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
                 double moveZ = 0.0;
                 float upwardForce = 0.5f;
 
-                if (livingEntity.isPassenger()) {
+                if (this.hasControllingPassenger()) {
                     if (this.inputLeft) {
                         this.setYRot(this.getYRot() + 1.0F);
                     }
@@ -426,11 +425,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
                     if (this.inputRight) {
                         this.setYRot(this.getYRot() - 1.0F);
                     }
-                    System.out.println(this.getYRot());
 
                     double yawRad = Math.toRadians(this.getYRot());
                     double x = Math.sin(yawRad);
-                    double z = -Math.cos(yawRad);
+                    double z = Math.cos(yawRad);
 
                     if (this.inputUp) {
                         moveX += x * 0.1;
@@ -444,7 +442,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
                     this.move(MoverType.SELF, new Vec3(moveX, moveY, moveZ));
 
-                    if (this.horizontalCollision && this.onGround()) {
+                    if (this.horizontalCollision && this.onGround() && this.hasControllingPassenger()) {
                         this.setDeltaMovement(this.getDeltaMovement().add(0.0, upwardForce, 0.0));
                     }
                 }
@@ -623,7 +621,9 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             this.setDeltaMovement(Vec3.ZERO);
         }
         System.out.println(this.getYRot());
-
+        if(!this.hasControllingPassenger()) {
+            this.setYRot(0);
+        }
 
         fuelTick();
         accelerationTick();
@@ -1038,6 +1038,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     }
 
 
+
+    @org.jetbrains.annotations.Nullable
     @Override
     public LivingEntity getControllingPassenger() {
         return this.getPassengers().isEmpty() ? null : (LivingEntity) this.getPassengers().get(0);

@@ -19,10 +19,7 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
     }
 
     public ResourceLocation getTextureResource(ExampleTankEntity object) {
-        if (object.isCamoRed) {
-            return new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/item/red.png");
 
-        }
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "textures/item/tank.png");
     }
 
@@ -30,21 +27,22 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
         return new ResourceLocation(TrajansCoreMod.MOD_ID, "animations/tank.json");
     }
 
+
    @Override
     public void setCustomAnimations(ExampleTankEntity animatable, long instanceId, software.bernie.geckolib.core.animation.AnimationState<ExampleTankEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
         CoreGeoBone main = this.getAnimationProcessor().getBone("Tank");
-
+        CoreGeoBone turret = this.getAnimationProcessor().getBone("Tank").getChildBones().get(1).getChildBones().get(0);
 
         /*CoreGeoBone turret = this.getAnimationProcessor().getBone("TopPart");
         CoreGeoBone gun = this.getAnimationProcessor().getBone("TopPart").getChildBones().get(1);
         CoreGeoBone manlet = this.getAnimationProcessor().getBone("TopPart").getChildBones().get(0);
-
-        turret.setRotY(0);*/
+*/
         if (animatable.hasControllingPassenger()) {
             Entity rider = animatable.getControllingPassenger();
             if (animatable.isVehicle() && rider instanceof Player player && player.level().isClientSide() && animatable.hasControllingPassenger()) {
-                /*turret.setRotY((float) -Math.toRadians(rider.getYHeadRot() - animatable.getYRot()));
+                turret.setRotY((float) -Math.toRadians(rider.getYHeadRot()));
+                /*
                 float elevationAngle = rider.getXRot();
 
                 float maxElevation = 5;
@@ -55,6 +53,7 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
                 } else if (elevationAngle < minElevation) {
                     elevationAngle = minElevation;
                 }
+
 
                 float targetGunRotZ = (float) Math.toRadians(elevationAngle);
                 float targetManletRotZ = (float) Math.toRadians(elevationAngle);
@@ -72,6 +71,7 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
             }
         }
     }
+
 
 
 }
