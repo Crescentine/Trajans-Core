@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.crescentine.trajanscore.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+    "EntityRenderDispatcherMixin",
+    "ForgeGuiMixin",
+    "LivingEntityRendererMixin",
+    "LocalPlayerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "trajanscore.refmap.json"
+}

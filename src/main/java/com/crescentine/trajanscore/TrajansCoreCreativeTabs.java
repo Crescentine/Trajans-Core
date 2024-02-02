@@ -50,6 +50,8 @@ public class TrajansCoreCreativeTabs {
                 output.accept(TrajansCoreItems.ARMOR_PIERCING_SHELL.get());
                 output.accept(TrajansCoreItems.HEAT_SHELL.get());
                 output.accept(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get());
+                output.accept(TrajansCoreItems.LOW_CALIBER_SHELL.get());
+
             }).build());
     public static void register(IEventBus eventBus) {
         CREATIVE_TABS.register(eventBus);

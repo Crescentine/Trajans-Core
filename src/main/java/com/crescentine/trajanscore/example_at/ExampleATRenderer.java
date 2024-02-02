@@ -10,4 +10,7 @@ public class ExampleATRenderer extends GeoEntityRenderer<ExampleATEntity> {
         super(renderManagerIn, new ExampleATModel());
         this.shadowRadius = 0.7F;
     }
+
+
+
 }

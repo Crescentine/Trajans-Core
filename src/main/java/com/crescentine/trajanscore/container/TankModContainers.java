@@ -37,6 +37,7 @@ public class TankModContainers {
 
 
 
+
     private static <T extends AbstractContainerMenu>RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,
                                                                                                  String name) {
         return CONTAINERS.register(name, () -> IForgeMenuType.create(factory));
