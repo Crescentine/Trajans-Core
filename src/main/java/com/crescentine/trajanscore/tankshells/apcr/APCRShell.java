@@ -2,6 +2,7 @@ package com.crescentine.trajanscore.tankshells.apcr;
 
 import com.crescentine.trajanscore.TrajansCoreConfig;
 import com.crescentine.trajanscore.TrajansCoreEntities;
+import com.crescentine.trajanscore.basetank.BaseTankEntity;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.tankshells.base.BaseShell;
 import net.minecraft.nbt.CompoundTag;
@@ -33,6 +34,7 @@ public class APCRShell extends BaseShell {
         explosionRadius = TrajansCoreConfig.APCRShellExplosionRadius.get();
         fire = false;
     }
+
 
 
 

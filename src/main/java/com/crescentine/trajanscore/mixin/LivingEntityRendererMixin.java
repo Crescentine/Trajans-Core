@@ -25,6 +25,6 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
 
     @Inject(method = "render(Lnet/minecraft/world/entity/LivingEntity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At("HEAD"), cancellable = true)
     private void render(T livingEntity, float yaw, float tickDelta, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, CallbackInfo ci) {
-        if (livingEntity instanceof Player player && TankUtilMain.playerIsInTank(player) && ((BaseTankEntity) player.getControlledVehicle()).isVisiblePlayer) ci.cancel();
+        if (livingEntity instanceof Player player && TankUtilMain.playerIsInTank(player) && ((BaseTankEntity) player.getControlledVehicle()).getVisibility()) ci.cancel();
     }
 }

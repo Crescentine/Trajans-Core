@@ -6,7 +6,7 @@
   ],
   "client": [
     "EntityRenderDispatcherMixin",
-    "GuiMixin",
+    "ForgeGuiMixin",
     "LivingEntityRendererMixin",
     "LocalPlayerMixin"
   ],

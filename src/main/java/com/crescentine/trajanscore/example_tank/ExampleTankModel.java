@@ -38,10 +38,13 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
         CoreGeoBone gun = this.getAnimationProcessor().getBone("TopPart").getChildBones().get(1);
         CoreGeoBone manlet = this.getAnimationProcessor().getBone("TopPart").getChildBones().get(0);
 */
-        if (animatable.hasControllingPassenger()) {
+
+       main.setRotY(0f);
+       turret.setRotY(0f);
+     if (animatable.getControllingPassenger()!=null) {
             Entity rider = animatable.getControllingPassenger();
-            if (animatable.isVehicle() && rider instanceof Player player && player.level().isClientSide() && animatable.hasControllingPassenger()) {
-                turret.setRotY((float) -Math.toRadians(rider.getYHeadRot()));
+            if (animatable.isVehicle()) {
+                turret.setRotY((float) -Math.toRadians(rider.getYHeadRot()+animatable.getYRot()));
                 /*
                 float elevationAngle = rider.getXRot();
 
@@ -69,8 +72,12 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
 
 
             }
-        }
+        } else {
+         main.setRotY((float) Math.toRadians(animatable.getYRot()));
+     }
     }
+
+
 
 
 

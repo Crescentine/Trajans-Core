@@ -7,6 +7,8 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -35,6 +37,8 @@ public abstract class AnimatedTankEntity extends Entity implements GeoEntity {
     }
 
 
+    @OnlyIn(Dist.CLIENT)
+    public abstract void lerpTo(double x, double y, double z, float yaw, float pitch, int posRotationIncrements);
 
     @Override
     protected void defineSynchedData() {

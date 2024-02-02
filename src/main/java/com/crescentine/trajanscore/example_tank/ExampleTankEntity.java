@@ -1,12 +1,18 @@
 package com.crescentine.trajanscore.example_tank;
 
 import com.crescentine.trajanscore.TankShootEvent;
+import com.crescentine.trajanscore.TrajansCoreEntities;
 import com.crescentine.trajanscore.TrajansCoreMod;
 import com.crescentine.trajanscore.basetank.BaseTankEntity;
+import com.crescentine.trajanscore.item.TrajansCoreItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -46,14 +52,48 @@ public class ExampleTankEntity extends BaseTankEntity  {
 
 
 
+
+
     protected <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
-        if (event.isMoving() && this.getControllingPassenger()!=null) {
+        if ((this.entityData.get(DATA_IS_MOVING) || this.entityData.get(DATA_IS_ROTATING)) && this.getControllingPassenger() != null && this.level().isClientSide()) {
             event.getController().setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
             return PlayState.CONTINUE;
         }
         return PlayState.STOP;
-
     }
+
+
+    public ItemStack getItemStack() {
+        ItemStack itemStack = getItem().getDefaultInstance();
+        CompoundTag compound = new CompoundTag();
+        addAdditionalSaveData(compound);
+        compound.putInt("health", entityData.get(HEALTH));
+        itemStack.addTagElement("EntityTag", compound);
+        return itemStack;
+    }
+
+
+    @Override
+    public boolean hurt(DamageSource pSource, float pAmount) {
+        if(getHealth()<=0) {
+            kill();
+            dropItem();
+        }
+
+        return super.hurt(pSource, pAmount);
+    }
+
+    protected void dropItem() {
+        ItemStack itemStack = getItemStack();
+        spawnAtLocation(itemStack);
+    }
+
+
+    protected Item getItem() {
+        return TrajansCoreItems.HAMMER.get();
+    }
+
+
 
 
 

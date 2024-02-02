@@ -35,7 +35,6 @@
   "key.trajanscore.shootKey" : "Shoot (Trajan's Tanks)",
   "key.trajanscore.fuelRemaining" : "Print Amount of Fuel Remaining",
   "key.trajanscore.toggleVisibility" : "Toggle Visibility",
-  "key.trajanscore.zoom" : "Toggle Zoom",
 
 
   "itemgroup.trajanscore_shells" : "Tank Shells",

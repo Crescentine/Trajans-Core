@@ -99,7 +99,7 @@ public class RotationOverlay {
             int pivpxTurret = pxTurret+32;
             int pivpyTurret = pyTurret+32;
             poseStack.pose().translate(pivpxTurret, pivpyTurret, 0);
-            poseStack.pose().mulPose(Axis.ZP.rotationDegrees(entity.getControllingPassenger().getYHeadRot()-entity.getYRot())); // Rotate turret (example rotation)
+            poseStack.pose().mulPose(Axis.ZP.rotationDegrees(entity.getControllingPassenger().getYHeadRot()-entity.getYRot()));
             poseStack.pose().translate(-pivpxTurret, -pivpyTurret, 0);
 
             for (int i = 0; i < 10; i++) {

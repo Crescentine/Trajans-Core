@@ -14,14 +14,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = Gui.class, priority = 1010)
+//@Mixin(value = Gui.class, priority = 1010)
 public class GuiMixin {
-    @Shadow @Final protected Minecraft minecraft;
+    //@Shadow @Final protected Minecraft minecraft;
 
-    @Inject(method = "renderCrosshair", at = @At(value = "HEAD"), cancellable = true)
-    private void dynamiccrosshair$preCrosshair(GuiGraphics p_282828_, CallbackInfo ci) {
-        if(this.minecraft.player.getVehicle() instanceof BaseTankEntity) {
-            ci.cancel();
-        }
+    //@Inject(method = "renderCrosshair", at = @At(value = "HEAD"), cancellable = true)
+    private void crosshair(GuiGraphics p_282828_, CallbackInfo ci) {
+//        if(this.minecraft.player.getVehicle() instanceof BaseTankEntity) {
+ //           ci.cancel();
+  //      }
     }
 }

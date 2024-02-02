@@ -25,10 +25,15 @@ public class ExampleATModel extends GeoModel<ExampleATEntity> {
     public void setCustomAnimations(ExampleATEntity animatable, long instanceId, AnimationState<ExampleATEntity> animationState) {
         super.setCustomAnimations(animatable, instanceId, animationState);
         CoreGeoBone gun = this.getAnimationProcessor().getBone("Barrel");
+        CoreGeoBone main = this.getAnimationProcessor().getBone("Artillery");
+        gun.setRotY(0f);
+        main.setRotY(0f);
+
         if (animatable.hasControllingPassenger()) {
             Entity rider = animatable.getControllingPassenger();
             if (animatable.isVehicle() && rider instanceof Player player && player.level().isClientSide() && animatable.hasControllingPassenger()) {
                 float elevationAngle = rider.getXRot();
+                main.setRotY((float) Math.toRadians(-animatable.getYRot()));
 
                 float maxElevation = 8;
                 float minElevation = -3;
@@ -46,6 +51,8 @@ public class ExampleATModel extends GeoModel<ExampleATEntity> {
                 gun.setRotX(-targetGunRotZ);
 
 
+            } else {
+                main.setRotY((float) Math.toRadians(-animatable.getYRot()));
             }
         }
     }

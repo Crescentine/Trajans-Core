@@ -1,5 +1,6 @@
 package com.crescentine.trajanscore.tankshells.base;
 
+import com.crescentine.trajanscore.basetank.BaseTankEntity;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -73,6 +74,10 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
         Entity entity = entityHitResult.getEntity();
         entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
         if (entity instanceof LivingEntity) {
+            entity.hurt(damageSources().thrown(this, this.getOwner()), (float) damage);
+            entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
+        }
+        if (entity instanceof BaseTankEntity) {
             entity.hurt(damageSources().thrown(this, this.getOwner()), (float) damage);
             entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
         }

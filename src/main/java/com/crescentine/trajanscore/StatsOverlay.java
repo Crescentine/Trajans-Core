@@ -1,5 +1,6 @@
 package com.crescentine.trajanscore;
 
+import com.crescentine.trajanscore.basetank.BaseATEntity;
 import com.crescentine.trajanscore.basetank.BaseTankEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -41,26 +42,36 @@ public class StatsOverlay implements IGuiOverlay {
         Player player = gui.getMinecraft().player;
         if(player == null)
             return;
+         Level world = player.level();
+         if (!world.isClientSide) {
+             return;
+         }
 
         Entity entity = player.getVehicle();
-        if(!(entity instanceof BaseTankEntity tank))
-            return;
-        Level world = player.level();
-        if (!world.isClientSide) {
-            return;
+        if(entity instanceof BaseTankEntity tank) {
+            DecimalFormat format1 = new DecimalFormat("0.00");
+            String speed = format1.format(tank.getOverlaySpeed());
+            String health = format1.format(tank.getHealth());
+            guiGraphics.drawString(gui.getMinecraft().font, ChatFormatting.BOLD + "Health: " + ChatFormatting.WHITE + health, 10, 10, Color.CYAN.getRGB());
+            if(TrajansCoreConfig.fuelSystemEnabled.get() && !(((BaseTankEntity) entity).isZoom)) { //!(gui.getMinecraft().options.getCameraType().isFirstPerson())
+                DecimalFormat format = new DecimalFormat("0.0");
+                String fuel = format.format(tank.getFuelAmount()) + "/" + format.format(tank.maxFuel);
+                guiGraphics.drawString(gui.getMinecraft().font,  ChatFormatting.BOLD + "Fuel Remaining: " + ChatFormatting.WHITE + fuel, 10, 20, Color.CYAN.getRGB());
+                //  mc.font.drawShadow(matrixStack, ChatFormatting.BOLD + "Speed: " + ChatFormatting.WHITE + speed + " Blocks Per Second", 10, 30, Color.CYAN.getRGB());
+            }
         }
 
+         if(entity instanceof BaseATEntity at) {
+             DecimalFormat format1 = new DecimalFormat("0.00");
+             String speed = format1.format(at.getOverlaySpeed());
+             String health = format1.format(at.getHealth());
+             guiGraphics.drawString(gui.getMinecraft().font, ChatFormatting.BOLD + "Health: " + ChatFormatting.WHITE + health, 10, 10, Color.CYAN.getRGB());
 
-        DecimalFormat format1 = new DecimalFormat("0.00");
-        String speed = format1.format(tank.getOverlaySpeed());
-        String health = format1.format(tank.getHealth());
-        guiGraphics.drawString(gui.getMinecraft().font, ChatFormatting.BOLD + "Health: " + ChatFormatting.WHITE + health, 10, 10, Color.CYAN.getRGB());
-        if(TrajansCoreConfig.fuelSystemEnabled.get() && (((BaseTankEntity) entity).showFuel) && !(((BaseTankEntity) entity).isZoom) && !(gui.getMinecraft().options.getCameraType().isFirstPerson())) {
-            DecimalFormat format = new DecimalFormat("0.0");
-            String fuel = format.format(tank.getFuelAmount()) + "/" + format.format(tank.maxFuel);
-            guiGraphics.drawString(gui.getMinecraft().font,  ChatFormatting.BOLD + "Fuel Remaining: " + ChatFormatting.WHITE + fuel, 10, 20, Color.CYAN.getRGB());
-            //  mc.font.drawShadow(matrixStack, ChatFormatting.BOLD + "Speed: " + ChatFormatting.WHITE + speed + " Blocks Per Second", 10, 30, Color.CYAN.getRGB());
-        }
+         }
+
+
+
+
 
     }
 

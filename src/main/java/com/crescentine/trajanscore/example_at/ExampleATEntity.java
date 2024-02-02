@@ -2,8 +2,8 @@ package com.crescentine.trajanscore.example_at;
 
 import com.crescentine.trajanscore.basetank.BaseATEntity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import oshi.jna.platform.unix.CLibrary;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -14,11 +14,9 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class ExampleATEntity extends BaseATEntity implements GeoEntity {
-    protected ExampleATEntity(EntityType<? extends LivingEntity> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
-    }
-    /*private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    public ExampleATEntity(EntityType<?> entityType, Level world) {
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public ExampleATEntity(EntityType<? extends BaseATEntity> entityType, Level world) {
         super(entityType, world);
         this.health = 20;
         this.armor = 3.0;
@@ -44,5 +42,5 @@ public class ExampleATEntity extends BaseATEntity implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.cache;
-    }*/
+    }
 }

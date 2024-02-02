@@ -25,20 +25,24 @@ public class InputEvents {
     }
 
     private static void onInput(Minecraft mc, int key, int action) {
-        /*
+
         if (mc.screen == null && TankModClient.SHOOT_KEY.consumeClick()) {
             TrajansCoreNetwork.TANK.sendToServer(new TankPacket(key));
 
         }
-
+        /*
         if (mc.screen == null && TankModClient.FUEL_CHECK.consumeClick()) {
             TrajansCoreNetwork.FUEL_REMAINING.sendToServer(new FuelRemainingPacket(key));
 
         }
-        if (TankModClient.TOGGLE_VISIBILITY_KEY.consumeClick() && mc.player.getVehicle() instanceof BaseTankEntity b) {
-            b.isVisiblePlayer = !b.isVisiblePlayer;
+        */
+
+        if (TankModClient.TOGGLE_VISIBILITY_KEY.consumeClick() && mc.player.getVehicle() instanceof BaseTankEntity b && b.level().isClientSide) {
+            TrajansCoreNetwork.TANK.sendToServer(new VisibilityPacket());
         }
-    */
+
+
+
     }
 
 
