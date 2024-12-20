@@ -10,7 +10,6 @@ import com.crescentine.trajanscore.tankshells.highexplosive.HighExplosiveShell;
 import com.crescentine.trajanscore.tankshells.low_caliber.LowCaliberShell;
 import com.crescentine.trajanscore.tankshells.low_caliber.LowCaliberShellModel;
 import com.crescentine.trajanscore.tankshells.standard.StandardShell;
-import com.crescentine.trajanscore.temp_luchs_test.LuchsTankEntity;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -71,9 +70,6 @@ public class TrajansCoreEntities {
 
 
 
-    public static final RegistryObject<EntityType<LuchsTankEntity>> LUCHS = ENTITY_TYPES.register("luchs",
-            () -> EntityType.Builder.<LuchsTankEntity>of(LuchsTankEntity::new, MobCategory.MISC).sized(3.5F, 2.3F)
-                    .clientTrackingRange(10).build("luchs"));
 
     public static final RegistryObject<EntityType<ExampleATEntity>> EXAMPLE_AT = ENTITY_TYPES.register("example_at",
             () -> EntityType.Builder.<ExampleATEntity>of(ExampleATEntity::new, MobCategory.MISC).sized(1.65f, 1.05f)

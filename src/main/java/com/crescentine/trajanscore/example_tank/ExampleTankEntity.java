@@ -8,9 +8,12 @@ import com.crescentine.trajanscore.item.TrajansCoreItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,10 +35,11 @@ public class ExampleTankEntity extends BaseTankEntity  {
     public ExampleTankEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends BaseTankEntity>) entityType, world);
         this.health = 20.0;
-        this.speedMultiplier = 0.25;
-        this.shootingCooldown = 260;
+        this.speedMultiplier = 0.8;
+        this.shootingCooldown = 20;
         this.armor = 3.0;
         this.isTD = false;
+        this.tankItem = TrajansCoreItems.CRAFTER_BLOCK_ITEM.get();
 
 
         this.healAmount = 5;
@@ -63,35 +67,10 @@ public class ExampleTankEntity extends BaseTankEntity  {
     }
 
 
-    public ItemStack getItemStack() {
-        ItemStack itemStack = getItem().getDefaultInstance();
-        CompoundTag compound = new CompoundTag();
-        addAdditionalSaveData(compound);
-        compound.putInt("health", entityData.get(HEALTH));
-        itemStack.addTagElement("EntityTag", compound);
-        return itemStack;
-    }
 
 
-    @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
-        if(getHealth()<=0) {
-            kill();
-            dropItem();
-        }
-
-        return super.hurt(pSource, pAmount);
-    }
-
-    protected void dropItem() {
-        ItemStack itemStack = getItemStack();
-        spawnAtLocation(itemStack);
-    }
 
 
-    protected Item getItem() {
-        return TrajansCoreItems.HAMMER.get();
-    }
 
 
 

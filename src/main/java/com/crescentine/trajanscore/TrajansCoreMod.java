@@ -20,7 +20,6 @@ import com.crescentine.trajanscore.tankshells.heat.HeatShellRenderer;
 import com.crescentine.trajanscore.tankshells.highexplosive.HighExplosiveShellRenderer;
 import com.crescentine.trajanscore.tankshells.low_caliber.LowCaliberShellRenderer;
 import com.crescentine.trajanscore.tankshells.standard.StandardShellRenderer;
-import com.crescentine.trajanscore.temp_luchs_test.LuchsTankRenderer;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -99,7 +98,6 @@ public class TrajansCoreMod {
             EntityRenderers.register(TrajansCoreEntities.EXAMPLE_TANK.get(), ExampleTankRenderer::new);
 
 
-            EntityRenderers.register(TrajansCoreEntities.LUCHS.get(), LuchsTankRenderer::new);
             EntityRenderers.register(TrajansCoreEntities.EXAMPLE_AT.get(), ExampleATRenderer::new);
         }
     }

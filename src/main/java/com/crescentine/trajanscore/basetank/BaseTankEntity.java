@@ -6,6 +6,7 @@ import com.crescentine.trajanscore.TrajansCoreConfig;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
 import com.crescentine.trajanscore.packet.InputPacket;
 import com.crescentine.trajanscore.packet.TrajansCoreNetwork;
+import com.crescentine.trajanscore.sound.SoundRegistry;
 import com.crescentine.trajanscore.tankshells.apcr.APCRShell;
 import com.crescentine.trajanscore.tankshells.armorpiercing.ArmorPiercingShell;
 import com.crescentine.trajanscore.tankshells.heat.HeatShell;
@@ -34,11 +35,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.DismountHelper;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -65,6 +68,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public double healAmount = 0;
     public boolean armored;
     public double speedMultiplier = 0;
+    public Item tankItem;
+    protected double shootingYOffset = 1.5; // Default Y-offset for shell spawning
 
     private static final EntityDataAccessor<Integer> FUEL_AMOUNT = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.FLOAT);
@@ -82,30 +87,25 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public static final EntityDataAccessor<Boolean> DATA_IS_ROTATING = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.BOOLEAN);
 
 
-    private boolean shooting = false;
-
     public boolean isVisiblePlayer = true;
     public boolean isZoom = false;
 
-
-    public boolean isCamoRed = false;
     protected SimpleContainer inventory;
-
 
     public float time;
     public double armor = 0;
     static int shellsUsed = 1;
     public double health = 0;
-    private ResourceLocation lootTable;
 
     public boolean isTD;
+    public boolean isOpposite;
+    // ^ for tanks like archer (sigh)
 
     public int age;
 
     public double coalFuelAmount = TrajansCoreConfig.coalFuelAmount.get();
     public double lavaFuelAmount = TrajansCoreConfig.lavaFuelAmount.get();
     public double maxFuel = 12000.00;
-    public boolean shootingAnimation;
     double d0 = this.random.nextGaussian() * 0.03D;
     double d1 = this.random.nextGaussian() * 0.03D;
     double d2 = this.random.nextGaussian() * 0.03D;
@@ -127,7 +127,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
     public boolean canUseLowCaliberShell;
 
-    public boolean turretFollow;
     public int accelerationTime;
     private boolean breakableBlocks;
     public int timeInVehicle;
@@ -135,16 +134,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
     public float yrot;
 
-
-
     private boolean inputLeft;
     private boolean inputRight;
     private boolean inputUp;
     private boolean inputDown;
-
-
-
-
 
     public BaseTankEntity(EntityType<? extends BaseTankEntity> entityType, Level world) {
         super(entityType, world);
@@ -167,6 +160,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         }
         if (this.isAlive()) {
         }
+        if (player.isShiftKeyDown()){
+            kill();
+            dropItem();
+        }
         if (getFuelAmount() < maxFuel && FUELS.test(itemstack)) {
             if (COAL_FUEL.test(itemstack)) {
                 fuelTankWithItem((int) coalFuelAmount * 20);
@@ -183,7 +180,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             }
             return InteractionResult.SUCCESS;
         }
-        if (canAddPassenger(player)) {
+        if (canAddPassenger(player) && !player.isCrouching()) {
             player.startRiding(this, true);
             return InteractionResult.FAIL;
         }
@@ -195,7 +192,22 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         super.checkFallDamage(pY, pOnGround, pState, pPos);
     }
 
+    protected Item getItem() {
+        return tankItem;
+    }
 
+    public ItemStack getItemStack() {
+        ItemStack itemStack = getItem().getDefaultInstance();
+        CompoundTag compound = new CompoundTag();
+        addAdditionalSaveData(compound);
+        compound.putInt("health", entityData.get(HEALTH));
+        itemStack.addTagElement("EntityTag", compound);
+        return itemStack;
+    }
+    protected void dropItem() {
+        ItemStack itemStack = getItemStack();
+        spawnAtLocation(itemStack);
+    }
 
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity pLivingEntity) {
@@ -227,7 +239,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         }
 
         return super.getDismountLocationForPassenger(pLivingEntity);
-
     }
 
     @Override
@@ -238,7 +249,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             this.absMoveTo(this.lerpX, this.lerpY, this.lerpZ, (float)this.lerpYRot, (float)this.lerpXRot);
         }
     }
-
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
@@ -276,20 +286,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         }
     }
 
-
-
     @Override
     public int getMaxFallDistance() {
         return 30;
     }
-
-
-
-
-
-
-
-
 
     /*
     Added in the next beta
@@ -299,22 +299,14 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         LivingEntity entity = (LivingEntity) pEntity;
         Entity rider = this.getControllingPassenger();
 
-
         if (this.hasControllingPassenger() && pEntity != rider) {
             Player playerRider = (Player) rider;
             assert playerRider != null;
             System.out.println(playerRider.getSpeed());
             entity.hurt(this.damageSources().mobAttack(this), 20);
         }
-
-
-
     }
-
-     */
-
-
-
+    */
 
     public void sendClientInputInfo(boolean up, boolean down, boolean left, boolean right) {
         if (!(
@@ -326,16 +318,13 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             setInput(up, down, left, right);
             TrajansCoreNetwork.TANK.sendToServer(new InputPacket(this, inputUp, inputDown, inputLeft, inputRight));
         }
-
     }
-
 
     @Override
     public void push(Entity pEntity) {
         super.push(pEntity);
         LivingEntity entity = (LivingEntity) pEntity;
         Entity rider = this.getControllingPassenger();
-
 
         if (this.hasControllingPassenger() && pEntity != rider) {
             Player playerRider = (Player) rider;
@@ -384,23 +373,16 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         return flag;
     }
 
-
     @Override
     public boolean shouldRiderSit() {
         return false;
     }
-
-
-
-
-
 
     @Override
     public boolean startRiding(Entity p_21396_, boolean p_21397_) {
         this.time = 0;
         return super.startRiding(p_21396_, p_21397_);
     }
-
 
     @Override
     protected void positionRider(Entity pPassenger, MoveFunction pCallback) {
@@ -425,12 +407,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         this.inputDown = pInputDown;
     }
 
-
-
-
-
-
-
     private void controlTank() {
         if (this.isVehicle() && this.hasControllingPassenger() && this.getFuelAmount() > 0) {
             double gravity = 0.875D;
@@ -450,22 +426,26 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
                 if (this.hasControllingPassenger()) {
                     if (this.inputLeft) {
-                        this.setYRot((float) (this.getYRot() + 1.0F + speedMultiplier));
-                    }
-
-                    if (this.inputRight) {
                         this.setYRot((float) (this.getYRot() - 1.0F - speedMultiplier));
                     }
 
+                    if (this.inputRight) {
+                        this.setYRot((float) (this.getYRot() + 1.0F + speedMultiplier));
+                    }
+
                     double yawRad = Math.toRadians(this.getYRot());
-                    double x = Math.sin(yawRad);
+                    double x = -Math.sin(yawRad);
                     double z = Math.cos(yawRad);
 
-                    if (this.inputUp) {
+                    // Handle forward/backward movement based on isOpposite flag
+                    boolean shouldMoveForward = isOpposite ? this.inputDown : this.inputUp;
+                    boolean shouldMoveBackward = isOpposite ? this.inputUp : this.inputDown;
+
+                    if (shouldMoveForward) {
                         moveX += x * 0.1 * accelerationTime / 10 * speedMultiplier;
                         moveZ += z * 0.1 * accelerationTime / 10 * speedMultiplier;
                     }
-                    if (this.inputDown) {
+                    if (shouldMoveBackward) {
                         moveX -= x * 0.1 * 2 * speedMultiplier; // backward speed
                         moveZ -= z * 0.1 * 2 * speedMultiplier;
                     }
@@ -488,11 +468,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         }
     }
 
-
-
-
-
-
     public static float SCALE_FACTOR = 0.7F;
 
     private int steps;
@@ -506,31 +481,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
     private Vec3 previousPosition = Vec3.ZERO;
 
-
     private int lerpSteps;
     private double lerpX;
     private double lerpY;
     private double lerpZ;
     private double lerpYRot;
     private double lerpXRot;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public boolean canBeCollidedWith() {
@@ -543,7 +499,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     }
 
     @Override
-
     public boolean isPushable() {
         return true;
     }
@@ -552,8 +507,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public boolean isPickable() {
         return isAlive();
     }
-
-
 
     public void tickLerp() {
         if (this.isControlledByLocalInstance()) {
@@ -594,19 +547,13 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         return InteractionResult.FAIL;
     }
 
-
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
-
     }
-
-
-
 
     @Override
     public void tick() {
-
         if (!this.isMoving()) {
             entityData.set(DATA_IS_MOVING, isMoving());
         }
@@ -614,7 +561,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             entityData.set(DATA_IS_ROTATING, isRotating());
         }
 
-        System.out.println(this.isMovingForward());
+        // System.out.println(this.isMovingForward());
 
         if (!level().isClientSide) {
             this.xo = getX();
@@ -629,7 +576,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         this.setDeltaMovement(Vec3.ZERO);
         this.yrot = this.getYRot();
 
-
         // TODO: Revisit this temporary way of checking if it is moving
         if (!this.getDeltaMovement().equals(Vec3.ZERO) || !this.position().equals(this.previousPosition)) {
             this.previousPosition = this.position();
@@ -638,7 +584,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         if (this.getYRot() != this.previousRotationYaw) {
             this.previousRotationYaw = this.getYRot();
         }
-
 
         if (this.isControlledByLocalInstance()) {
             if (this.level().isClientSide) {
@@ -650,32 +595,22 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             this.setDeltaMovement(Vec3.ZERO);
         }
 
-
         fuelTick();
         accelerationTick();
         age++;
+
         if (time < shootingCooldown) {
             time++;
             float progress = (shootingCooldown - time) / 20;
             float roundedProgress = Math.round(progress * 10.0f) / 10.0f; // Round to 1 decimal place
 
-
-
-            if (this.getControllingPassenger() instanceof Player) {
+            if (this.getControllingPassenger() instanceof Player && this.isVehicle() && !this.level().isClientSide()) {
                 Player p = (Player) this.getControllingPassenger();
-                if(progress == 0) {
-                    p.displayClientMessage(Component
-                            .literal(shootingCooldown + "s")
-                            .withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD), true);
-
-
-                }
 
                 p.displayClientMessage(Component
                         .literal(roundedProgress + "s")
                         .withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), true);
             }
-
         }
         if (this.isVehicle()) {
             timeInVehicle++;
@@ -683,7 +618,11 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         if (timeInVehicle % 20 == 0) {
             blocksPerSecond = this.getDeltaMovement().horizontalDistance() * 20;
         }
-    }
+//        if (this.xo == this.getX() || this.zo == this.getZ()) {
+//            this.playSound(SoundRegistry.TANK_IDLE.get(), 1.0f, 1.0f);
+//
+//        }
+        }
 
     protected void fuelTick() {
         int fuel = getFuelAmount();
@@ -704,7 +643,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         if (accelerationTime >= 0) {
             // Decrease AccTime when not moving OR not in tank OR no fuel
             if (!this.isVehicle() || !this.isMovingForward() || getFuelAmount() == 0) {
-                accelerationTime -= 2;
+                accelerationTime -= 20;
                 if (accelerationTime < 0) {
                     accelerationTime = 1;
                 }
@@ -713,7 +652,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
                 accelerationTime +=0.5f;
             }
         }
-            System.out.println("Da fak is" + accelerationTime);
+            // System.out.println("e" + accelerationTime);
 
         age++;
         if (level().isClientSide() && this.isVehicle() && this.age % 10 == 0 && getFuelAmount() > 0) {
@@ -725,7 +664,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             this.breakableBlocks = this.destroyBlocks(this.getBoundingBox());
         }
     }
-
 
     private void removeFuel(int amount) {
         int fuel = getFuelAmount();
@@ -740,13 +678,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     }
 
     public boolean isMovingForward() {
-        return this.inputUp;
+        return isOpposite ? this.inputDown : this.inputUp;
     }
 
     public boolean isMovingBackward() {
-        return this.inputDown;
+        return isOpposite ? this.inputUp : this.inputDown;
     }
-
 
     @Override
     protected void defineSynchedData() {
@@ -758,10 +695,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         entityData.define(VISIBLE, false);
         entityData.define(DATA_IS_MOVING, this.isMoving());
         entityData.define(DATA_IS_ROTATING, this.isRotating());
-
     }
-
-
 
     public void setSpeed(float speed) {
         entityData.set(SPEED, speed);
@@ -782,7 +716,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         return entityData.get(MAX_HEALTH);
     }
 
-
     public void setVisibility(boolean v) {
         entityData.set(VISIBLE, v);
     }
@@ -790,7 +723,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public boolean getVisibility() {
         return entityData.get(VISIBLE);
     }
-
 
     public void setFuelAmount(int fuel) {
         this.entityData.set(FUEL_AMOUNT, fuel);
@@ -829,32 +761,19 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         pCompound.putInt("health", entityData.get(HEALTH));
         pCompound.putInt("max_health", entityData.get(MAX_HEALTH));
         pCompound.putBoolean("visible", entityData.get(VISIBLE));
-
-
     }
 
 
-    public boolean isShooting() {
-        return shooting;
-    }
 
-    public void setShooting(boolean isShooting) {
-        shooting = isShooting;
-    }
 
 
 
 
     public void shoot(Player player, BaseTankEntity tank, Level world) {
-
         TankShootEvent tankEvent = new TankShootEvent(this);
         Player playerEntity = (Player) player;
         ItemStack itemStack = ItemStack.EMPTY;
         BaseTankEntity tankEntity = (BaseTankEntity) tank;
-
-
-
-
 
         if (!tankEvent.isCanceled() && getFuelAmount() > 0) {
             boolean foundAmmo = false;
@@ -875,8 +794,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             }
         }
 
-
-
         for (int i = 0; i < playerEntity.getInventory().getContainerSize(); ++i) {
             ItemStack stack = playerEntity.getInventory().offhand.get(i);
             if (stack.getCount() >= shellsUsed) {
@@ -890,8 +807,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             player.displayClientMessage(Component.literal("Please wait " + progress + "s !").withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), false);
             player.level().playSound(null, player.blockPosition(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 1.0f);
             return;
-
-
         }
         if (getFuelAmount() < 1 && TrajansCoreConfig.fuelSystemEnabled.get()) {
             player.displayClientMessage(Component.literal("You don't have any fuel!").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
@@ -908,6 +823,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             StandardShell shellEntity = new StandardShell(tankEntity.getControllingPassenger(), world);
             float xRot = playerEntity.getXRot();
             xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            Vec3 shootPos = tankEntity.position().add(0, shootingYOffset, 0);
+            shellEntity.setPos(shootPos);
             shellEntity.shootFromRotation(tankEntity, xRot, tankEntity.isTD ? tankEntity.getYRot() : playerEntity.getYRot(), 0.0F, 3.5F, 0F);
             MinecraftForge.EVENT_BUS.post(new TankShootEvent(this));
             world.addFreshEntity(shellEntity);
@@ -919,11 +836,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             return;
         }
 
-
         if (itemStack.is(TrajansCoreItems.ARMOR_PIERCING_SHELL.get()) && canUseArmorPiercing) {
             ArmorPiercingShell shellEntity = new ArmorPiercingShell(tankEntity.getControllingPassenger(), world);
             float xRot = playerEntity.getXRot();
             xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            Vec3 shootPos = tankEntity.position().add(0, shootingYOffset, 0);
+            shellEntity.setPos(shootPos);
             shellEntity.shootFromRotation(tankEntity, xRot, tankEntity.isTD ? tankEntity.getYRot() : playerEntity.getYRot(), 0.0F, 3.5F, 1.0F);
             MinecraftForge.EVENT_BUS.post(new TankShootEvent(this));
             world.addFreshEntity(shellEntity);
@@ -935,18 +853,18 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             return;
         }
 
-
         if (itemStack.is(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get()) && canUseHighExplosive) {
             HighExplosiveShell shellEntity = new HighExplosiveShell(tankEntity.getControllingPassenger(), world);
             float xRot = playerEntity.getXRot();
             xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            Vec3 shootPos = tankEntity.position().add(0, shootingYOffset, 0);
+            shellEntity.setPos(shootPos);
             shellEntity.shootFromRotation(tankEntity, xRot, tankEntity.isTD ? tankEntity.getYRot() : playerEntity.getYRot(), 0.0F, 3.5F, 0F);
             MinecraftForge.EVENT_BUS.post(new TankShootEvent(this));
             world.addFreshEntity(shellEntity);
             itemStack.shrink(shellsUsed);
         }
         if (itemStack.is(TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get()) && !canUseHighExplosive) {
-
             player.displayClientMessage(Component.literal("Shell Type disabled with this vehicle!").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
             world.playSound(null, player.blockPosition(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 1.0f);
             return;
@@ -955,6 +873,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             HeatShell shellEntity = new HeatShell(tankEntity.getControllingPassenger(), world);
             float xRot = playerEntity.getXRot();
             xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            Vec3 shootPos = tankEntity.position().add(0, shootingYOffset, 0);
+            shellEntity.setPos(shootPos);
             shellEntity.shootFromRotation(tankEntity, xRot, tankEntity.isTD ? tankEntity.getYRot() : playerEntity.getYRot(), 0.0F, 2.0F, 0F);
             MinecraftForge.EVENT_BUS.post(new TankShootEvent(this));
             world.addFreshEntity(shellEntity);
@@ -970,6 +890,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             APCRShell shellEntity = new APCRShell(tankEntity.getControllingPassenger(), world);
             float xRot = playerEntity.getXRot();
             xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            Vec3 shootPos = tankEntity.position().add(0, shootingYOffset, 0);
+            shellEntity.setPos(shootPos);
             shellEntity.shootFromRotation(tankEntity, xRot, tankEntity.isTD ? tankEntity.getYRot() : playerEntity.getYRot(), 0.0F, 3.5F, 0F);
             MinecraftForge.EVENT_BUS.post(new TankShootEvent(this));
             world.addFreshEntity(shellEntity);
@@ -985,21 +907,20 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             LowCaliberShell shellEntity = new LowCaliberShell(tankEntity.getControllingPassenger(), world);
             float xRot = playerEntity.getXRot();
             xRot = Math.max(-10.0F, Math.min(10.0F, xRot));
+            Vec3 shootPos = tankEntity.position().add(0, shootingYOffset, 0);
+            shellEntity.setPos(shootPos);
             shellEntity.shootFromRotation(tankEntity, xRot, tankEntity.isTD ? tankEntity.getYRot() : playerEntity.getYRot(), 0.0F, 3.5F, 0F);
             MinecraftForge.EVENT_BUS.post(new TankShootEvent(this));
             world.addFreshEntity(shellEntity);
             itemStack.shrink(shellsUsed);
         }
         if (itemStack.is(TrajansCoreItems.LOW_CALIBER_SHELL.get()) && !canUseLowCaliberShell) {
-
             player.displayClientMessage(Component.literal("Shell Type disabled with this vehicle!").withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
             world.playSound(null, player.blockPosition(), SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 1.0f, 1.0f);
             return;
         }
         time = 0;
     }
-
-
 
     public void fuelLeft(Player player) {
         double fuel = getFuelAmount();
@@ -1020,9 +941,13 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         }
     }
 
+    @Override
+    protected void playStepSound(BlockPos pPos, BlockState pState) {
+        this.playSound(SoundRegistry.TANK_MOVE.get(), 0.5f, 1);
+    }
 
 
-
+    //hi
     @Override
     public float getStepHeight() {
         return 1.0f;
@@ -1041,10 +966,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         return TrajansCoreConfig.tanksImmuneToFire.get();
     }
 
-
-
-
-
     protected void clampRotation(Entity pEntityToUpdate) {
         pEntityToUpdate.setYBodyRot(this.getYRot());
         float f = Mth.wrapDegrees(pEntityToUpdate.getYRot() - this.getYRot());
@@ -1055,6 +976,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     }
 
 
+    //broken
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
         /*Entity entity = pSource.getDirectEntity();
@@ -1084,15 +1006,16 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             }
         }
 
-
-
         if (pSource == level().damageSources().drown()) {
             return false;
         }
         return super.hurt(pSource, pAmount);
-
          */
         if (pSource.type() == level().damageSources().cactus().type() || pSource.type() == level().damageSources().sweetBerryBush().type()) {
+            return false;
+        }
+
+        if (pSource.getEntity() == this) {
             return false;
         }
 
@@ -1105,7 +1028,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         if (!TrajansCoreConfig.meleeDamageTanks.get() && entity instanceof Player) {
             if (pSource.type() == level().damageSources().playerAttack((Player) entity).type()) {
                 return false;
-
             }
         }
 
@@ -1118,16 +1040,23 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         if (pSource == level().damageSources().drown()) {
             return false;
         }
+        if (level().isClientSide || isRemoved()) {
+            return false;
+        }
+        if (health < 0) {
+            return false;
+        }
 
         this.setHealth((int) (this.entityData.get(HEALTH)-pAmount));
 
-        return super.hurt(pSource, pAmount);
+
+        if (this.getHealth() <= 0) {
+            this.kill();
+            dropItem();
+        }
+
+        return true;
     }
-
-
-
-
-
 
     public double getOverlaySpeed() {
         return blocksPerSecond;
@@ -1143,15 +1072,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         //controllers.add(new AnimationController<>(this, "shoot_controller", state -> PlayState.STOP)
         //        .triggerableAnim("shoot", RawAnimation.begin().then("shoot", Animation.LoopType.PLAY_ONCE)));
-
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
-
-
 
     @org.jetbrains.annotations.Nullable
     @Override
@@ -1163,8 +1089,4 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public void stopRiding() {
         super.stopRiding();
     }
-
-
-
-
 }

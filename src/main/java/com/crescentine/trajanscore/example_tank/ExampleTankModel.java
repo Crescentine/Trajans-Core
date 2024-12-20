@@ -44,7 +44,7 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
      if (animatable.getControllingPassenger()!=null) {
             Entity rider = animatable.getControllingPassenger();
             if (animatable.isVehicle()) {
-                turret.setRotY((float) -Math.toRadians(rider.getYHeadRot()+animatable.getYRot()));
+                turret.setRotY((float) -Math.toRadians(rider.getYHeadRot()-animatable.getYRot()));
                 /*
                 float elevationAngle = rider.getXRot();
 
@@ -67,13 +67,13 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
                 manlet.setRotZ(targetManletRotZ);
 
                  */
-                main.setRotY((float) Math.toRadians(animatable.getYRot()));
+                main.setRotY((float) Math.toRadians(-animatable.getYRot()));
 
 
 
             }
         } else {
-         main.setRotY((float) Math.toRadians(animatable.getYRot()));
+         main.setRotY((float) Math.toRadians(-animatable.getYRot()));
      }
     }
 
