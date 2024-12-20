@@ -7,10 +7,16 @@ public class TrajansCoreConfig {
     public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> fuelSystemEnabled;
+
+    public static final ForgeConfigSpec.ConfigValue<Boolean> ATMountMove;
+
     public static final ForgeConfigSpec.ConfigValue<Double> coalFuelAmount;
     public static final ForgeConfigSpec.ConfigValue<Double> lavaFuelAmount;
     public static final ForgeConfigSpec.ConfigValue<Boolean> tanksImmuneToFire;
     public static final ForgeConfigSpec.ConfigValue<Boolean> arrowsDamageTanks;
+
+    public static final ForgeConfigSpec.ConfigValue<Boolean> meleeDamageTanks;
+
 
 
     public static final ForgeConfigSpec.ConfigValue<Double> standardShellDamage;
@@ -28,6 +34,9 @@ public class TrajansCoreConfig {
 
     public static final ForgeConfigSpec.ConfigValue<Double> APCRShellDamage;
     public static final ForgeConfigSpec.ConfigValue<Integer> APCRShellExplosionRadius;
+    public static final ForgeConfigSpec.ConfigValue<Double> LowCaliberShellDamage;
+    public static final ForgeConfigSpec.ConfigValue<Integer> LowCaliberShellExplosionRadius;
+
 
     static {
         BUILDER.push("Trajan's Core Config");
@@ -38,8 +47,10 @@ public class TrajansCoreConfig {
         fuelSystemEnabled = BUILDER.define("Set to false to disable tanks requiring fuel", true);
         tanksImmuneToFire = BUILDER.define("Set to true to make tanks affected by fire", false);
         arrowsDamageTanks = BUILDER.define("Set to true to make tanks affected by arrows", false);
+        meleeDamageTanks = BUILDER.define("Set to true to make tanks affected by melee", false);
         coalFuelAmount = BUILDER.define("How Much Fuel Coal and Charcoal Gives (seconds)", 6.0);
         lavaFuelAmount = BUILDER.define("How Much Fuel Lava Gives (seconds)", 60.0);
+        ATMountMove = BUILDER.define("Allows you to move your AT slowly when mounted on it", true);
         BUILDER.pop();
 
         BUILDER.push("Standard Shell Stats");
@@ -66,6 +77,11 @@ public class TrajansCoreConfig {
         BUILDER.push("APCR Shell Stats");
         APCRShellDamage = BUILDER.define("APCR Shell Damage", 90.0);
         APCRShellExplosionRadius = BUILDER.define("ACPR Shell Explosion Radius", 0);
+        BUILDER.pop();
+
+        BUILDER.push("Low Caliber Shell Stats");
+        LowCaliberShellDamage = BUILDER.define("Low Caliber Shell Damage", 20.0);
+        LowCaliberShellExplosionRadius = BUILDER.define("Low Caliber Shell Explosion Radius", 0);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

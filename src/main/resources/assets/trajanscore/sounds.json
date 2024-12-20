@@ -1,0 +1,20 @@
+{
+  "at_shoot": {
+    "subtitle": "sounds.trajanscore.at_shoot",
+    "sounds": [
+      "trajanscore:at_shoot"
+    ]
+  },
+  "tank_idle": {
+    "subtitle": "sounds.trajanscore.tank_idle",
+    "sounds": [
+      "trajanscore:tank_idle"
+    ]
+  },
+  "tank_move": {
+      "subtitle": "sounds.trajanscore.tank_move",
+      "sounds": [
+      "trajanscore:tank_move"
+      ]
+  }
+}
