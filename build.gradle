@@ -212,7 +212,7 @@ publishing {
         }
         maven {
             name = "MyMavenRepository"
-            url = uri("https://mymavenrepo.com/repo/2VWHzJyNCXsByvz03LL3")
+            url = uri("https://mymavenrepo.com/repo/${repo}")
 
         }
     }

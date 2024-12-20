@@ -1,6 +1,5 @@
 package com.crescentine.trajanscore.basetank;
 
-import com.crescentine.trajanscore.TankModClient;
 import com.crescentine.trajanscore.TankShootEvent;
 import com.crescentine.trajanscore.TrajansCoreConfig;
 import com.crescentine.trajanscore.item.TrajansCoreItems;
@@ -15,7 +14,6 @@ import com.crescentine.trajanscore.tankshells.low_caliber.LowCaliberShell;
 import com.crescentine.trajanscore.tankshells.standard.StandardShell;
 import com.google.common.collect.Lists;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -26,8 +24,6 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -35,9 +31,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.DismountHelper;
@@ -52,7 +46,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.network.NetworkDirection;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DataTickets;
@@ -87,7 +80,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public static final EntityDataAccessor<Boolean> DATA_IS_ROTATING = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.BOOLEAN);
 
 
-    public boolean isVisiblePlayer = true;
     public boolean isZoom = false;
 
     protected SimpleContainer inventory;
@@ -114,8 +106,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     private static final Ingredient COAL_BLOCK_FUEL = Ingredient.of(Items.COAL_BLOCK);
     private static final Ingredient LAVA_FUEL = Ingredient.of(Items.LAVA_BUCKET);
     private static final Ingredient HEALS = Ingredient.of(Items.IRON_BLOCK, Items.IRON_INGOT);
-    private static final Ingredient IRON_INGOT = Ingredient.of(Items.IRON_INGOT);
-    private static final Ingredient IRON_BLOCK = Ingredient.of(Items.IRON_BLOCK);
     public static final Ingredient AMMO = Ingredient.of(TrajansCoreItems.APCR_SHELL.get(), TrajansCoreItems.ARMOR_PIERCING_SHELL.get(), TrajansCoreItems.HEAT_SHELL.get(), TrajansCoreItems.STANDARD_SHELL.get(), TrajansCoreItems.HIGH_EXPLOSIVE_SHELL.get(), TrajansCoreItems.LOW_CALIBER_SHELL.get());
     public boolean showFuel;
 
@@ -390,15 +380,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         super.positionRider(pPassenger, pCallback);
     }
 
-    @Override
-    public Iterable<ItemStack> getArmorSlots() {
-        return null;
-    }
 
-    @Override
-    public void setItemSlot(EquipmentSlot pSlot, ItemStack pStack) {
 
-    }
 
     public void setInput(boolean pInputLeft, boolean pInputRight, boolean pInputUp, boolean pInputDown) {
         this.inputLeft = pInputLeft;
@@ -468,7 +451,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         }
     }
 
-    public static float SCALE_FACTOR = 0.7F;
 
     private int steps;
     private double clientX;
@@ -649,6 +631,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
                 }
             }
             if (this.isMovingBackward()) {
+                // Implicit cast from 'float' to 'int' in compound assignment can be lossy
                 accelerationTime +=0.5f;
             }
         }
@@ -697,13 +680,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         entityData.define(DATA_IS_ROTATING, this.isRotating());
     }
 
-    public void setSpeed(float speed) {
-        entityData.set(SPEED, speed);
-    }
 
-    public Float getSpeed() {
-        return entityData.get(SPEED);
-    }
     public void setHealth(int health) {
         entityData.set(HEALTH, Math.max(health, 0));
     }
