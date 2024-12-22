@@ -45,7 +45,8 @@
   "item.trajanscore.high_explosive_shell" : "High Explosive Shell",
   "item.trajanscore.low_caliber_shell" : "Low-Caliber Shell",
 
-  "sounds.trajanscore.at_shoot": "Anti-Tank Sound"
+  "sounds.trajanscore.at_shoot": "Anti-Tank Sound",
+  "sounds.trajanscore.tank_move": "Tank Moving"
 
 
 }
