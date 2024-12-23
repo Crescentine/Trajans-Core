@@ -35,7 +35,7 @@ public class ExampleATModel extends GeoModel<ExampleATEntity> {
                 float elevationAngle = rider.getXRot();
                 main.setRotY((float) Math.toRadians(-animatable.getYRot()));
 
-                float maxElevation = 8;
+                float maxElevation = 9;
                 float minElevation = -3;
 
                 if (elevationAngle > maxElevation) {

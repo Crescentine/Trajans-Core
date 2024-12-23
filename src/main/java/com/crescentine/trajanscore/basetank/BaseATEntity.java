@@ -634,6 +634,13 @@ public class BaseATEntity extends AnimatedTankEntity {
         this.yrot = this.getYRot();
 
 
+        double gravity = 0.875D;
+        if (!this.onGround()) {
+            Vec3 motion = this.getDeltaMovement();
+            this.setDeltaMovement(motion.x, motion.y - gravity, motion.z);
+        }
+
+
         // TODO: Revisit this temporary way of checking if it is moving
         if (!this.getDeltaMovement().equals(Vec3.ZERO) || !this.position().equals(this.previousPosition)) {
             this.previousPosition = this.position();
@@ -657,26 +664,16 @@ public class BaseATEntity extends AnimatedTankEntity {
         age++;
         if (time < shootingCooldown) {
             time++;
-            float progress = (float) (shootingCooldown - time) / 20;
+            float progress = (shootingCooldown - time) / 20;
             float roundedProgress = Math.round(progress * 10.0f) / 10.0f; // Round to 1 decimal place
 
-
-
-            if (this.getControllingPassenger() instanceof Player) {
+            if (this.getControllingPassenger() instanceof Player && this.isVehicle() && !this.level().isClientSide()) {
                 Player p = (Player) this.getControllingPassenger();
-                if(progress == 0) {
-                    p.displayClientMessage(Component
-                            .literal(shootingCooldown + "s")
-                            .withStyle(ChatFormatting.GRAY, ChatFormatting.BOLD), true);
-
-
-                }
 
                 p.displayClientMessage(Component
                         .literal(roundedProgress + "s")
                         .withStyle(ChatFormatting.YELLOW, ChatFormatting.BOLD), true);
             }
-
         }
         if (this.isVehicle()) {
             timeInVehicle++;
