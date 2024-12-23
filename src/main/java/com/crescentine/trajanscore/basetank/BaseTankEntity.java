@@ -118,6 +118,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public boolean canUseLowCaliberShell;
 
     public int accelerationTime;
+    private float lastPlayerYHeadRot;
+
     private boolean breakableBlocks;
     public int timeInVehicle;
     public double blocksPerSecond = 0.00;
@@ -149,10 +151,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
             }
         }
         if (this.isAlive()) {
-        }
-        if (player.isShiftKeyDown()){
-            kill();
-            dropItem();
         }
         if (getFuelAmount() < maxFuel && FUELS.test(itemstack)) {
             if (COAL_FUEL.test(itemstack)) {
@@ -190,7 +188,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         ItemStack itemStack = getItem().getDefaultInstance();
         CompoundTag compound = new CompoundTag();
         addAdditionalSaveData(compound);
-        compound.putInt("health", entityData.get(HEALTH));
+        compound.putInt("health", 1);
         itemStack.addTagElement("EntityTag", compound);
         return itemStack;
     }
@@ -1052,8 +1050,16 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
     @Override
     protected void removePassenger(Entity pPassenger) {
+        if (pPassenger instanceof Player) {
+            Player player = (Player) pPassenger;
+            lastPlayerYHeadRot = player.getYHeadRot();
+        }
         this.timeInVehicle = 0;
         super.removePassenger(pPassenger);
+    }
+
+    public float getLastPlayerYHeadRot() {
+        return lastPlayerYHeadRot;
     }
 
     @Override

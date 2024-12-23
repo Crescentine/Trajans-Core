@@ -73,6 +73,8 @@ public class ExampleTankModel extends GeoModel<ExampleTankEntity> {
 
             }
         } else {
+         turret.setRotY((float) -Math.toRadians(animatable.getLastPlayerYHeadRot()-animatable.getYRot()));
+
          main.setRotY((float) Math.toRadians(-animatable.getYRot()));
      }
     }
