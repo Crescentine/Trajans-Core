@@ -67,6 +67,8 @@ public class BaseATEntity extends AnimatedTankEntity {
 
 
 
+    private float lastYRot;
+
     private boolean inputUp;
     private boolean inputDown;
 
@@ -182,9 +184,14 @@ public class BaseATEntity extends AnimatedTankEntity {
 
     @Override
     protected void removePassenger(Entity pPassenger) {
+        lastYRot = this.getYRot();
         super.removePassenger(pPassenger);
     }
 
+
+    public float getLastYRot() {
+        return lastYRot;
+    }
 
 
     @Override
@@ -664,7 +671,7 @@ public class BaseATEntity extends AnimatedTankEntity {
         age++;
         if (time < shootingCooldown) {
             time++;
-            float progress = (shootingCooldown - time) / 20;
+            float progress = (float) (shootingCooldown - time) / 20;
             float roundedProgress = Math.round(progress * 10.0f) / 10.0f; // Round to 1 decimal place
 
             if (this.getControllingPassenger() instanceof Player && this.isVehicle() && !this.level().isClientSide()) {

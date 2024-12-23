@@ -29,9 +29,9 @@ public class ExampleATModel extends GeoModel<ExampleATEntity> {
         gun.setRotY(0f);
         main.setRotY(0f);
 
-        if (animatable.hasControllingPassenger()) {
+        if (animatable.getControllingPassenger()!=null) {
             Entity rider = animatable.getControllingPassenger();
-            if (animatable.isVehicle() && rider instanceof Player player && player.level().isClientSide() && animatable.hasControllingPassenger()) {
+            if (animatable.isVehicle()) {
                 float elevationAngle = rider.getXRot();
                 main.setRotY((float) Math.toRadians(-animatable.getYRot()));
 
@@ -51,9 +51,9 @@ public class ExampleATModel extends GeoModel<ExampleATEntity> {
                 gun.setRotX(-targetGunRotZ);
 
 
-            } else {
-                main.setRotY((float) Math.toRadians(-animatable.getYRot()));
             }
+        } else {
+            main.setRotY((float) Math.toRadians(-animatable.getLastYRot()));
         }
     }
 }
