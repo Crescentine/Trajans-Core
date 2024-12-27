@@ -18,7 +18,8 @@ public class ExampleATEntity extends BaseATEntity implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     public ExampleATEntity(EntityType<? extends BaseATEntity> entityType, Level world) {
         super(entityType, world);
-        this.health = 20;
+        this.health = 100;
+        this.entityData.set(HEALTH, (int) this.health);
         this.armor = 3.0;
         this.shootingCooldown = 180;
         this.canUseAPCR = true;

@@ -127,8 +127,8 @@ public class BaseATEntity extends AnimatedTankEntity {
     protected void defineSynchedData() {
 
         super.defineSynchedData();
-        entityData.define(HEALTH, 20);
-        entityData.define(MAX_HEALTH, 20);
+        entityData.define(HEALTH, (int) health);
+        entityData.define(MAX_HEALTH, (int) health);
 
     }
 
@@ -665,7 +665,7 @@ public class BaseATEntity extends AnimatedTankEntity {
         } else {
             this.setDeltaMovement(Vec3.ZERO);
         }
-        System.out.println(this.getYRot());
+        //System.out.println(this.getYRot());
 
 
         age++;

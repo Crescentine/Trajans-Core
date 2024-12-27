@@ -1,5 +1,6 @@
 package com.crescentine.trajanscore;
 
+import com.crescentine.trajanscore.basetank.BaseTankEntity;
 import com.crescentine.trajanscore.example_at.ExampleATEntity;
 import com.crescentine.trajanscore.example_tank.ExampleTankEntity;
 import com.crescentine.trajanscore.packet.TrajansCoreNetwork;
@@ -79,10 +80,4 @@ public class TrajansCoreEntities {
         ENTITY_TYPES.register(eventBus);
     }
 
-    @SubscribeEvent
-    public static void entityAttributesInit(EntityAttributeCreationEvent event) {
-        /*event.put(EXAMPLE_TANK.get(), ExampleTankEntity.createAttributes().build());
-        event.put(LUCHS.get(), LuchsTankEntity.createAttributes().build());*/
-        //event.put(EXAMPLE_AT.get(), ExampleATEntity.createAttributes().build());
-    }
 }
