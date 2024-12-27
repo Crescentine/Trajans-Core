@@ -146,7 +146,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     @Override
     public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (this.getHealth() < this.entityData.get(MAX_HEALTH)) {
+        if (this.getHealth() < health) {
             if (HEALS.test(itemstack)) {
                 if (itemstack.is(Items.IRON_BLOCK)) {
                     healTank(healAmount);
@@ -258,12 +258,12 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     }
 
     public void healTank(double healAmount) {
-        if (this.getMaxHealth() - this.getHealth() > healAmount) {
+        if (this.health - this.getHealth() > healAmount) {
             this.setHealth((int) ((float) this.getHealth() + (float) healAmount));
             this.level().addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
         } else {
-            if (this.getHealth() < this.getMaxHealth()) {
-                this.setHealth(this.getMaxHealth());
+            if (this.getHealth() < this.health) {
+                this.setHealth(this.health);
                 this.level().addParticle(ParticleTypes.FLAME, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
             }
         }
@@ -325,7 +325,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         if (this.hasControllingPassenger() && pEntity != rider) {
             Player playerRider = (Player) rider;
             assert playerRider != null;
-            System.out.println(playerRider.getSpeed());
             if (this.getControllingPassenger() instanceof Player) {
                 entity.hurt(this.damageSources().playerAttack((Player) this.getControllingPassenger()), (float) this.accelerationTime /10);
             }
@@ -541,6 +540,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
 
     @Override
     public void tick() {
+        //ystem.out.println(this.getHealth() + "/" + this.health);
         if (!this.isMoving()) {
             entityData.set(DATA_IS_MOVING, isMoving());
         }

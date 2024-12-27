@@ -665,7 +665,7 @@ public class BaseATEntity extends AnimatedTankEntity {
         } else {
             this.setDeltaMovement(Vec3.ZERO);
         }
-        System.out.println(this.getYRot());
+        //System.out.println(this.getYRot());
 
 
         age++;

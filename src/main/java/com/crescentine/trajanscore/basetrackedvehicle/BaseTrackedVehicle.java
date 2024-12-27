@@ -612,7 +612,7 @@ public class BaseTrackedVehicle extends Entity {
         } else {
             this.setDeltaMovement(Vec3.ZERO);
         }
-        System.out.println(this.getYRot());
+        //System.out.println(this.getYRot());
 
 
         fuelTick();
