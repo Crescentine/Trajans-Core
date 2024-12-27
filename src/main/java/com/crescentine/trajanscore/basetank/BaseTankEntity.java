@@ -57,12 +57,13 @@ import java.util.List;
 
 public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    public int health = 0;
 
     public double healAmount = 0;
     public boolean armored;
     public double speedMultiplier = 0;
     public Item tankItem;
-    protected double shootingYOffset = 1.5; // Default Y-offset for shell spawning
+    protected double shootingYOffset = 0; // Default Y-offset for shell spawning
 
     private static final EntityDataAccessor<Integer> FUEL_AMOUNT = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(BaseTankEntity.class, EntityDataSerializers.FLOAT);
@@ -87,7 +88,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public float time;
     public double armor = 0;
     static int shellsUsed = 1;
-    public double health = 0;
 
     public boolean isTD;
     public boolean isOpposite;
@@ -132,13 +132,21 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     private boolean inputDown;
 
     public BaseTankEntity(EntityType<? extends BaseTankEntity> entityType, Level world) {
+
         super(entityType, world);
+
+    }
+
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        //this.setHealth(health);
     }
 
     @Override
     public InteractionResult interactAt(Player player, Vec3 hitPos, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if (this.getHealth() < this.entityData.get(HEALTH)) {
+        if (this.getHealth() < this.entityData.get(MAX_HEALTH)) {
             if (HEALS.test(itemstack)) {
                 if (itemstack.is(Items.IRON_BLOCK)) {
                     healTank(healAmount);
@@ -676,8 +684,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         super.defineSynchedData();
         entityData.define(FUEL_AMOUNT, 0);
         entityData.define(SPEED, 0.0f);
-        entityData.define(HEALTH, 100);
-        entityData.define(MAX_HEALTH, 100);
+        entityData.define(HEALTH, health);
+        entityData.define(MAX_HEALTH, health);
         entityData.define(VISIBLE, false);
         entityData.define(DATA_IS_MOVING, this.isMoving());
         entityData.define(DATA_IS_ROTATING, this.isRotating());
@@ -695,6 +703,8 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public int getMaxHealth() {
         return entityData.get(MAX_HEALTH);
     }
+
+
 
     public void setVisibility(boolean v) {
         entityData.set(VISIBLE, v);
@@ -718,9 +728,9 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         setFuelAmount(pCompound.getInt("fuel"));
         if (pCompound.contains("max_health")) {
             int maxHealth = pCompound.getInt("max_health");
-            if (maxHealth <= 0) {
-                maxHealth = 20;
-            }
+//            if (maxHealth <= 0) {
+//                maxHealIth = 20;
+//            }
             entityData.set(MAX_HEALTH, maxHealth);
         }
 
