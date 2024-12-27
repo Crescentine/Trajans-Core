@@ -11,7 +11,7 @@ public class LuchsTankEntity extends BaseTankEntity  {
 
     public LuchsTankEntity(EntityType<?> entityType, Level world) {
         super((EntityType<? extends BaseTankEntity>) entityType, world);
-        this.health = 60.0;
+        this.health = 60;
         this.speedMultiplier = 0.625;
         this.shootingCooldown = 20;
         this.armor = 3.0;

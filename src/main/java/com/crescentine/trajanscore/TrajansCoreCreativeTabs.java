@@ -24,6 +24,7 @@ public class TrajansCoreCreativeTabs {
                 output.accept(TrajansCoreItems.TURRET_FACTORY_BLOCK_ITEM.get());
                 output.accept(TrajansCoreItems.ENGINE_FABRICATOR_ITEM.get());
                 output.accept(TrajansCoreItems.STEEL_MANUFACTURER_ITEM.get());
+                output.accept(TrajansCoreItems.SHELL_WORKBENCH.get());
                 output.accept(TrajansCoreItems.LIGHT_TANK_TURRET.get());
                 output.accept(TrajansCoreItems.LIGHT_ENGINE.get());
                 output.accept(TrajansCoreItems.LIGHT_TANK_PLATING.get());

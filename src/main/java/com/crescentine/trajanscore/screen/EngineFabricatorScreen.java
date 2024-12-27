@@ -34,4 +34,10 @@ public class EngineFabricatorScreen extends AbstractContainerScreen<EngineFabric
         }
         //old      blit(pPoseStack, x + 97, y + 35, 176, 0, menu.getScaledProgress(), 14);
     }
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        renderBackground(guiGraphics);
+        super.render(guiGraphics, mouseX, mouseY, delta);
+        renderTooltip(guiGraphics, mouseX, mouseY);
+    }
 }
