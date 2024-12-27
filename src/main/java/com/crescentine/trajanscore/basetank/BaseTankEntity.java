@@ -394,7 +394,7 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         this.inputUp = pInputUp;
         this.inputDown = pInputDown;
     }
-
+    
     private void controlTank() {
         if (this.isVehicle() && this.hasControllingPassenger() && this.getFuelAmount() > 0) {
             double gravity = 0.875D;
@@ -1093,4 +1093,6 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
     public void stopRiding() {
         super.stopRiding();
     }
+
+
 }
