@@ -72,13 +72,15 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
     protected void onHitEntity(EntityHitResult entityHitResult) {
         super.onHitEntity(entityHitResult);
         Entity entity = entityHitResult.getEntity();
+        Entity owner = this.getOwner();
         entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
-        if (entity instanceof LivingEntity) {
-            entity.hurt(damageSources().thrown(this, this.getOwner()), (float) damage);
+        if (entity instanceof LivingEntity && entity != owner) {
+            entity.hurt(damageSources().thrown(this, owner), (float) damage);
             entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
         }
-        if (entity instanceof BaseTankEntity) {
-            entity.hurt(damageSources().thrown(this, this.getOwner()), (float) damage);
+        if (entity instanceof BaseTankEntity && entity != owner) {
+            entity.hurt(damageSources().thrown(this, owner), (float) damage);
+            kill();
             entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
         }
     }
@@ -91,9 +93,9 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
     }
-    @Override
-    protected void onHit(HitResult p_70227_1_){
-        super.onHit(p_70227_1_);
+/*    @Override
+    protected void onHit(HitResult hitResult){
+        super.onHit(hitResult);
         if (!this.level().isClientSide) { // checks if the world is client
             this.level().broadcastEntityEvent(this, (byte) 3); // particle?
             if (!level().isClientSide) {
@@ -101,6 +103,37 @@ public class BaseShell extends ThrowableItemProjectile implements GeoEntity {
                 this.kill();
             }
         }
+    }*/
+
+
+/*    @Override
+    protected void onHitEntity(EntityHitResult entityHitResult) {
+        super.onHitEntity(entityHitResult);
+        Entity entity = entityHitResult.getEntity();
+        entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
+        if (entity instanceof LivingEntity || entity instanceof BaseTankEntity) {
+            entity.hurt(damageSources().thrown(this, this.getOwner()), (float) damage);
+            entity.playSound(SoundEvents.GENERIC_EXPLODE, 2F, 1F);
+        }
+        if (!(entity instanceof BaseTankEntity)) {
+            explode();
+        }
+    }*/
+
+    @Override
+    protected void onHit(HitResult hitResult) {
+        super.onHit(hitResult);
+        if (!this.level().isClientSide) {
+            this.level().broadcastEntityEvent(this, (byte) 3);
+            if (!(hitResult instanceof EntityHitResult) || !(((EntityHitResult) hitResult).getEntity() instanceof BaseTankEntity)) {
+                explode();
+            }
+        }
+    }
+
+    private void explode() {
+        this.level().explode(this, getX(), getY(), getZ(), explosionRadius, fire, Level.ExplosionInteraction.BLOCK);
+        this.kill();
     }
 
     @Override

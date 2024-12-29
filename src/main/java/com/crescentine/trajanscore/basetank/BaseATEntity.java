@@ -90,7 +90,8 @@ public class BaseATEntity extends AnimatedTankEntity {
     public double armor = 0;
     static int shellsUsed = 1;
     public double health = 0;
-    public double speedMultiplier = 0;
+    public double forwardSpeed = 0.025f;
+    public double backwardSpeed = 0.00625f;
 
 
     public BaseATEntity(EntityType<? extends BaseATEntity> entityType, Level world) {
@@ -422,8 +423,8 @@ public class BaseATEntity extends AnimatedTankEntity {
                 double moveX = 0.0;
                 double moveY = 0.0;
                 double moveZ = 0.0;
-                float forwardSpeed = 0.1f;
-                float backwardSpeed = 0.05f;
+                //float forwardSpeed = 0.1f;
+                //float backwardSpeed = 0.05f;
 
                 if (this.hasControllingPassenger()) {
                     this.setYRot(livingEntity.getYHeadRot());
