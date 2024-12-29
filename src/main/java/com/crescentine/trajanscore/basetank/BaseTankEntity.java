@@ -1072,6 +1072,10 @@ public class BaseTankEntity extends AnimatedTankEntity implements GeoEntity {
         return lastPlayerYHeadRot;
     }
 
+    public void setLastPlayerYHeadRot(float lastPlayerYHeadRot) {
+        this.lastPlayerYHeadRot = lastPlayerYHeadRot;
+    }
+
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         //controllers.add(new AnimationController<>(this, "shoot_controller", state -> PlayState.STOP)
