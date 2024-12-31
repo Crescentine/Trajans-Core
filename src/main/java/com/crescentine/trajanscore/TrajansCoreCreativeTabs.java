@@ -39,6 +39,7 @@ public class TrajansCoreCreativeTabs {
                 output.accept(TrajansCoreItems.HEAVY_TANK_TRACKS.get());
                 output.accept(TrajansCoreItems.HAMMER.get());
                 output.accept(TrajansCoreItems.BOLSTER_PLATE.get());
+                output.accept(TrajansCoreItems.TANK_CONTROLLER.get());
             }).build());
 
     public static final RegistryObject<CreativeModeTab> SHELLS_TAB = CREATIVE_TABS.register("trajanscore_shells", () -> CreativeModeTab.builder()
